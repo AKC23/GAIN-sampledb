@@ -173,8 +173,7 @@
             // Level 4: Tables that depend on Level 3 tables
             echo "<h3>Creating tables with Level 4 dependencies...</h3>";
             include('insert_import_amount_oilseeds.php');
-            // Commented out missing file
-            // include('insert_local_production_amount_oilseed.php');
+            include('insert_import_edible_oil.php');  
             include('insert_total_local_crop_production.php');
             
         } catch (Exception $e) {
@@ -182,20 +181,16 @@
         } finally {
             // Safely close the database connection
             if (isset($conn) && $conn instanceof mysqli) {
-                if (!$conn->connect_error) {
-                    try {
-                        // Only close if the connection is still open
-                        if ($conn->ping()) {
-                            $conn->close();
-                            echo "<br>Database connection closed successfully.<br>";
-                        } else {
-                            echo "<br>Database connection was already closed.<br>";
-                        }
-                    } catch (Exception $closeError) {
-                        echo "<br>Error closing database connection: " . $closeError->getMessage() . "<br>";
+                try {
+                    // Only attempt to close if the connection is still open
+                    if (!$conn->connect_error) {
+                        $conn->close();
+                        echo "<br>Database connection closed successfully.<br>";
+                    } else {
+                        echo "<br>Database connection was not successfully established.<br>";
                     }
-                } else {
-                    echo "<br>Database connection was not successfully established.<br>";
+                } catch (Exception $closeError) {
+                    echo "<br>Error closing database connection: " . $closeError->getMessage() . "<br>";
                 }
             } else {
                 echo "<br>No database connection to close.<br>";
@@ -211,7 +206,7 @@
                 "producers_supply" => "Producers Supply Amount",
                 "producers_brand_name" => "Producer Brands",
                 "producer_skus" => "Producer SKUs",
-                "local_production_amount_oilseed" => "Local Production Amount (Oilseed)",
+                
                 "importers_supply" => "Importers Supply Amount",
                 "importers_brand_name" => "Importer Brands",
                 "importer_skus" => "Importer SKUs",

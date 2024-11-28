@@ -101,6 +101,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     echo "Error: Could not open CSV file.";
 }
 
-// Close the database connection
-$conn->close();
+// Note: Do not close the database connection here
+// The connection will be closed by index.php
+// $conn->close(); // REMOVED: This line should NOT be uncommented
 ?>
