@@ -24,6 +24,7 @@ foreach ($requiredTables as $table) {
     }
 }
 
+
 // SQL query to create the 'total_local_crop_production' table
 $createTableSQL = "
     CREATE TABLE total_local_crop_production (
