@@ -1,0 +1,5 @@
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+Food Vehicle,VehicleID,Food Type,FoodTypeID,Processing Stage,RawCropsID,Country,Country_ID,Source Volume,Converted Value,Volume Unit,Periodical Unit (Annual/Monthly),Start Year,End Year,Accessed Date,Source,Link,Process to Obtain Data
+E= Edible Oil,,Types of Food,,Type of Crop,,Country Name,,Actual volume number,Converted Value,Type of unit of the volume found in the data source,Time period of Data,Data collection start year,Data collection end year,Date data was accessed,Data Source File Name,Link of the Source File,How to get the data from the source
+E,1,,1,,5,Malaysia,5,2000,2000,Metric Ton,Monthly,2020,2020,,,,
+E,1,,1,,5,,,2000,,,Monthly,2020,2020,,,,

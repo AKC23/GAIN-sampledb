@@ -18,55 +18,165 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE FoodType (
         FoodTypeID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        FoodTypeName VARCHAR(50) NULL,
-        VehicleID INT(11) NULL,
-        INDEX (VehicleID),
-        
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) 
+        VehicleID INT(11),
+        FoodTypeName VARCHAR(50) NOT NULL,
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'FoodType' created successfully with foreign key constraint.<br>";
+    echo "Table 'FoodType' created successfully.<br>";
 } else {
-    echo "Error creating table 'FoodType': " . $conn->error . "<br>";
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Path to your uploaded CSV file for FoodType data
-$csvFile = 'foodtype.csv';  // Update with the correct path of your CSV file
+// Get valid VehicleIDs
+$validVehicleIDs = array();
+$result = $conn->query("SELECT * FROM FoodVehicle");
+if ($result) {
+    echo "<br>Valid VehicleIDs in database:<br>";
+    while ($row = $result->fetch_assoc()) {
+        $validVehicleIDs[] = $row['VehicleID'];
+        echo "VehicleID: {$row['VehicleID']}, Name: {$row['VehicleName']}<br>";
+    }
+} else {
+    echo "Error getting valid VehicleIDs: " . $conn->error . "<br>";
+}
 
-// Open the CSV file for reading
+// Path to your CSV file
+$csvFile = 'foodtype.csv';  // Update with the exact path of your CSV file
+
+if (!file_exists($csvFile)) {
+    die("Error: CSV file '$csvFile' not found.<br>");
+}
+
+echo "<br>Opening CSV file: $csvFile<br>";
+
+// Check for BOM and remove if present
+$content = file_get_contents($csvFile);
+if ($content === false) {
+    die("Error: Could not read CSV file.<br>");
+}
+
+// Check for UTF-8 BOM and remove it
+$bom = pack('H*','EFBBBF');
+if (strncmp($content, $bom, 3) === 0) {
+    echo "Found and removing UTF-8 BOM from CSV file.<br>";
+    $content = substr($content, 3);
+}
+
+// Normalize line endings
+$content = str_replace("\r\n", "\n", $content);
+$content = str_replace("\r", "\n", $content);
+$lines = explode("\n", $content);
+
+// Remove any empty lines
+$lines = array_filter($lines, function($line) {
+    return trim($line) !== '';
+});
+
+// Save normalized content to temp file
+$tempFile = $csvFile . '.tmp';
+file_put_contents($tempFile, implode("\n", $lines));
+$csvFile = $tempFile;
+
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
+    // Skip header row
+    $header = fgetcsv($handle, 1000, ",");
+    if ($header !== FALSE) {
+        echo "Header row: " . implode(", ", array_map('trim', $header)) . "<br>";
+    }
 
-    // Read through each line of the CSV file
+    echo "<br>CSV Contents:<br>";
+    if ($header !== FALSE) {
+        echo "Row 1 (Header): " . implode(", ", array_map('trim', $header)) . "<br>";
+    }
+    
+    $rowNumber = 2;
+    rewind($handle);
+    fgetcsv($handle); // Skip header again
+    
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        // Show raw data for debugging
+        echo "<br>Row $rowNumber raw data:<br>";
+        foreach ($data as $index => $value) {
+            echo "Column $index: '" . bin2hex($value) . "' (hex), '" . $value . "' (raw)<br>";
+        }
+        
+        // Clean and validate data
+        if (count($data) < 2) {
+            echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
 
-        // CSV data: FoodTypeName is in the first column (index 0) and VehicleID is in the second column (index 1)
-        $foodTypeName = mysqli_real_escape_string($conn, trim($data[0]));
-        $vehicleID = mysqli_real_escape_string($conn, trim($data[1]));
+        // Clean the data more thoroughly
+        $foodTypeName = trim($data[0]);
+        $vehicleID = trim($data[1]);
+        
+        // Remove any extra spaces between the name and comma
+        $foodTypeName = preg_replace('/\s+,/', ',', $foodTypeName);
+        
+        // Convert to proper types
+        $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
+        if ($vehicleID === false || $vehicleID === null) {
+            echo "Error: Invalid VehicleID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
 
-        // Ensure the FoodTypeName and VehicleID are not empty
-        if (!empty($foodTypeName) && !empty($vehicleID)) {
-            // Prepare SQL query to insert the data into the 'FoodType' table
-            $sql = "INSERT INTO FoodType (FoodTypeName, VehicleID) VALUES ('$foodTypeName', '$vehicleID')";
+        $foodTypeName = mysqli_real_escape_string($conn, $foodTypeName);
 
-            // Execute the query
-            if ($conn->query($sql) === TRUE) {
-                echo "Food Type '$foodTypeName' with VehicleID '$vehicleID' inserted successfully.<br>";
-            } else {
-                echo "Error inserting '$foodTypeName': " . $conn->error . "<br>";
-            }
+        echo "Processing Row $rowNumber:<br>";
+        echo "VehicleID from CSV: $vehicleID (Valid IDs: " . implode(", ", $validVehicleIDs) . ")<br>";
+        echo "FoodTypeName: '$foodTypeName'<br>";
+
+        // Validate VehicleID
+        if (!in_array($vehicleID, $validVehicleIDs)) {
+            echo "Error: VehicleID $vehicleID does not exist in FoodVehicle table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        if (empty($foodTypeName)) {
+            echo "Warning: Empty food type name in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        $sql = "INSERT INTO FoodType (VehicleID, FoodTypeName) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("is", $vehicleID, $foodTypeName);
+
+        if ($stmt->execute()) {
+            $foodTypeID = $conn->insert_id;
+            echo "✓ Inserted food type '$foodTypeName' with ID: $foodTypeID<br>";
         } else {
-            echo "Skipping empty row or missing data.<br>";
+            echo "Error inserting food type: " . $stmt->error . "<br>";
+        }
+
+        $stmt->close();
+        $rowNumber++;
+    }
+
+    // After inserting, show what's in the table
+    echo "<br>Final FoodType table contents:<br>";
+    $result = $conn->query("SELECT ft.*, fv.VehicleName 
+                           FROM FoodType ft 
+                           JOIN FoodVehicle fv ON ft.VehicleID = fv.VehicleID 
+                           ORDER BY ft.FoodTypeID");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            echo "ID: {$row['FoodTypeID']}, VehicleID: {$row['VehicleID']}, " .
+                 "Vehicle: {$row['VehicleName']}, Type: {$row['FoodTypeName']}<br>";
         }
     }
 
-    // Close the file after reading
     fclose($handle);
 } else {
-    echo "Error: Could not open CSV file.";
+    echo "Error: Could not open CSV file.<br>";
 }
 
-// Close the database connection
-$conn->close();
+// Note: We do not close the database connection here
+// because it needs to remain open for subsequent operations in index.php
 ?>

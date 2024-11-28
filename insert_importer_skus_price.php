@@ -39,6 +39,46 @@ if ($conn->query($createTableSQL) === TRUE) {
     echo "Error creating table 'importer_skus': " . $conn->error . "<br>";
 }
 
+// Get valid IDs from reference tables
+$validIDs = array(
+    'importers' => array(),
+    'vehicle' => array(),
+    'foodtype' => array()
+);
+
+// Get valid ImporterIDs
+$result = $conn->query("SELECT ImporterID FROM importers_supply");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validIDs['importers'][] = $row['ImporterID'];
+    }
+    echo "Valid ImporterIDs: " . implode(", ", $validIDs['importers']) . "<br>";
+} else {
+    echo "Error getting valid ImporterIDs: " . $conn->error . "<br>";
+}
+
+// Get valid VehicleIDs
+$result = $conn->query("SELECT VehicleID FROM FoodVehicle");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validIDs['vehicle'][] = $row['VehicleID'];
+    }
+    echo "Valid VehicleIDs: " . implode(", ", $validIDs['vehicle']) . "<br>";
+} else {
+    echo "Error getting valid VehicleIDs: " . $conn->error . "<br>";
+}
+
+// Get valid FoodTypeIDs
+$result = $conn->query("SELECT FoodTypeID FROM FoodType");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validIDs['foodtype'][] = $row['FoodTypeID'];
+    }
+    echo "Valid FoodTypeIDs: " . implode(", ", $validIDs['foodtype']) . "<br>";
+} else {
+    echo "Error getting valid FoodTypeIDs: " . $conn->error . "<br>";
+}
+
 // Path to your CSV file
 $csvFilePath = 'importer_skus_price.csv'; // Update with the exact path of your CSV file
 
@@ -61,6 +101,29 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
     } else {
         // Read through each line of the CSV file
         while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            // Validate foreign keys
+            $importerID = (int)trim($row[1]);
+            $vehicleID = (int)trim($row[3]);
+            $foodTypeID = (int)trim($row[10]);
+
+            $isValid = true;
+            if (!in_array($importerID, $validIDs['importers'])) {
+                echo "Error: Invalid ImporterID $importerID. Skipping.<br>";
+                $isValid = false;
+            }
+            if (!in_array($vehicleID, $validIDs['vehicle'])) {
+                echo "Error: Invalid VehicleID $vehicleID. Skipping.<br>";
+                $isValid = false;
+            }
+            if (!in_array($foodTypeID, $validIDs['foodtype'])) {
+                echo "Error: Invalid FoodTypeID $foodTypeID. Skipping.<br>";
+                $isValid = false;
+            }
+
+            if (!$isValid) {
+                continue;
+            }
+
             // Bind parameters with each column of the CSV data
             $stmt->bind_param(
                 "iiissdisss",

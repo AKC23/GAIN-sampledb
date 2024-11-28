@@ -73,10 +73,134 @@
 
         <?php
         
+        // Include database connection
+        include('db_connect.php');
         
-        include('insert_total_local_crop_production.php');
-        
-        
+        try {
+            // Disable foreign key checks for dropping tables
+            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+            
+            // First drop all tables in reverse order of dependencies
+            $dropTables = [
+                'total_local_crop_production',
+                'crude_oil',
+                'import_edible_oil',
+                'import_amount_oilseeds',
+                'distribution_channels',
+                'importer_skus_price',
+                'importers_brand_name',
+                'producers_brand_name',
+                'importers_supply',
+                'producers_supply',
+                'foodtype',
+                'raw_crops',
+                'country',
+                'foodvehicle'
+            ];
+            
+            foreach ($dropTables as $table) {
+                $sql = "DROP TABLE IF EXISTS " . $table;
+                if ($conn->query($sql) === TRUE) {
+                    echo "Table '$table' dropped successfully.<br>";
+                } else {
+                    echo "Error dropping table '$table': " . $conn->error . "<br>";
+                }
+            }
+            
+            // Re-enable foreign key checks
+            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+            
+            // Level 0: Create and populate base tables (no dependencies)
+            echo "<h3>Creating base tables (Level 0)...</h3>";
+            include('insert_foodvehicle.php');  // Must be first as others depend on it
+            
+            // Verify FoodVehicle data
+            $result = $conn->query("SELECT * FROM FoodVehicle");
+            if ($result && $result->num_rows > 0) {
+                echo "<br>✓ FoodVehicle table populated successfully<br>";
+            } else {
+                throw new Exception("FoodVehicle table is empty - cannot proceed");
+            }
+            
+            include('insert_country.php');
+            include('insert_rawcrops.php');
+
+            // Level 1: Tables that depend on base tables
+            echo "<h3>Creating tables with Level 1 dependencies...</h3>";
+            include('insert_foodtype.php');  // Depends on FoodVehicle
+            
+            // Verify FoodType data
+            $result = $conn->query("SELECT * FROM FoodType");
+            if ($result && $result->num_rows > 0) {
+                echo "<br>✓ FoodType table populated successfully<br>";
+            } else {
+                throw new Exception("FoodType table is empty - cannot proceed");
+            }
+
+            include('insert_producers_supply.php');  // Depends on Country
+            include('insert_importers_supply.php');  // Depends on Country
+
+            // Level 2: Tables that depend on Level 1 tables
+            echo "<h3>Creating tables with Level 2 dependencies...</h3>";
+            include('insert_producers_brand_name.php');  // Depends on producers_supply
+            include('insert_importers_brand_name.php');  // Depends on importers_supply
+            include('insert_crude_oil.php');  // Depends on FoodType, Country, RawCrops
+
+            // Level 3: Tables that depend on Level 2 tables
+            echo "<h3>Creating tables with Level 3 dependencies...</h3>";
+            
+            // Verify required tables exist before creating importer_skus
+            $requiredTables = array(
+                'importers_supply' => 'ImporterID',
+                'FoodVehicle' => 'VehicleID',
+                'FoodType' => 'FoodTypeID'
+            );
+            
+            foreach ($requiredTables as $table => $idColumn) {
+                $result = $conn->query("SELECT $idColumn FROM $table LIMIT 1");
+                if (!$result) {
+                    throw new Exception("Required table '$table' does not exist. Cannot create importer_skus.");
+                }
+                if ($result->num_rows === 0) {
+                    throw new Exception("Required table '$table' is empty. Cannot create importer_skus.");
+                }
+                echo "✓ Required table '$table' exists and contains data.<br>";
+            }
+            
+            include('insert_importer_skus_price.php');  // Depends on importers_supply, FoodVehicle, FoodType
+            include('insert_distribution_channels.php');  // Depends on FoodType
+
+            // Level 4: Tables that depend on Level 3 tables
+            echo "<h3>Creating tables with Level 4 dependencies...</h3>";
+            include('insert_import_amount_oilseeds.php');
+            // Commented out missing file
+            // include('insert_local_production_amount_oilseed.php');
+            include('insert_total_local_crop_production.php');
+            
+        } catch (Exception $e) {
+            echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
+        } finally {
+            // Safely close the database connection
+            if (isset($conn) && $conn instanceof mysqli) {
+                if (!$conn->connect_error) {
+                    try {
+                        // Only close if the connection is still open
+                        if ($conn->ping()) {
+                            $conn->close();
+                            echo "<br>Database connection closed successfully.<br>";
+                        } else {
+                            echo "<br>Database connection was already closed.<br>";
+                        }
+                    } catch (Exception $closeError) {
+                        echo "<br>Error closing database connection: " . $closeError->getMessage() . "<br>";
+                    }
+                } else {
+                    echo "<br>Database connection was not successfully established.<br>";
+                }
+            } else {
+                echo "<br>No database connection to close.<br>";
+            }
+        }
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             // Get the user-friendly display name
@@ -118,34 +242,3 @@
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
-
-<!-- 
-
-
-// include('insert_local_production_amount_oilseed.php');
-// include('insert_import_edible_oil.php');
-
-// include('insert_import_amount_oilseeds.php');
-// include('insert_import_edible_oil.php');
-//include('insert_total_local_production_amount_edible_oil.php');
-
-//include('insert_producer_skus_price.php');
-//include('insert_producers_brand_name.php');
-//include('insert_producers_supply.php');
-
-//include('insert_importer_skus_price.php');
-//include('insert_importers_brand_name.php');
-//include('insert_importers_supply.php');
-
-//include('insert_distribution_channels.php');
-
-//include('insert_rawcrops.php');
-//include('insert_foodtype.php');
-//include('insert_foodvehicle.php'); 
-
-
-
--->

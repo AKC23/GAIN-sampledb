@@ -45,9 +45,10 @@ $createTableSQL = "
         Source VARCHAR(255),
         Link VARCHAR(255),
         Process VARCHAR(255),
-        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (CountryID) REFERENCES Country(CountryID) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (CountryID) REFERENCES Country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -98,7 +99,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $process = trim($data[19]);
 
             // Bind the parameters
-            $stmt->bind_param("iiiissdssdsssss", $vehicleID, $foodTypeID, $rawCropsID, $countryID,
+            $stmt->bind_param("iiiissdssdssssss", $vehicleID, $foodTypeID, $rawCropsID, $countryID,
                 $sourceVolumeUnit, $sourceVolume, $convertedValue, $convertedUnit, 
                 $periodicalUnit, $cropToFoodConvertedValue, $startYear, $endYear, 
                 $accessedDate, $source, $link, $process);
@@ -121,6 +122,5 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     echo "Error: Could not open CSV file.";
 }
 
-// Close the database connection
-$conn->close();
+// Connection will be closed by index.php
 ?>

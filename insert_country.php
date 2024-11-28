@@ -2,16 +2,6 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'Country' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS Country";
-
-// Execute the query to drop the table
-if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'Country' dropped successfully.<br>";
-} else {
-    echo "Error dropping table 'Country': " . $conn->error . "<br>";
-}
-
 // SQL query to create the 'Country' table
 $createTableSQL = "
     CREATE TABLE Country (
@@ -27,7 +17,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Path to your uploaded CSV file for Country data
-$csvFile = 'insert_country.csv';  // Update with the correct path of your CSV file
+$csvFile = 'country.csv';  // Update with the correct path of your CSV file
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
@@ -61,9 +51,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Close the file after reading
     fclose($handle);
 } else {
-    echo "Error: Could not open CSV file.";
+    echo "Error: Could not open CSV file.<br>";
 }
 
-// Close the database connection
-$conn->close();
+// Note: Do not close the database connection here
+// The connection will be closed by index.php
 ?>

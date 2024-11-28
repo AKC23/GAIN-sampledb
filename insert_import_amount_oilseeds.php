@@ -15,9 +15,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 // SQL query to create the 'import_amount_oilseeds' table with foreign keys
 $createTableSQL = "
     CREATE TABLE import_amount_oilseeds (
-        DataID INT AUTO_INCREMENT PRIMARY KEY,
-        RawCropsID INT,
-        VehicleID INT,
+        DataID INT PRIMARY KEY AUTO_INCREMENT,
+        RawCropsID INT(11),
+        VehicleID INT(11),
         Converted_Unit VARCHAR(50),
         Value DECIMAL(20, 3),
         Start_Year VARCHAR(15),
@@ -27,8 +27,8 @@ $createTableSQL = "
         Link TEXT,
         DataType VARCHAR(50),
         ProcessToObtainData TEXT,
-        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -70,7 +70,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $ProcessToObtainData = mysqli_real_escape_string($conn, trim($data[14]));
 
             // Bind parameters
-            $stmt->bind_param("iisssssssss", $RawCropsID, $VehicleID, $Converted_Unit, $Value, $Start_Year, $End_Year, $AccessedDate, $Source, $Link, $DataType, $ProcessToObtainData);
+            $stmt->bind_param("iisdsssssss", $RawCropsID, $VehicleID, $Converted_Unit, $Value, $Start_Year, $End_Year, $AccessedDate, $Source, $Link, $DataType, $ProcessToObtainData);
 
             // Execute the query
             if ($stmt->execute() === TRUE) {
