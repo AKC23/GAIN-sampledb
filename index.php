@@ -74,7 +74,7 @@
         <?php
         
         
-        include('insert_country.php');
+        include('insert_total_local_crop_production.php');
         
         
         
