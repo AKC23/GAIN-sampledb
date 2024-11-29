@@ -2,6 +2,9 @@
 // Include the database connection
 include('db_connect.php');
 
+
+$dropTableSQL = "DROP TABLE IF EXISTS crude_oil";
+
 // SQL query to create the 'crude_oil' table with the required columns
 $createTableSQL = "
     CREATE TABLE crude_oil (

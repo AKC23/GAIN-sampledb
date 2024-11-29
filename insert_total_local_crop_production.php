@@ -34,11 +34,11 @@ $createTableSQL = "
         RawCropsID INT,
         CountryID INT,
         SourceVolumeUnit VARCHAR(50),
-        SourceVolume DECIMAL(15, 3),
-        ConvertedValue DECIMAL(15, 3),
+        SourceVolume DECIMAL(30, 2),
+        ConvertedValue DECIMAL(30, 2),
         ConvertedUnit VARCHAR(50),
         PeriodicalUnit VARCHAR(50),
-        CropToFoodConvertedValue DECIMAL(15, 3),
+        CropToFoodConvertedValue DECIMAL(30, 2),
         StartYear VARCHAR(50),
         EndYear VARCHAR(50),
         AccessedDate VARCHAR(50),
@@ -86,11 +86,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $rawCropsID = (int) trim($data[5]);
             $countryID = (int) trim($data[7]);
             $sourceVolumeUnit = trim($data[8]);
-            $sourceVolume = (float) trim($data[9]);
-            $convertedValue = (float) trim($data[10]);
+            $sourceVolume = str_replace(',', '', trim($data[9])); // Remove any commas and preserve exact decimal
+            $convertedValue = str_replace(',', '', trim($data[10])); // Remove any commas and preserve exact decimal
             $convertedUnit = trim($data[11]);
             $periodicalUnit = trim($data[12]);
-            $cropToFoodConvertedValue = (float) trim($data[13]);
+            $cropToFoodConvertedValue = str_replace(',', '', trim($data[13])); // Remove any commas and preserve exact decimal
             $startYear = trim($data[14]);
             $endYear = trim($data[15]);
             $accessedDate = trim($data[16]);
