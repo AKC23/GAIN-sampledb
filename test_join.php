@@ -25,48 +25,64 @@ if ($debug_result) {
 // Modified main query
 $query = "
 SELECT DISTINCT 
+    -- Common Identifiers
     tlcp.DataID,
     fv.VehicleName,
     ft.FoodTypeName,
     rc.RawCrops as RawCropsName,
-    tlcp.SourceVolumeUnit,
-    (tlcp.SourceVolume / 12) AS SourceVolume,
-    (tlcp.ConvertedValue / 12) AS ConvertedValue,
-    tlcp.ConvertedUnit,
+    
+    -- Crop Production Data
+    tlcp.SourceVolumeUnit AS CropSourceUnit,
+    tlcp.SourceVolume/12 AS CropSourceVolume,
+    tlcp.ConvertedValue/12 AS CropConvertedValue,
+    tlcp.CropToFoodConvertedValue/12 AS CropToFoodConvertedValue,
     'Monthly' AS PeriodicalUnit,
-    tlcp.CropToFoodConvertedValue,
-    tlcp.StartYear,
-    tlcp.EndYear,
-    tlcp.AccessedDate,
-    tlcp.Source,
-    tlcp.Link,
-    tlcp.Process,
+    -- New Total Oil Calculation
+    
+    
+    tlcp.StartYear AS CropStartYear,
+    tlcp.Source AS CropSource,
+    
+    -- Crude Oil Data
     co.SourceVolume AS CrudeOilSourceVolume,
     co.ConvertedValue AS CrudeOilConvertedValue,
     co.VolumeUnit AS CrudeOilVolumeUnit,
-    'Monthly' AS CrudeOilPeriodicalUnit,
-    ((co.ConvertedValue * 0.15) + tlcp.CropToFoodConvertedValue) AS 'Total Oil Available For Consumption',
     co.StartYear AS CrudeOilStartYear,
-    co.EndYear AS CrudeOilEndYear,
-    co.AccessedDate AS CrudeOilAccessedDate,
     co.Source AS CrudeOilSource,
-    co.Link AS CrudeOilLink,
-    co.Process AS CrudeOilProcess
+    (tlfp.ConvertedValue + ((co.ConvertedValue * 0.15) + tlcp.CropToFoodConvertedValue/12)) AS 'Total Oil Available For Consumption',
+    
+    -- Local Food Production Data
+    tlfp.SourceVolume AS LocalFoodSourceVolume,
+    tlfp.ConvertedValue AS LocalFoodConvertedValue,
+
+    ((co.ConvertedValue * 0.15) + tlcp.CropToFoodConvertedValue/12) AS TotalOil,
+    tlfp.VolumeUnit AS LocalFoodVolumeUnit,
+    tlfp.StartYear AS LocalFoodStartYear,
+    tlfp.Source AS LocalFoodSource
+    
 FROM 
     total_local_crop_production tlcp
 INNER JOIN 
     FoodType ft ON tlcp.FoodTypeID = ft.FoodTypeID
 INNER JOIN 
-    FoodVehicle fv ON tlcp.VehicleID = fv.VehicleID AND fv.VehicleID = ft.VehicleID
+    FoodVehicle fv ON tlcp.VehicleID = fv.VehicleID 
 LEFT JOIN 
     raw_crops rc ON tlcp.RawCropsID = rc.RawCropsID
 LEFT JOIN 
     crude_oil co ON tlcp.VehicleID = co.VehicleID 
-                AND tlcp.FoodTypeID = co.FoodTypeID 
-                AND tlcp.RawCropsID = co.RawCropsID
+        AND tlcp.FoodTypeID = co.FoodTypeID 
+        AND tlcp.RawCropsID = co.RawCropsID
+        AND co.StartYear = tlcp.StartYear  -- Match the exact StartYear
+LEFT JOIN 
+    total_local_food_production tlfp ON tlcp.VehicleID = tlfp.VehicleID 
+        AND tlcp.FoodTypeID = tlfp.FoodTypeID 
+        AND tlcp.RawCropsID = tlfp.RawCropsID
+        AND tlfp.StartYear = tlcp.StartYear  -- Match the exact StartYear
 WHERE 
     tlcp.StartYear IN ('July 2020', 'July 2021')
     AND ft.FoodTypeName = 'Soya Bean'
+ORDER BY 
+    tlcp.StartYear, ft.FoodTypeName
 ";
 
 $result = $conn->query($query);

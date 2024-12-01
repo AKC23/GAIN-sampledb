@@ -1,17 +1,18 @@
+
 <?php
 include('db_connect.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Drop table if exists
-$dropTableSQL = "DROP TABLE IF EXISTS total_food_import";
+$dropTableSQL = "DROP TABLE IF EXISTS total_local_food_production";
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'total_food_import' dropped successfully.<br>";
+    echo "Table 'total_local_food_production' dropped successfully.<br>";
 }
 
 // Create table
 $createTableSQL = "
-CREATE TABLE total_food_import (
+CREATE TABLE total_local_food_production (
     DataID INT PRIMARY KEY AUTO_INCREMENT,
     VehicleID INT,
     FoodTypeID INT,
@@ -35,7 +36,7 @@ CREATE TABLE total_food_import (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'total_food_import' created successfully.<br>";
+    echo "Table 'total_local_food_production' created successfully.<br>";
 }
 
 // Get valid IDs from reference tables
@@ -64,14 +65,14 @@ foreach ($tables as $key => $sql) {
 }
 
 // Read and insert CSV data
-$csvFile = 'total_food_import.csv';
+$csvFile = 'total_local_food_production.csv';
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Skip header
     fgetcsv($handle);
     
     // Prepare insert statement
     $stmt = $conn->prepare("
-        INSERT INTO total_food_import (
+        INSERT INTO total_local_food_production (
             VehicleID, FoodTypeID, RawCropsID, Country_ID,
             SourceVolumeUnit, SourceVolume, ConvertedValue, VolumeUnit,
             PeriodicalUnit, StartYear, EndYear, AccessedDate,
@@ -100,7 +101,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         $stmt->bind_param(
-            "iiiisddssssssss",  // Changed from 'iiiisddsssssssss' to 'iiiisddssssssss'
+            "iiiisddssssssss",
             $vehicleID,
             $foodTypeID,
             $rawCropsID,
