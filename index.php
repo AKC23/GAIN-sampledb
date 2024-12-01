@@ -60,7 +60,20 @@
         <div class="card">
             <!-- Dropdown or other content on the left side -->
             <div>
-                <?php include('display_dropdown.php'); ?>
+                <form method="post" action="">
+                    <select name="tableName" class="form-control">
+                        <option value="">Select a table</option>
+                        <?php
+                        include('db_connect.php');
+                        $result = $conn->query("SHOW TABLES");
+                        while ($row = $result->fetch_array()) {
+                            $table = $row[0];
+                            echo "<option value='$table'>" . htmlspecialchars($table) . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Show Table</button>
+                </form>
             </div>
 
             <!-- Last Updated Date and Time on the right side of the card -->
@@ -84,6 +97,7 @@
             $dropTables = [
                 'total_local_crop_production',
                 'crude_oil',
+                'total_food_import',        // Add this line
                 'import_edible_oil',
                 'import_amount_oilseeds',
                 'distribution_channels',
@@ -175,6 +189,8 @@
             include('insert_import_amount_oilseeds.php');
             include('insert_import_edible_oil.php');  
             include('insert_total_local_crop_production.php');
+            include('insert_total_food_import.php');   // Add this line
+            include('insert_total_crop_import.php');
             
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
@@ -198,29 +214,9 @@
         }
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
-            // Get the user-friendly display name
-            $tableNames = [
-                "foodvehicle" => "Food Vehicle",
-                "foodtype" => "Food Type",
-                "raw_crops" => "Raw Crops",
-                "producers_supply" => "Producers Supply Amount",
-                "producers_brand_name" => "Producer Brands",
-                "producer_skus" => "Producer SKUs",
-                
-                "importers_supply" => "Importers Supply Amount",
-                "importers_brand_name" => "Importer Brands",
-                "importer_skus" => "Importer SKUs",
-                "import_amount_oilseeds" => "Import Amount Oilseeds",
-                "import_edible_oil" => "Import Edible Oil",
-                "total_local_production_amount_edible_oil" => "Total Local Production Amount (Edible Oil)",
-                "distribution_channels" => "Distribution Channels",
-            ];
-            $tableName = $_POST['tableName'];
-            $displayTableName = $tableNames[$tableName] ?? $tableName;
-
-            
             // Display the friendly table name
-            echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($displayTableName) . "</h2>";
+            $tableName = $_POST['tableName'];
+            echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
 
             // Include display_table.php to show the data
             echo '<div class="table-responsive">';
