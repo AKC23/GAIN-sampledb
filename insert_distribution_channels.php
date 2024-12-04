@@ -25,7 +25,7 @@ $createTableSQL = "
 
         FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (ProducerID) REFERENCES producers_supply(ProducerID)
+        FOREIGN KEY (ProducerID) REFERENCES producer_name(ProducersID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -133,3 +133,7 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
 } else {
     echo "Error: Could not open CSV file.";
 }
+
+// Close the database connection
+$conn->close();
+?>

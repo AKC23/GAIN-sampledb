@@ -12,7 +12,15 @@ if (!isset($tableName)) {
 $sql = "SELECT * FROM " . $conn->real_escape_string($tableName);
 
 // Execute the query
-$result = $conn->query($sql);
+try {
+    $result = $conn->query($sql);
+    if (!$result) {
+        throw new Exception("Table '$tableName' does not exist.");
+    }
+} catch (Exception $e) {
+    echo "<div class='alert alert-danger'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+    exit;
+}
 
 // Check if there are results and display the table
 if ($result && $result->num_rows > 0) {

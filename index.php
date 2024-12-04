@@ -64,7 +64,7 @@
                     <select name="tableName" class="form-control">
                         <option value="">Select a table</option>
                         <?php
-                        include('db_connect.php');
+                        require_once('db_connect.php');  // Changed to require_once
                         $result = $conn->query("SHOW TABLES");
                         while ($row = $result->fetch_array()) {
                             $table = $row[0];
@@ -86,8 +86,8 @@
 
         <?php
         
-        // Include database connection
-        include('db_connect.php');
+        // Remove this include since we already have the connection
+        // include('db_connect.php');
         
         try {
             // Disable foreign key checks for dropping tables
@@ -105,11 +105,13 @@
                 'importers_brand_name',
                 'producers_brand_name',
                 'importers_supply',
-                'producers_supply',
+                'producer_name',
                 'foodtype',
                 'raw_crops',
                 'country',
-                'foodvehicle'
+                'foodvehicle',
+                'packaging_type',           // Add this line
+                'repacker_name'             // Add this line
             ];
             
             foreach ($dropTables as $table) {
@@ -136,7 +138,16 @@
                 throw new Exception("FoodVehicle table is empty - cannot proceed");
             }
             
-            include('insert_country.php');
+            include('insert_country.php');  // Must be second as others depend on it
+            
+            // Verify Country data
+            $result = $conn->query("SELECT * FROM Country");
+            if ($result && $result->num_rows > 0) {
+                echo "<br>✓ Country table populated successfully<br>";
+            } else {
+                throw new Exception("Country table is empty - cannot proceed");
+            }
+            
             include('insert_rawcrops.php');
 
             // Level 1: Tables that depend on base tables
@@ -151,12 +162,14 @@
                 throw new Exception("FoodType table is empty - cannot proceed");
             }
 
-            include('insert_producers_supply.php');  // Depends on Country
+            
             include('insert_importers_supply.php');  // Depends on Country
-
+            include('insert_repacker_name.php');  // Depends on Country
+            include('insert_producer_name.php');  // Depends on Country
+            
             // Level 2: Tables that depend on Level 1 tables
             echo "<h3>Creating tables with Level 2 dependencies...</h3>";
-            include('insert_producers_brand_name.php');  // Depends on producers_supply
+            include('insert_producers_brand_name.php');  // Depends on producer_name
             include('insert_importers_brand_name.php');  // Depends on importers_supply
             include('insert_crude_oil.php');  // Depends on FoodType, Country, RawCrops
 
@@ -191,39 +204,36 @@
             include('insert_total_local_crop_production.php');
             include('insert_total_food_import.php');   // Add this line
             include('insert_total_crop_import.php');
+            include('insert_packaging_type.php');      // Add this line
             
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
-        } finally {
-            // Safely close the database connection
-            if (isset($conn) && $conn instanceof mysqli) {
-                try {
-                    // Only attempt to close if the connection is still open
-                    if (!$conn->connect_error) {
-                        $conn->close();
-                        echo "<br>Database connection closed successfully.<br>";
-                    } else {
-                        echo "<br>Database connection was not successfully established.<br>";
-                    }
-                } catch (Exception $closeError) {
-                    echo "<br>Error closing database connection: " . $closeError->getMessage() . "<br>";
-                }
-            } else {
-                echo "<br>No database connection to close.<br>";
-            }
         }
-        
+
+        // Display requested table (using the same connection)
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
-            // Display the friendly table name
             $tableName = $_POST['tableName'];
             echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
 
-            // Include display_table.php to show the data
             echo '<div class="table-responsive">';
-            include('display_table.php');
+            try {
+                include('display_table.php');
+            } catch (Exception $e) {
+                echo "<div class='alert alert-danger'>Error displaying table: " . htmlspecialchars($e->getMessage()) . "</div>";
+            }
             echo '</div>';
         } else {
             echo "<p class='text-center text-muted'>Select a table to display data.</p>";
+        }
+
+        // Modified connection closing
+        if (!empty($conn) && is_object($conn)) {
+            try {
+                $conn->close();
+                echo "<br>Database connection closed successfully.<br>";
+            } catch (Exception $e) {
+                // Silently handle any closing errors
+            }
         }
         ?>
     </div>

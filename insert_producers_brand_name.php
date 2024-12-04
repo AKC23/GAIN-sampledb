@@ -17,10 +17,10 @@ $createTableSQL = "
         BrandID INT AUTO_INCREMENT PRIMARY KEY,
         BrandName VARCHAR(20),
         ProducerID INT,
-        VehicleID INT,
+        FoodTypeID INT,
         
-        FOREIGN KEY (ProducerID) REFERENCES producers_supply(ProducerID),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        FOREIGN KEY (ProducerID) REFERENCES producer_name(ProducersID) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -40,7 +40,7 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
     // Prepare the SQL statement with placeholders
     $stmt = $conn->prepare("
         INSERT INTO producers_brand_name (
-            BrandName, ProducerID, VehicleID
+            BrandName, ProducerID, FoodTypeID
         ) VALUES (?, ?, ?)
     ");
 
@@ -53,15 +53,15 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
             $stmt->bind_param(
                 "sii",  // 's' for string, 'i' for integer
                 $row[0], // BrandName
-                $row[2], // ProducerID (foreign key)
-                $row[4]  // VehicleID (foreign key)
+                $row[1], // ProducerID (foreign key)
+                $row[2]  // FoodTypeID (foreign key)
             );
 
             // Execute the statement and check for errors
             if ($stmt->execute() === TRUE) {
-                echo "Data inserted successfully for BrandName: " . $row[0] . "<br>";
+                echo "Data inserted successfully for BrandName: " . $row[1] . "<br>";
             } else {
-                echo "Error inserting data for BrandName: " . $row[0] . " - " . $stmt->error . "<br>";
+                echo "Error inserting data for BrandName: " . $row[1] . " - " . $stmt->error . "<br>";
             }
         }
 
