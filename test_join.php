@@ -29,7 +29,7 @@ SELECT DISTINCT
     tlcp.DataID,
     fv.VehicleName,
     ft.FoodTypeName,
-    rc.RawCrops as RawCropsName,
+    rc.CropName as RawCropsName,
     
     -- Crop Production Data
     tlcp.SourceVolumeUnit AS CropSourceUnit,
@@ -38,7 +38,6 @@ SELECT DISTINCT
     tlcp.CropToFoodConvertedValue/12 AS CropToFoodConvertedValue,
     'Monthly' AS PeriodicalUnit,
     -- New Total Oil Calculation
-    
     
     tlcp.StartYear AS CropStartYear,
     tlcp.Source AS CropSource,

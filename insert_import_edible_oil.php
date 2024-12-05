@@ -30,8 +30,8 @@ $createTableSQL = "
         Link VARCHAR(255),
         DataType VARCHAR(50),
         Process VARCHAR(255),
-        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE SET NULL ON UPDATE CASCADE
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table

@@ -93,121 +93,85 @@
             // Disable foreign key checks for dropping tables
             $conn->query('SET FOREIGN_KEY_CHECKS = 0');
             
-            // First drop all tables in reverse order of dependencies
+            // Update drop tables order to ensure proper dependency handling
             $dropTables = [
-                'total_local_crop_production',
+                'total_local_crop_production',  // Should be created last
+                'total_food_import',
                 'crude_oil',
-                'total_food_import',        // Add this line
-                'import_edible_oil',
-                'import_amount_oilseeds',
-                'distribution_channels',
-                'importer_skus_price',
-                'importers_brand_name',
                 'producers_brand_name',
-                'importers_supply',
-                'producer_name',
+                'importers_brand_name',
+                'importer_name',
+                'import_edible_oil',
+                'distribution_channels',
                 'foodtype',
                 'raw_crops',
+                'producer_name',
                 'country',
                 'foodvehicle',
-                'packaging_type',           // Add this line
-                'repacker_name'             // Add this line
+                'packaging_type',
+                'repacker_name',
+                'distributer_list', // Level 5 tables
+                'distributer_brand', // Level 5 tables
+                'distributer_name' // Level 5 tables
             ];
             
             foreach ($dropTables as $table) {
                 $sql = "DROP TABLE IF EXISTS " . $table;
                 if ($conn->query($sql) === TRUE) {
                     echo "Table '$table' dropped successfully.<br>";
-                } else {
-                    echo "Error dropping table '$table': " . $conn->error . "<br>";
                 }
             }
             
             // Re-enable foreign key checks
             $conn->query('SET FOREIGN_KEY_CHECKS = 1');
             
-            // Level 0: Create and populate base tables (no dependencies)
+            // Level 0: Base tables with no dependencies
             echo "<h3>Creating base tables (Level 0)...</h3>";
-            include('insert_foodvehicle.php');  // Must be first as others depend on it
+            include('insert_foodvehicle.php');
+            include('insert_country.php');
+            include('insert_raw_crops.php');     // Depends on: FoodVehicle
             
-            // Verify FoodVehicle data
-            $result = $conn->query("SELECT * FROM FoodVehicle");
-            if ($result && $result->num_rows > 0) {
-                echo "<br>✓ FoodVehicle table populated successfully<br>";
-            } else {
-                throw new Exception("FoodVehicle table is empty - cannot proceed");
-            }
-            
-            include('insert_country.php');  // Must be second as others depend on it
-            
-            // Verify Country data
-            $result = $conn->query("SELECT * FROM Country");
-            if ($result && $result->num_rows > 0) {
-                echo "<br>✓ Country table populated successfully<br>";
-            } else {
-                throw new Exception("Country table is empty - cannot proceed");
-            }
-            
-            include('insert_rawcrops.php');
-
             // Level 1: Tables that depend on base tables
-            echo "<h3>Creating tables with Level 1 dependencies...</h3>";
-            include('insert_foodtype.php');  // Depends on FoodVehicle
+            echo "<h3>Creating Level 1 tables...</h3>";
+            include('insert_foodtype.php');      // Depends on: FoodVehicle
+            include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
             
-            // Verify FoodType data
-            $result = $conn->query("SELECT * FROM FoodType");
-            if ($result && $result->num_rows > 0) {
-                echo "<br>✓ FoodType table populated successfully<br>";
-            } else {
-                throw new Exception("FoodType table is empty - cannot proceed");
-            }
-
+            // Level 2: Tables depending on Level 1
+            echo "<h3>Creating Level 2 tables...</h3>";
+            include('insert_crude_oil.php');        // Depends on: raw_crops, FoodType
+            include('insert_importer_name.php');    // Depends on: Country, producer_name
+            include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
             
-            include('insert_importers_supply.php');  // Depends on Country
-            include('insert_repacker_name.php');  // Depends on Country
-            include('insert_producer_name.php');  // Depends on Country
+            // Level 3: Tables depending on Level 2
+            echo "<h3>Creating Level 3 tables...</h3>";
+            include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
+            include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
+            include('insert_distribution_channels.php'); // Depends on: FoodType
             
-            // Level 2: Tables that depend on Level 1 tables
-            echo "<h3>Creating tables with Level 2 dependencies...</h3>";
-            include('insert_producers_brand_name.php');  // Depends on producer_name
-            include('insert_importers_brand_name.php');  // Depends on importers_supply
-            include('insert_crude_oil.php');  // Depends on FoodType, Country, RawCrops
-
-            // Level 3: Tables that depend on Level 2 tables
-            echo "<h3>Creating tables with Level 3 dependencies...</h3>";
-            
-            // Verify required tables exist before creating importer_skus
-            $requiredTables = array(
-                'importers_supply' => 'ImporterID',
-                'FoodVehicle' => 'VehicleID',
-                'FoodType' => 'FoodTypeID'
-            );
-            
-            foreach ($requiredTables as $table => $idColumn) {
-                $result = $conn->query("SELECT $idColumn FROM $table LIMIT 1");
-                if (!$result) {
-                    throw new Exception("Required table '$table' does not exist. Cannot create importer_skus.");
-                }
-                if ($result->num_rows === 0) {
-                    throw new Exception("Required table '$table' is empty. Cannot create importer_skus.");
-                }
-                echo "✓ Required table '$table' exists and contains data.<br>";
-            }
-            
-            include('insert_importer_skus_price.php');  // Depends on importers_supply, FoodVehicle, FoodType
-            include('insert_distribution_channels.php');  // Depends on FoodType
-
-            // Level 4: Tables that depend on Level 3 tables
-            echo "<h3>Creating tables with Level 4 dependencies...</h3>";
-            include('insert_import_amount_oilseeds.php');
-            include('insert_import_edible_oil.php');  
-            include('insert_total_local_crop_production.php');
-            include('insert_total_food_import.php');   // Add this line
+            // Level 4: Tables depending on Level 3 or complex dependencies
+            echo "<h3>Creating Level 4 tables...</h3>";
+            include('insert_import_edible_oil.php');
+            include('insert_total_food_import.php');
             include('insert_total_crop_import.php');
-            include('insert_packaging_type.php');      // Add this line
+            include('insert_packaging_type.php');
+
+            // Level 5: Tables depending on Level 4 or complex dependencies
+            echo "<h3>Creating Level 5 tables...</h3>";
+            include('insert_distributer_name.php');
+            include('insert_distributer_brand.php');
+            include('insert_distributer_list.php');
+            
+            // Move total_local_crop_production to the very end
+            // after all its dependencies are created
+            echo "<h3>Creating Final Level tables...</h3>";
+            include('insert_total_local_crop_production.php');
             
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
+            // Add detailed error logging
+            if ($conn->error) {
+                echo "<br>Database Error: " . $conn->error . "<br>";
+            }
         }
 
         // Display requested table (using the same connection)
@@ -227,12 +191,10 @@
         }
 
         // Modified connection closing
-        if (!empty($conn) && is_object($conn)) {
-            try {
+        if (isset($conn) && $conn instanceof mysqli) {
+            if ($conn->ping()) {
                 $conn->close();
                 echo "<br>Database connection closed successfully.<br>";
-            } catch (Exception $e) {
-                // Silently handle any closing errors
             }
         }
         ?>

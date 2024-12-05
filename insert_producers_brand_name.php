@@ -19,8 +19,8 @@ $createTableSQL = "
         ProducerID INT,
         FoodTypeID INT,
         
-        FOREIGN KEY (ProducerID) REFERENCES producer_name(ProducersID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (ProducerID) REFERENCES producer_name(ProducersID),
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -54,7 +54,7 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
                 "sii",  // 's' for string, 'i' for integer
                 $row[0], // BrandName
                 $row[1], // ProducerID (foreign key)
-                $row[2]  // FoodTypeID (foreign key)
+                $row[3]  // FoodTypeID (foreign key)
             );
 
             // Execute the statement and check for errors

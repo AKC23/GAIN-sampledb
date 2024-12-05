@@ -11,8 +11,8 @@ if(isset($_GET['table'])) {
     // Check if table exists
     $table_exists = $conn->query("SHOW TABLES LIKE '$table'");
     if($table_exists->num_rows > 0) {
-        // Get the year column name based on table
-        $year_column = ($table === 'import_amount_oilseeds') ? 'Start_Year' : 'StartYear';
+        // Removed references to 'import_amount_oilseeds'
+        $year_column = 'StartYear'; // Default column name
         
         // Build the query based on table
         switch($table) {
@@ -38,7 +38,6 @@ if(isset($_GET['table'])) {
                 break;
                 
             case 'total_local_crop_production':
-            case 'import_amount_oilseeds':
                 $query = "SELECT 
                     t.DataID,
                     rc.RawCrops as 'Raw Crop',
@@ -75,12 +74,6 @@ if(isset($_GET['table'])) {
                 $columns[] = $displayName;
             }
         }
-    }
-    
-    if ($table === 'import_amount_oilseeds') {
-        $columns = array_map(function($column) {
-            return ($column === 'Start_Year') ? 'Year' : $column;
-        }, $columns);
     }
     
     echo json_encode($columns);

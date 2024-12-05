@@ -3,7 +3,7 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'importers_brand_name' table if it exists
+// Drop the table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS importers_brand_name";
 if ($conn->query($dropTableSQL) === TRUE) {
     echo "Table 'importers_brand_name' dropped successfully.<br>";
@@ -11,23 +11,28 @@ if ($conn->query($dropTableSQL) === TRUE) {
     echo "Error dropping table 'importers_brand_name': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'importers_brand_name' table with foreign key
+// Create the table with the specified columns
 $createTableSQL = "
     CREATE TABLE importers_brand_name (
         BrandID INT AUTO_INCREMENT PRIMARY KEY,
         BrandName VARCHAR(20),
         ImporterID INT,
-        VehicleID INT,
+        FoodTypeID INT,
         
-        FOREIGN KEY (ImporterID) REFERENCES importers_supply(ImporterID),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        FOREIGN KEY (ImporterID) REFERENCES importer_name(ImporterID),
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
-// Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'importers_brand_name' created successfully.<br>";
 } else {
     echo "Error creating table 'importers_brand_name': " . $conn->error . "<br>";
+}
+
+// Add verification after table creation
+$verifyTable = $conn->query("SHOW TABLES LIKE 'importers_brand_name'");
+if (!$verifyTable || $verifyTable->num_rows === 0) {
+    die("Failed to create importers_brand_name table properly");
 }
 
 // Path to your CSV file
@@ -35,35 +40,39 @@ $csvFilePath = 'importers_brand_name.csv'; // Update with the exact path of your
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
-    // Skip the header row (if there is one)
+    // Skip the header row
     fgetcsv($handle);
 
     // Prepare the SQL statement with placeholders
     $stmt = $conn->prepare("
         INSERT INTO importers_brand_name (
-            BrandName, ImporterID, VehicleID
+            BrandName, ImporterID, FoodTypeID
         ) VALUES (?, ?, ?)
     ");
 
-    // Check if the statement was prepared successfully
     if ($stmt === FALSE) {
         echo "Error preparing statement: " . $conn->error . "<br>";
     } else {
-        // Read through each line of the CSV file
+        // Read each line of the CSV file
         while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            // Bind parameters with each column of the CSV data
+            // Extract values
+            $brandName = trim($row[0]);
+            $importerID = trim($row[2]);
+            $foodTypeID = trim($row[4]);
+
+            // Bind the CSV values to the prepared statement
             $stmt->bind_param(
-                "sii",
-                $row[0],  // BrandName
-                $row[2],  // ImporterID
-                $row[4]   // VehicleID
+                "sii",  // 's' for string, 'i' for integer
+                $brandName,    // BrandName
+                $importerID,   // ImporterID
+                $foodTypeID    // FoodTypeID
             );
 
-            // Execute the query and check for errors
+            // Execute the statement and check for errors
             if ($stmt->execute() === TRUE) {
-                echo "Data inserted successfully for BrandName: " . $row[0] . "<br>";
+                echo "Data inserted successfully for BrandName: " . $brandName . "<br>";
             } else {
-                echo "Error inserting data for BrandName: " . $row[0] . " - " . $stmt->error . "<br>";
+                echo "Error inserting data for BrandName: " . $brandName . " - " . $stmt->error . "<br>";
             }
         }
 
@@ -71,11 +80,10 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
         $stmt->close();
     }
 
-    // Close the file after reading
+    // Close the CSV file after reading
     fclose($handle);
 } else {
     echo "Error: Could not open CSV file.";
 }
 
-// Connection will be closed by index.php
 ?>

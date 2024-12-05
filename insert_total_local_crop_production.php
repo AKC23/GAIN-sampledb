@@ -14,16 +14,14 @@ if ($conn->query($dropTableSQL) === TRUE) {
     echo "Error dropping table 'total_local_crop_production': " . $conn->error . "<br>";
 }
 
-// Check if referenced tables and columns exist and are properly defined
-$requiredTables = ['FoodType', 'FoodVehicle', 'Country'];
+// First verify required tables exist
+$requiredTables = ['FoodType', 'FoodVehicle', 'raw_crops', 'Country'];
 foreach ($requiredTables as $table) {
-    $checkTableSQL = "SHOW TABLES LIKE '$table'";
-    $result = $conn->query($checkTableSQL);
+    $result = $conn->query("SHOW TABLES LIKE '$table'");
     if ($result->num_rows == 0) {
-        die("Error: Referenced table '$table' does not exist. Foreign key constraints cannot be created.<br>");
+        die("Error: Required table '$table' does not exist.<br>");
     }
 }
-
 
 // SQL query to create the 'total_local_crop_production' table
 $createTableSQL = "

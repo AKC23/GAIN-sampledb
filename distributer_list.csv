@@ -1,0 +1,9 @@
+Food Type,FoodTypeID,Distributer ,Distributer_ID,Volume,Unit,Accessed Date,Source,Link
+Palm,5,Richardson oil Scals Ltd,1,0,Litre,A,A,A
+Rice Bran,13,Bangladesh Edible Oil Ltd,2,0,Litre,B,B,B
+Rice Bran,13,IFAD Multi Products Ltd,3,0,Litre,C,C,C
+Soya Bean,4,SM Enterprise,4,0,Litre,A,A,A
+Sunflower,6,SS Tradecom International,5,0,Litre,B,B,B
+Super Palm,14,Q & Q Trading,6,0,Litre,C,C,C
+Super Palm,14,SS Trade Company,7,0,Litre,B,B,B
+Super Palm,14,Bangladesh Edible Oil Ltd,2,0,Litre,C,C,C

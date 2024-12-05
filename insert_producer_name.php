@@ -30,8 +30,8 @@ $createTableSQL = "
         ProducerSize VARCHAR(50),
         VehicleID INT(11),
         
-        FOREIGN KEY (CountryID) REFERENCES Country(Country_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (CountryID) REFERENCES Country(Country_ID),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table

@@ -127,7 +127,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         $foodTypeName = mysqli_real_escape_string($conn, $foodTypeName);
 
-        echo "Processing Row $rowNumber:<br>";
+        // Debugging: Show extracted values
         echo "VehicleID from CSV: $vehicleID (Valid IDs: " . implode(", ", $validVehicleIDs) . ")<br>";
         echo "FoodTypeName: '$foodTypeName'<br>";
 

@@ -24,6 +24,9 @@ if ($result->num_rows > 0) {
                 <th>FoodTypeName</th>
             </tr>";
 
+    // Ensure that imported data reflects correct foreign key relationships
+    // No direct references found.
+    // Ensure joined tables are updated if necessary.
     // Output data for each row
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
@@ -40,4 +43,5 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close();
+
 ?>
