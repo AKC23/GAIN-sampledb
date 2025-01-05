@@ -57,7 +57,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Path to your updated CSV file
-$csvFile = 'total_local_crop_production.csv'; // Update with the exact path of your CSV file
+$csvFile = 'data/total_local_crop_production.csv'; // Update with the exact path of your CSV file
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFile, "r")) !== FALSE) {

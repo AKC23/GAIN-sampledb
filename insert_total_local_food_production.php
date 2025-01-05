@@ -65,7 +65,7 @@ foreach ($tables as $key => $sql) {
 }
 
 // Read and insert CSV data
-$csvFile = 'total_local_food_production.csv';
+$csvFile = 'data/total_local_food_production.csv';
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Skip header
     fgetcsv($handle);

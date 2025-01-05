@@ -86,6 +86,7 @@
                             'total_local_production_amount_edible_oil',
                             'distribution_channels',
                             'total_local_crop_production',
+                            'total_local_food_production',
                             'total_food_import',
                             'total_crop_import',
                             'crude_oil',
@@ -127,6 +128,7 @@
             // Update drop tables order to ensure proper dependency handling
             $dropTables = [
                 'total_local_crop_production',  // Should be created last
+                'total_local_food_production',  // Should be created last
                 'total_food_import',
                 'total_crop_import',
                 'crude_oil',
@@ -207,6 +209,7 @@
             // after all its dependencies are created
             echo "<h3>Creating Final Level tables...</h3>";
             include('insert_total_local_crop_production.php');
+            include('insert_total_local_food_production.php');
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
             // Add detailed error logging

@@ -19,6 +19,7 @@ $tableNames = [
     "total_local_production_amount_edible_oil" => "Total Local Production Amount (Edible Oil)",
     "distribution_channels" => "Distribution Channels",
     "total_local_crop_production" => "Total Local Crop Production",
+    "total_local_food_production" => "Total Local Food Production",
     "total_food_import" => "Total Food Import",
     "total_crop_import" => "Total Crop Import",
     "crude_oil" => "Crude Oil",

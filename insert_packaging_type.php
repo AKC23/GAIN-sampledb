@@ -27,7 +27,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Path to your CSV file
-$csvFilePath = 'packaging_type.csv'; // Update with the exact path of your CSV file
+$csvFilePath = 'data/packaging_type.csv'; // Update with the exact path of your CSV file
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
