@@ -11,8 +11,32 @@ if (!isset($tableName)) {
 if (!empty($tableName)) {
     // Add table name verification
     $validTables = [
-        'importers_brand_name',  // Make sure this is the correct name
-        // ...other table names...
+        'foodvehicle',
+        'foodtype',
+        'country',
+        'measure_unit',
+        'measure_period',
+        'measure_currency',
+        'geography',
+        'raw_crops',
+        'producer_name',
+        'producers_brand_name',
+        'producer_skus',
+        'local_production_amount_oilseed',
+        'importer_name',
+        'importers_brand_name',
+        'import_edible_oil',
+        'total_local_production_amount_edible_oil',
+        'distribution_channels',
+        'total_local_crop_production',
+        'total_food_import',
+        'total_crop_import',
+        'crude_oil',
+        'packaging_type',
+        'repacker_name',
+        'distributer_list',
+        'distributer_brand',
+        'distributer_name'
     ];
     
     if (!in_array($tableName, $validTables)) {
@@ -77,6 +101,5 @@ if (!empty($tableName)) {
     }
 }
 
-// Close the database connection
-$conn->close();
+// Remove the connection closing code
 ?>

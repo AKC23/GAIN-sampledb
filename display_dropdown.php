@@ -3,16 +3,30 @@
 $tableNames = [
     "foodvehicle" => "Food Vehicle",
     "foodtype" => "Food Type",
+    "country" => "Country",
+    "measure_unit" => "Measure Unit",
+    "measure_period" => "Measure Period",
+    "measure_currency" => "Measure Currency",
+    "geography" => "Geography",
     "raw_crops" => "Raw Crops",
     "producer_name" => "Producers Name",
     "producers_brand_name" => "Producer Brands",
     "producer_skus" => "Producer SKUs",
     "local_production_amount_oilseed" => "Local Production Amount (Oilseed)",
     "importer_name" => "Importer Name",
-    //"importers_brand_name" => "Importer Brands", // Updated to correct table name
+    "importers_brand_name" => "Importer Brands",
     "import_edible_oil" => "Import Edible Oil",
     "total_local_production_amount_edible_oil" => "Total Local Production Amount (Edible Oil)",
     "distribution_channels" => "Distribution Channels",
+    "total_local_crop_production" => "Total Local Crop Production",
+    "total_food_import" => "Total Food Import",
+    "total_crop_import" => "Total Crop Import",
+    "crude_oil" => "Crude Oil",
+    "packaging_type" => "Packaging Type",
+    "repacker_name" => "Repacker Name",
+    "distributer_list" => "Distributer List",
+    "distributer_brand" => "Distributer Brand",
+    "distributer_name" => "Distributer Name"
 ];
 
 // Determine if a table name has been selected

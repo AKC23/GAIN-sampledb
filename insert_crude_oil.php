@@ -37,7 +37,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Path to your CSV file
-$csvFile = 'crude_oil.csv'; // Update this with the actual path to your CSV file
+$csvFile = 'data/crude_oil.csv'; // Update this with the actual path to your CSV file
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
