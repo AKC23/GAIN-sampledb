@@ -25,7 +25,7 @@ if ($tableExists && $tableExists->num_rows > 0) {
 }
 
 // Path to your CSV file
-$csvFile = 'foodvehicle.csv';
+$csvFile = 'data/foodvehicle.csv';
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");

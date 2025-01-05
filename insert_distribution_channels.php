@@ -50,7 +50,7 @@ if ($result) {
 }
 
 // Path to your CSV file
-$csvFilePath = 'distribution_channels.csv'; // Update with the exact path of your CSV file
+$csvFilePath = 'data/distribution_channels.csv'; // Update with the exact path of your CSV file
 
 if (!file_exists($csvFilePath)) {
     die("Error: CSV file '$csvFilePath' not found.<br>");

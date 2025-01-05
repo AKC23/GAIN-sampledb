@@ -44,7 +44,7 @@ if ($result) {
 }
 
 // Path to your CSV file
-$csvFile = 'foodtype.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/foodtype.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");

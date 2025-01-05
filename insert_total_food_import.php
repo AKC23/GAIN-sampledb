@@ -68,7 +68,7 @@ foreach ($tables as $key => $sql) {
 }
 
 // Read and insert CSV data
-$csvFile = 'total_food_import.csv';
+$csvFile = 'data/total_food_import.csv';
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
 }

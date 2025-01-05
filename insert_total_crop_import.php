@@ -47,7 +47,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Path to your CSV file
-$csvFile = 'total_crop_import.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/total_crop_import.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");

@@ -35,7 +35,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Read and insert data from CSV
-$csvFile = 'distributer_list.csv';
+$csvFile = 'data/distributer_list.csv';
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Skip header row
     fgetcsv($handle);

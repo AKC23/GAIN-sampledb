@@ -32,7 +32,7 @@ if ($conn->query($createTableSQL) === TRUE) {
 }
 
 // Read and insert data from CSV
-$csvFile = 'distrubuter_name.csv';
+$csvFile = 'data/distrubuter_name.csv';
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Skip header row
     fgetcsv($handle);
