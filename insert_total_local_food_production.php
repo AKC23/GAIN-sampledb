@@ -1,73 +1,53 @@
 <?php
-include('db_connect.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// insert_total_local_food_production.php
 
-// Drop table if exists
+// Include the database connection
+include('db_connect.php');
+
+// SQL query to drop the 'total_local_food_production' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS total_local_food_production";
+
+// Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
     echo "Table 'total_local_food_production' dropped successfully.<br>";
 } else {
     echo "Error dropping table 'total_local_food_production': " . $conn->error . "<br>";
 }
 
-// Create table
+// SQL query to create the 'total_local_food_production' table with foreign keys
 $createTableSQL = "
-CREATE TABLE total_local_food_production (
-    ProductionID INT(11) AUTO_INCREMENT PRIMARY KEY,
-    VehicleID INT(11) NOT NULL,
-    FoodTypeID INT(11) NOT NULL,
-    RawCropsID INT(11) NOT NULL,
-    Country_ID INT(11) NOT NULL,
-    PeriodicalUnit VARCHAR(50) NOT NULL,
-    Volume FLOAT NOT NULL,
-    UnitID INT(11) NOT NULL,
-    StartYear YEAR NOT NULL,
-    EndYear YEAR NOT NULL,
-    AccessedDate DATE NOT NULL,
-    Source VARCHAR(255) NOT NULL,
-    Link VARCHAR(255) NOT NULL,
-    ProcessToObtainData TEXT NOT NULL,
-    FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Country_ID) REFERENCES country(Country_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+    CREATE TABLE total_local_food_production (
+        ProductionID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        VehicleID INT(11) NOT NULL,
+        FoodTypeID INT(11) NOT NULL,
+        RawCropsID INT(11) NOT NULL,
+        Country_ID INT(11) NOT NULL,
+        PeriodicalUnit VARCHAR(50) NOT NULL,
+        Volume FLOAT NOT NULL,
+        UnitID INT(11) NOT NULL,
+        StartYear YEAR NOT NULL,
+        EndYear YEAR NOT NULL,
+        AccessedDate DATE NOT NULL,
+        Source VARCHAR(255) NOT NULL,
+        Link VARCHAR(255) NOT NULL,
+        ProcessToObtainData VARCHAR(255) NOT NULL,
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (Country_ID) REFERENCES country(Country_ID),
+        FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
+// Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'total_local_food_production' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid IDs from reference tables
-$validIDs = array(
-    'vehicle' => array(),
-    'foodtype' => array(),
-    'rawcrops' => array(),
-    'country' => array()
-);
+// Path to your CSV file
+$csvFile = 'data/total_local_food_production.csv';  // Update with the exact path of your CSV file
 
-// Get all valid IDs
-$tables = array(
-    'vehicle' => "SELECT VehicleID FROM FoodVehicle",
-    'foodtype' => "SELECT FoodTypeID FROM FoodType",
-    'rawcrops' => "SELECT RawCropsID FROM raw_crops",
-    'country' => "SELECT Country_ID FROM Country"
-);
-
-foreach ($tables as $key => $sql) {
-    $result = $conn->query($sql);
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $validIDs[$key][] = $row[array_key_first($row)];
-        }
-    }
-}
-
-// Read and insert CSV data
-$csvFile = 'data/total_local_food_production.csv';
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
 }
@@ -206,4 +186,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 } else {
     echo "Error: Could not open CSV file.<br>";
 }
+
+// Note: We do not close the database connection here
+// because it needs to remain open for subsequent operations in index.php
 ?>

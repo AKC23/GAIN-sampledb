@@ -84,17 +84,20 @@
                             'importers_brand_name',
                             'import_edible_oil',
                             'total_local_production_amount_edible_oil',
-                            'distribution_channels',
+                            //'distribution_channels',
                             'total_local_crop_production',
                             'total_local_food_production',
                             'total_food_import',
                             'total_crop_import',
                             'crude_oil',
+                            'entities',
+                            'producer_processor',
                             'packaging_type',
                             'repacker_name',
                             'distributer_list',
                             'distributer_brand',
-                            'distributer_name'
+                            'distributer_name',
+                            'distribution'  // Add this line
                         ];
                         while ($row = $result->fetch_array()) {
                             $table = $row[0];
@@ -132,11 +135,13 @@
                 'total_food_import',
                 'total_crop_import',
                 'crude_oil',
+                'entities',
+                'producer_processor',
                 'producers_brand_name',
                 'importers_brand_name',
                 'importer_name',
                 'import_edible_oil',
-                'distribution_channels',
+                'distribution',
                 'measure_unit',
                 'measure_period',
                 'measure_currency',
@@ -183,14 +188,16 @@
             // Level 2: Tables depending on Level 1
             echo "<h3>Creating Level 2 tables...</h3>";
             include('insert_crude_oil.php');        // Depends on: raw_crops, FoodType
+            include('insert_entities.php');             
             include('insert_importer_name.php');    // Depends on: Country, producer_name
             include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
+            include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
 
             // Level 3: Tables depending on Level 2
             echo "<h3>Creating Level 3 tables...</h3>";
             include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
             include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
-            include('insert_distribution_channels.php'); // Depends on: FoodType
+            //include('insert_distribution_channels.php'); // Depends on: FoodType
 
             // Level 4: Tables depending on Level 3 or complex dependencies
             echo "<h3>Creating Level 4 tables...</h3>";
@@ -210,6 +217,7 @@
             echo "<h3>Creating Final Level tables...</h3>";
             include('insert_total_local_crop_production.php');
             include('insert_total_local_food_production.php');
+            include('insert_distribution.php'); // Add this line
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
             // Add detailed error logging

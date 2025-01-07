@@ -29,11 +29,11 @@ CREATE TABLE total_food_import (
     Link VARCHAR(255) NOT NULL,
     ProcessToObtainData TEXT NOT NULL,
 
-    FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Country_ID) REFERENCES country(Country_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+    FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+    FOREIGN KEY (Country_ID) REFERENCES country(Country_ID),
+    FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {

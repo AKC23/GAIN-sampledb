@@ -17,17 +17,19 @@ $tableNames = [
     "importers_brand_name" => "Importer Brands",
     "import_edible_oil" => "Import Edible Oil",
     "total_local_production_amount_edible_oil" => "Total Local Production Amount (Edible Oil)",
-    "distribution_channels" => "Distribution Channels",
+    "distribution" => "distribution",
     "total_local_crop_production" => "Total Local Crop Production",
     "total_local_food_production" => "Total Local Food Production",
     "total_food_import" => "Total Food Import",
     "total_crop_import" => "Total Crop Import",
+    "entities" => "Entities",
     "crude_oil" => "Crude Oil",
     "packaging_type" => "Packaging Type",
     "repacker_name" => "Repacker Name",
     "distributer_list" => "Distributer List",
     "distributer_brand" => "Distributer Brand",
-    "distributer_name" => "Distributer Name"
+    "distributer_name" => "Distributer Name",
+    "producer_processor" => "Producer Processor"
 ];
 
 // Determine if a table name has been selected

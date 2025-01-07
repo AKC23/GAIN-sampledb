@@ -1,36 +1,41 @@
 <?php
+// insert_entities.php
 
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'raw_crops' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS raw_crops";
+// SQL query to drop the 'entities' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS entities";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'raw_crops' dropped successfully.<br>";
+    echo "Table 'entities' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'raw_crops': " . $conn->error . "<br>";
+    echo "Error dropping table 'entities': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'raw_crops' table
+// SQL query to create the 'entities' table with foreign keys
 $createTableSQL = "
-    CREATE TABLE raw_crops (
-        RawCropsID INT(11) AUTO_INCREMENT PRIMARY KEY,
+    CREATE TABLE entities (
+        EntityID INT(11) AUTO_INCREMENT PRIMARY KEY,
         VehicleID INT(11) NOT NULL,
-        RawCropsName VARCHAR(255) NOT NULL,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        CompanyGroup VARCHAR(255),
+        ProducerProcessorName VARCHAR(255) NOT NULL,
+        ProducerProcessorAddress VARCHAR(255) NOT NULL,
+        Country_ID INT(11) NOT NULL,
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+        FOREIGN KEY (Country_ID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'raw_crops' created successfully.<br>";
+    echo "Table 'entities' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
-$csvFile = 'data/raw_crops.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/entities.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -90,7 +95,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 2) {
+        if (count($data) < 5) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -98,39 +103,47 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Clean the data more thoroughly
         $vehicleID = trim($data[0]);
-        $rawCropsName = trim($data[1]);
+        $companyGroup = trim($data[1]);
+        $producerProcessorName = trim($data[2]);
+        $producerProcessorAddress = trim($data[3]);
+        $countryID = trim($data[4]);
         
         // Remove any extra spaces between the name and comma
-        $rawCropsName = preg_replace('/\s+,/', ',', $rawCropsName);
+        $companyGroup = preg_replace('/\s+,/', ',', $companyGroup);
+        $producerProcessorName = preg_replace('/\s+,/', ',', $producerProcessorName);
+        $producerProcessorAddress = preg_replace('/\s+,/', ',', $producerProcessorAddress);
         
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
-        if ($vehicleID === false || $vehicleID === null) {
-            echo "Error: Invalid VehicleID format in row $rowNumber: '{$data[0]}'. Skipping.<br>";
+        $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
+        if ($vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
+            echo "Error: Invalid VehicleID or Country_ID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $rawCropsName = mysqli_real_escape_string($conn, $rawCropsName);
+        $companyGroup = mysqli_real_escape_string($conn, $companyGroup);
+        $producerProcessorName = mysqli_real_escape_string($conn, $producerProcessorName);
+        $producerProcessorAddress = mysqli_real_escape_string($conn, $producerProcessorAddress);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, RawCropsName: '$rawCropsName'<br>";
+        echo "VehicleID: $vehicleID, CompanyGroup: '$companyGroup', ProducerProcessorName: '$producerProcessorName', ProducerProcessorAddress: '$producerProcessorAddress', Country_ID: $countryID<br>";
 
-        if (empty($rawCropsName)) {
+        if (empty($producerProcessorName) || empty($producerProcessorAddress)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO raw_crops (VehicleID, RawCropsName) VALUES (?, ?)";
+        $sql = "INSERT INTO entities (VehicleID, CompanyGroup, ProducerProcessorName, ProducerProcessorAddress, Country_ID) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $vehicleID, $rawCropsName);
+        $stmt->bind_param("isssi", $vehicleID, $companyGroup, $producerProcessorName, $producerProcessorAddress, $countryID);
 
         if ($stmt->execute()) {
-            $rawCropsID = $conn->insert_id;
-            echo "✓ Inserted raw crop '$rawCropsName' with ID: $rawCropsID<br>";
+            $entityID = $conn->insert_id;
+            echo "✓ Inserted entity '$producerProcessorName' with ID: $entityID<br>";
         } else {
-            echo "Error inserting raw crop: " . $stmt->error . "<br>";
+            echo "Error inserting entity: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -138,11 +151,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final raw_crops table contents:<br>";
-    $result = $conn->query("SELECT * FROM raw_crops ORDER BY RawCropsID");
+    echo "<br>Final entities table contents:<br>";
+    $result = $conn->query("SELECT e.*, c.Country_Name 
+                           FROM entities e 
+                           JOIN country c ON e.Country_ID = c.Country_ID 
+                           ORDER BY e.EntityID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['RawCropsID']}, VehicleID: {$row['VehicleID']}, RawCropsName: {$row['RawCropsName']}<br>";
+            echo "ID: {$row['EntityID']}, VehicleID: {$row['VehicleID']}, CompanyGroup: {$row['CompanyGroup']}, ProducerProcessorName: {$row['ProducerProcessorName']}, ProducerProcessorAddress: {$row['ProducerProcessorAddress']}, Country_ID: {$row['Country_ID']}, Country: {$row['Country_Name']}<br>";
         }
     }
 
