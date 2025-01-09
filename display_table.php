@@ -9,43 +9,8 @@ if (!isset($tableName)) {
 }
 
 if (!empty($tableName)) {
-    // Add table name verification
-    $validTables = [
-        'foodvehicle',
-        'foodtype',
-        'country',
-        'measure_unit',
-        'measure_period',
-        'measure_currency',
-        'geography',
-        'processing_stage',
-        'producer_name',
-        'producers_brand_name',
-        'producer_skus',
-        'local_production_amount_oilseed',
-        'importer_name',
-        'importers_brand_name',
-        'import_edible_oil',
-        'producer_processor',
-        'total_local_production_amount_edible_oil',
-        'distribution',
-        'total_local_crop_production',
-        'total_local_food_production',
-        'total_food_import',
-        'total_crop_import',
-        'entities',
-        'crude_oil',
-        'packaging_type',
-        'repacker_name',
-        'distributer_list',
-        'distributer_brand',
-        'distributer_name'
-    ];
-    
-    if (!in_array($tableName, $validTables)) {
-        die("Invalid table name requested");
-    }
-    
+    // Remove the validTables array since it is already defined in index.php
+
     // Check if the table exists before querying
     $table_check = $conn->query("SHOW TABLES LIKE '" . $conn->real_escape_string($tableName) . "'");
     if ($table_check->num_rows == 0) {
@@ -90,9 +55,9 @@ if (!empty($tableName)) {
                 if ($fieldTypes[$field] == MYSQLI_TYPE_LONG) { // Integer values (assuming ID is integer)
                     $alignStyle = "text-align: center;";
                 } elseif (is_numeric($data)) { // Any numeric values (align right)
-                    $alignStyle = "text-align: right;";
+                    $alignStyle = "text-align: center;";
                 } else { // Default alignment for text (align left)
-                    $alignStyle = "text-align: left;";
+                    $alignStyle = "text-align: center;";
                 }
                 echo "<td style='background-color: #f8f9fa; $alignStyle'>" . htmlspecialchars($data) . "</td>";
             }

@@ -3,19 +3,9 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'processing_stage' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS processing_stage";
-
-// Execute the query to drop the table
-if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'processing_stage' dropped successfully.<br>";
-} else {
-    echo "Error dropping table 'processing_stage': " . $conn->error . "<br>";
-}
-
 // SQL query to create the 'processing_stage' table
 $createTableSQL = "
-    CREATE TABLE processing_stage (
+    CREATE TABLE IF NOT EXISTS processing_stage (
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
         VehicleID INT(11) NOT NULL,
         Processing_Stage VARCHAR(255) NOT NULL,

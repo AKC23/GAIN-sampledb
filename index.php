@@ -84,6 +84,7 @@
                             'importers_brand_name',
                             'import_edible_oil',
                             'total_local_production_amount_edible_oil',
+                            'extraction_conversion',
                             //'distribution_channels',
                             'total_local_crop_production',
                             'total_local_food_production',
@@ -136,12 +137,11 @@
             echo "<p class='text-center text-muted'>Select a table to display data.</p>";
         }
 
-        // Remove this include since we already have the connection
-        // include('db_connect.php');
-
         try {
             // Disable foreign key checks for dropping tables
             $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+
+            echo "<h2 class='center-title'>Drop & Create Database Tables</h2>";
 
             // Update drop tables order to ensure proper dependency handling
             $dropTables = [
@@ -149,6 +149,7 @@
                 'total_local_food_production',  // Should be created last
                 'total_food_import',
                 'total_crop_import',
+                'extraction_conversion', 
                 'crude_oil',
                 'entities',
                 'producer_processor',
@@ -190,15 +191,12 @@
             include('insert_measure_period.php');
             include('insert_measure_currency.php');
             
-
             // Level 1: Tables that depend on base tables
             echo "<h3>Creating Level 1 tables...</h3>";
             include('insert_foodtype.php');      // Depends on: FoodVehicle
             include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
             include('insert_processing_stage.php');     // Depends on: FoodVehicle
             include('insert_geography.php');     // Depends on: country
-
-
 
             // Level 2: Tables depending on Level 1
             echo "<h3>Creating Level 2 tables...</h3>";
@@ -207,12 +205,12 @@
             include('insert_importer_name.php');    // Depends on: Country, producer_name
             include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
             include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
+            include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
 
             // Level 3: Tables depending on Level 2
             echo "<h3>Creating Level 3 tables...</h3>";
             include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
             include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
-            //include('insert_distribution_channels.php'); // Depends on: FoodType
 
             // Level 4: Tables depending on Level 3 or complex dependencies
             echo "<h3>Creating Level 4 tables...</h3>";
