@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-//     header('Location: login.php');
-//     exit;
-// }
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header('Location: login.php');
+    exit;
+}
 
 if (!isset($_SESSION['data'])) {
     $_SESSION['data'] = [
@@ -13,16 +13,38 @@ if (!isset($_SESSION['data'])) {
         ['Calendar', '2016', '2016', 'Company C', 'Brand Z', 'Wheat', 'Production', 8000, 4000],
         ['Fiscal', '2016', '2017', 'Company A', 'Brand X', 'Oil', 'Import', 6000, 3500],
         ['Calendar', '2017', '2017', 'Company B', 'Brand Y', 'Wheat', 'Import', 9000, 4500],
+        ['Fiscal', '2017', '2018', 'Company C', 'Brand Z', 'Oil', 'Production', 7000, 3300],
+        ['Calendar', '2018', '2018', 'Company A', 'Brand X', 'Wheat', 'Production', 11000, 5500],
+        ['Fiscal', '2018', '2019', 'Company B', 'Brand Y', 'Oil', 'Import', 6500, 3000],
+        ['Calendar', '2019', '2019', 'Company C', 'Brand Z', 'Wheat', 'Import', 8500, 4200],
+        ['Fiscal', '2019', '2020', 'Company A', 'Brand X', 'Oil', 'Production', 7500, 3700],
+        ['Calendar', '2020', '2020', 'Company B', 'Brand Y', 'Wheat', 'Import', 10000, 4700],
+        ['Fiscal', '2020', '2021', 'Company C', 'Brand Z', 'Oil', 'Import', 7800, 3500],
+        ['Calendar', '2021', '2021', 'Company A', 'Brand X', 'Wheat', 'Production', 12000, 5800],
+        ['Fiscal', '2021', '2022', 'Company B', 'Brand Y', 'Oil', 'Production', 7200, 3400],
+        ['Calendar', '2022', '2022', 'Company C', 'Brand Z', 'Wheat', 'Import', 9200, 4600],
+        ['Fiscal', '2022', '2023', 'Company A', 'Brand X', 'Oil', 'Production', 8000, 4000],
+        ['Calendar', '2023', '2023', 'Company B', 'Brand Y', 'Wheat', 'Production', 11500, 5500],
+        ['Fiscal', '2023', '2024', 'Company C', 'Brand Z', 'Oil', 'Import', 8500, 4300],
+        ['Calendar', '2024', '2024', 'Company A', 'Brand X', 'Wheat', 'Import', 13000, 6200],
+        ['Fiscal', '2024', '2025', 'Company B', 'Brand Y', 'Oil', 'Production', 8800, 4200],
+        ['Calendar', '2025', '2025', 'Company C', 'Brand Z', 'Wheat', 'Production', 10500, 5000],
+        ['Fiscal', '2025', '2026', 'Company A', 'Brand X', 'Oil', 'Import', 9000, 4500],
+        ['Calendar', '2026', '2026', 'Company B', 'Brand Y', 'Wheat', 'Production', 12500, 5800],
+        ['Fiscal', '2026', '2027', 'Company C', 'Brand Z', 'Oil', 'Import', 9500, 4700],
+        // Additional data
+        
     ];
 }
 
 // Sort the data by Start Year
-usort($_SESSION['data'], function($a, $b) {
+usort($_SESSION['data'], function ($a, $b) {
     return $a[1] <=> $b[1];
 });
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,16 +54,19 @@ usort($_SESSION['data'], function($a, $b) {
         body {
             padding-top: 20px;
         }
+
         .table-container {
             max-height: 400px;
             overflow-y: auto;
         }
+
         .table-fixed-header {
             position: sticky;
             top: 0;
             background-color: #fff;
             z-index: 1;
         }
+
         .checkbox-group {
             max-height: 120px;
             overflow-y: auto;
@@ -49,21 +74,32 @@ usort($_SESSION['data'], function($a, $b) {
             border-radius: 0.25rem;
             padding: 0.375rem 0.75rem;
         }
+
         .unit-conversion {
             margin-bottom: 20px;
         }
+
         .currency-conversion {
             margin-bottom: 20px;
         }
+
         .conversion-group {
             margin-top: 20px;
         }
+
         .conversion-container {
             display: flex;
             justify-content: space-between;
         }
+
+        .table th,
+        .table td {
+            text-align: center; /* Center-align table headers and data */
+            vertical-align: middle; /* Middle-align table headers and data */
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row mb-4">
@@ -266,4 +302,5 @@ usort($_SESSION['data'], function($a, $b) {
         });
     </script>
 </body>
+
 </html>

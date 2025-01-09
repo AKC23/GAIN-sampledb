@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supply Chain Final</title>
+    <title>Distribution</title>
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -42,12 +42,12 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="center-title">Supply Chain Final</h1>
+        <h1 class="center-title">Distribution</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <?php
                 // Path to your CSV file
-                $csvFile = 'data/supply_chain_final.csv';  // Update with the exact path of your CSV file
+                $csvFile = 'data/distribution.csv';  // Update with the exact path of your CSV file
 
                 if (!file_exists($csvFile)) {
                     die("Error: CSV file '$csvFile' not found.<br>");
