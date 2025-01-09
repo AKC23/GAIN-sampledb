@@ -20,7 +20,7 @@ $createTableSQL = "
         ProductionID INT(11) AUTO_INCREMENT PRIMARY KEY,
         VehicleID INT(11) NOT NULL,
         FoodTypeID INT(11) NOT NULL,
-        RawCropsID INT(11) NOT NULL,
+        PSID INT(11) NOT NULL,
         Country_ID INT(11) NOT NULL,
         PeriodicalUnit VARCHAR(50) NOT NULL,
         Volume FLOAT NOT NULL,
@@ -33,7 +33,7 @@ $createTableSQL = "
         ProcessToObtainData VARCHAR(255) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
         FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
-        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (PSID) REFERENCES processing_stage(PSID),
         FOREIGN KEY (Country_ID) REFERENCES country(Country_ID),
         FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -115,7 +115,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Clean the data more thoroughly
         $vehicleID = trim($data[0]);
         $foodTypeID = trim($data[1]);
-        $rawCropsID = trim($data[2]);
+        $PSID = trim($data[2]);
         $countryID = trim($data[3]);
         $periodicalUnit = trim($data[4]);
         $volume = trim($data[5]);
@@ -136,7 +136,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         $foodTypeID = filter_var($foodTypeID, FILTER_VALIDATE_INT);
-        $rawCropsID = filter_var($rawCropsID, FILTER_VALIDATE_INT);
+        $PSID = filter_var($PSID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
         $volume = filter_var(str_replace(',', '', $volume), FILTER_VALIDATE_FLOAT);
         $unitID = filter_var($unitID, FILTER_VALIDATE_INT);
@@ -144,7 +144,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $endYear = filter_var(date('Y', strtotime($endYear)), FILTER_VALIDATE_INT);
         $accessedDate = date('Y-m-d', strtotime($accessedDate));
 
-        if ($vehicleID === false || $foodTypeID === false || $rawCropsID === false || $countryID === false || $volume === false || $unitID === false || $startYear === false || $endYear === false || $accessedDate === false) {
+        if ($vehicleID === false || $foodTypeID === false || $PSID === false || $countryID === false || $volume === false || $unitID === false || $startYear === false || $endYear === false || $accessedDate === false) {
             echo "Error: Invalid data format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -156,11 +156,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $processToObtainData = mysqli_real_escape_string($conn, $processToObtainData);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, FoodTypeID: $foodTypeID, RawCropsID: $rawCropsID, Country_ID: $countryID, PeriodicalUnit: '$periodicalUnit', Volume: $volume, UnitID: $unitID, StartYear: $startYear, EndYear: $endYear, AccessedDate: '$accessedDate', Source: '$source', Link: '$link', ProcessToObtainData: '$processToObtainData'<br>";
+        echo "VehicleID: $vehicleID, FoodTypeID: $foodTypeID, PSID: $PSID, Country_ID: $countryID, PeriodicalUnit: '$periodicalUnit', Volume: $volume, UnitID: $unitID, StartYear: $startYear, EndYear: $endYear, AccessedDate: '$accessedDate', Source: '$source', Link: '$link', ProcessToObtainData: '$processToObtainData'<br>";
 
-        $sql = "INSERT INTO total_local_food_production (VehicleID, FoodTypeID, RawCropsID, Country_ID, PeriodicalUnit, Volume, UnitID, StartYear, EndYear, AccessedDate, Source, Link, ProcessToObtainData) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO total_local_food_production (VehicleID, FoodTypeID, PSID, Country_ID, PeriodicalUnit, Volume, UnitID, StartYear, EndYear, AccessedDate, Source, Link, ProcessToObtainData) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiisdiisssss", $vehicleID, $foodTypeID, $rawCropsID, $countryID, $periodicalUnit, $volume, $unitID, $startYear, $endYear, $accessedDate, $source, $link, $processToObtainData);
+        $stmt->bind_param("iiiisdiisssss", $vehicleID, $foodTypeID, $PSID, $countryID, $periodicalUnit, $volume, $unitID, $startYear, $endYear, $accessedDate, $source, $link, $processToObtainData);
 
         if ($stmt->execute()) {
             $productionID = $conn->insert_id;
@@ -178,7 +178,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM total_local_food_production ORDER BY ProductionID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProductionID']}, VehicleID: {$row['VehicleID']}, FoodTypeID: {$row['FoodTypeID']}, RawCropsID: {$row['RawCropsID']}, Country_ID: {$row['Country_ID']}, PeriodicalUnit: {$row['PeriodicalUnit']}, Volume: {$row['Volume']}, UnitID: {$row['UnitID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, AccessedDate: {$row['AccessedDate']}, Source: {$row['Source']}, Link: {$row['Link']}, ProcessToObtainData: {$row['ProcessToObtainData']}<br>";
+            echo "ID: {$row['ProductionID']}, VehicleID: {$row['VehicleID']}, FoodTypeID: {$row['FoodTypeID']}, PSID: {$row['PSID']}, Country_ID: {$row['Country_ID']}, PeriodicalUnit: {$row['PeriodicalUnit']}, Volume: {$row['Volume']}, UnitID: {$row['UnitID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, AccessedDate: {$row['AccessedDate']}, Source: {$row['Source']}, Link: {$row['Link']}, ProcessToObtainData: {$row['ProcessToObtainData']}<br>";
         }
     }
 

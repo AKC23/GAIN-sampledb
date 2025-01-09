@@ -52,7 +52,7 @@ if(isset($_GET['table'])) {
                     t.DataType as 'Data Type',
                     t.ProcessToObtainData as 'Process'
                 FROM $table t
-                LEFT JOIN raw_crops rc ON t.RawCropsID = rc.RawCropsID
+                LEFT JOIN processing_stage rc ON t.PSID = rc.PSID
                 LEFT JOIN FoodVehicle fv ON t.VehicleID = fv.VehicleID
                 WHERE 1=1";
                 break;

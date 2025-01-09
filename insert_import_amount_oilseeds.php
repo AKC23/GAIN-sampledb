@@ -16,7 +16,7 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE import_amount_oilseeds (
         DataID INT PRIMARY KEY AUTO_INCREMENT,
-        RawCropsID INT(11),
+        PSID INT(11),
         VehicleID INT(11),
         Converted_Unit VARCHAR(50),
         Value DECIMAL(20, 3),
@@ -27,7 +27,7 @@ $createTableSQL = "
         Link TEXT,
         DataType VARCHAR(50),
         ProcessToObtainData TEXT,
-        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (PSID) REFERENCES processing_stage(PSID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -48,7 +48,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     fgetcsv($handle);
 
     // Prepare the SQL statement with placeholders
-    $stmt = $conn->prepare("INSERT INTO import_amount_oilseeds (RawCropsID, VehicleID, Converted_Unit, Value, Start_Year, End_Year, AccessedDate, Source, Link, DataType, ProcessToObtainData) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO import_amount_oilseeds (PSID, VehicleID, Converted_Unit, Value, Start_Year, End_Year, AccessedDate, Source, Link, DataType, ProcessToObtainData) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     // Check if the statement was prepared successfully
     if ($stmt === FALSE) {
@@ -57,7 +57,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Read through each line of the CSV file
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
             // Extract relevant columns from the CSV data
-            $RawCropsID = $data[1];
+            $PSID = $data[1];
             $VehicleID = $data[4];
             $Converted_Unit = $data[6];
             $Value = $data[7];
@@ -70,13 +70,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $ProcessToObtainData = mysqli_real_escape_string($conn, trim($data[14]));
 
             // Bind parameters
-            $stmt->bind_param("iisdsssssss", $RawCropsID, $VehicleID, $Converted_Unit, $Value, $Start_Year, $End_Year, $AccessedDate, $Source, $Link, $DataType, $ProcessToObtainData);
+            $stmt->bind_param("iisdsssssss", $PSID, $VehicleID, $Converted_Unit, $Value, $Start_Year, $End_Year, $AccessedDate, $Source, $Link, $DataType, $ProcessToObtainData);
 
             // Execute the query
             if ($stmt->execute() === TRUE) {
-                echo "Data inserted successfully for RawCropsID: $RawCropsID<br>";
+                echo "Data inserted successfully for PSID: $PSID<br>";
             } else {
-                echo "Error inserting data for RawCropsID: $RawCropsID - " . $stmt->error . "<br>";
+                echo "Error inserting data for PSID: $PSID - " . $stmt->error . "<br>";
             }
         }
 

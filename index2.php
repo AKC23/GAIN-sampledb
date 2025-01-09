@@ -164,7 +164,7 @@
                                         case 'FoodTypeID':
                                             $header_name = 'Food Type';
                                             break;
-                                        case 'RawCropsID':
+                                        case 'PSID':
                                             $header_name = 'Raw Crops';
                                             break;
                                         case 'CountryID':

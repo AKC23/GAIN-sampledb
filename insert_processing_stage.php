@@ -16,9 +16,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 // SQL query to create the 'processing_stage' table
 $createTableSQL = "
     CREATE TABLE processing_stage (
-        RawCropsID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
         VehicleID INT(11) NOT NULL,
-        RawCropsName VARCHAR(255) NOT NULL,
+        Processing_Stage VARCHAR(255) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -98,10 +98,10 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Clean the data more thoroughly
         $vehicleID = trim($data[0]);
-        $rawCropsName = trim($data[1]);
+        $processingStage = trim($data[1]);
         
         // Remove any extra spaces between the name and comma
-        $rawCropsName = preg_replace('/\s+,/', ',', $rawCropsName);
+        $processingStage = preg_replace('/\s+,/', ',', $processingStage);
         
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
@@ -111,26 +111,26 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $rawCropsName = mysqli_real_escape_string($conn, $rawCropsName);
+        $processingStage = mysqli_real_escape_string($conn, $processingStage);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, RawCropsName: '$rawCropsName'<br>";
+        echo "VehicleID: $vehicleID, Processing_Stage: '$processingStage'<br>";
 
-        if (empty($rawCropsName)) {
+        if (empty($processingStage)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO processing_stage (VehicleID, RawCropsName) VALUES (?, ?)";
+        $sql = "INSERT INTO processing_stage (VehicleID, Processing_Stage) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $vehicleID, $rawCropsName);
+        $stmt->bind_param("is", $vehicleID, $processingStage);
 
         if ($stmt->execute()) {
-            $rawCropsID = $conn->insert_id;
-            echo "✓ Inserted raw crop '$rawCropsName' with ID: $rawCropsID<br>";
+            $psid = $conn->insert_id;
+            echo "✓ Inserted processing stage '$processingStage' with ID: $psid<br>";
         } else {
-            echo "Error inserting raw crop: " . $stmt->error . "<br>";
+            echo "Error inserting processing stage: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -139,10 +139,10 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final processing_stage table contents:<br>";
-    $result = $conn->query("SELECT * FROM processing_stage ORDER BY RawCropsID");
+    $result = $conn->query("SELECT * FROM processing_stage ORDER BY PSID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['RawCropsID']}, VehicleID: {$row['VehicleID']}, RawCropsName: {$row['RawCropsName']}<br>";
+            echo "ID: {$row['PSID']}, VehicleID: {$row['VehicleID']}, Processing_Stage: {$row['Processing_Stage']}<br>";
         }
     }
 

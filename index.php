@@ -75,7 +75,7 @@
                             'measure_period',
                             'measure_currency',
                             'geography',
-                            'raw_crops',
+                            'processing_stage',
                             'producer_name',
                             'producers_brand_name',
                             'producer_skus',
@@ -120,6 +120,21 @@
         </div>
 
         <?php
+        // Display requested table (using the same connection)
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
+            $tableName = $_POST['tableName'];
+            echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
+
+            echo '<div class="table-responsive">';
+            try {
+                include('display_table.php');
+            } catch (Exception $e) {
+                echo "<div class='alert alert-danger'>Error displaying table: " . htmlspecialchars($e->getMessage()) . "</div>";
+            }
+            echo '</div>';
+        } else {
+            echo "<p class='text-center text-muted'>Select a table to display data.</p>";
+        }
 
         // Remove this include since we already have the connection
         // include('db_connect.php');
@@ -146,7 +161,7 @@
                 'measure_period',
                 'measure_currency',
                 'foodtype',
-                'raw_crops',
+                'processing_stage',
                 'producer_name',
                 'country',
                 'foodvehicle',
@@ -180,14 +195,14 @@
             echo "<h3>Creating Level 1 tables...</h3>";
             include('insert_foodtype.php');      // Depends on: FoodVehicle
             include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
-            include('insert_raw_crops.php');     // Depends on: FoodVehicle
+            include('insert_processing_stage.php');     // Depends on: FoodVehicle
             include('insert_geography.php');     // Depends on: country
 
 
 
             // Level 2: Tables depending on Level 1
             echo "<h3>Creating Level 2 tables...</h3>";
-            include('insert_crude_oil.php');        // Depends on: raw_crops, FoodType
+            include('insert_crude_oil.php');        // Depends on: processing_stage, FoodType
             include('insert_entities.php');             
             include('insert_importer_name.php');    // Depends on: Country, producer_name
             include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
@@ -215,31 +230,15 @@
             // Move total_local_crop_production to the very end
             // after all its dependencies are created
             echo "<h3>Creating Final Level tables...</h3>";
-            include('insert_total_local_crop_production.php');
-            include('insert_total_local_food_production.php');
-            include('insert_distribution.php'); // Add this line
+            //include('insert_total_local_crop_production.php');
+            //include('insert_total_local_food_production.php');
+            //include('insert_distribution.php'); // Add this line
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
             // Add detailed error logging
             if ($conn->error) {
                 echo "<br>Database Error: " . $conn->error . "<br>";
             }
-        }
-
-        // Display requested table (using the same connection)
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
-            $tableName = $_POST['tableName'];
-            echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
-
-            echo '<div class="table-responsive">';
-            try {
-                include('display_table.php');
-            } catch (Exception $e) {
-                echo "<div class='alert alert-danger'>Error displaying table: " . htmlspecialchars($e->getMessage()) . "</div>";
-            }
-            echo '</div>';
-        } else {
-            echo "<p class='text-center text-muted'>Select a table to display data.</p>";
         }
 
         // Modified connection closing

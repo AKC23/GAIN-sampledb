@@ -11,7 +11,7 @@ $createTableSQL = "
         DataID INT PRIMARY KEY AUTO_INCREMENT,
         VehicleID INT,
         FoodTypeID INT,
-        RawCropsID INT,
+        PSID INT,
         Country_ID INT,
         SourceVolume DECIMAL(15, 3),
         ConvertedValue DECIMAL(15, 3),
@@ -25,7 +25,7 @@ $createTableSQL = "
         Process VARCHAR(255),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
         FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
-        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (PSID) REFERENCES processing_stage(PSID),
         FOREIGN KEY (Country_ID) REFERENCES Country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -74,13 +74,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
     }
 
-    // Get valid RawCropsIDs
-    $result = $conn->query("SELECT RawCropsID FROM raw_crops");
+    // Get valid PSIDs
+    $result = $conn->query("SELECT PSID FROM processing_stage");
     if ($result) {
-        echo "<br>Valid RawCropsIDs in database:<br>";
+        echo "<br>Valid PSIDs in database:<br>";
         while ($row = $result->fetch_assoc()) {
-            $validIDs['rawcrops'][] = $row['RawCropsID'];
-            echo "RawCropsID: {$row['RawCropsID']}<br>";
+            $validIDs['rawcrops'][] = $row['PSID'];
+            echo "PSID: {$row['PSID']}<br>";
         }
     }
 
@@ -97,7 +97,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Prepare the SQL statement with placeholders
     $stmt = $conn->prepare("
         INSERT INTO crude_oil (
-            VehicleID, FoodTypeID, RawCropsID, Country_ID,
+            VehicleID, FoodTypeID, PSID, Country_ID,
             SourceVolume, ConvertedValue, VolumeUnit, PeriodicalUnit,
             StartYear, EndYear, AccessedDate, Source, Link, Process
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -112,13 +112,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             // Extract the relevant columns from the CSV file
             $vehicleID = (int) trim($data[1]);
             $foodTypeID = (int) trim($data[3]);
-            $rawCropsID = (int) trim($data[5]);
+            $PSID = (int) trim($data[5]);
             $countryID = (int) trim($data[7]);
 
             echo "<br>Processing Row $rowNumber:<br>";
             echo "VehicleID from CSV: $vehicleID (Valid IDs: " . implode(", ", $validIDs['vehicle']) . ")<br>";
             echo "FoodTypeID from CSV: $foodTypeID (Valid IDs: " . implode(", ", $validIDs['foodtype']) . ")<br>";
-            echo "RawCropsID from CSV: $rawCropsID (Valid IDs: " . implode(", ", $validIDs['rawcrops']) . ")<br>";
+            echo "PSID from CSV: $PSID (Valid IDs: " . implode(", ", $validIDs['rawcrops']) . ")<br>";
             echo "Country_ID from CSV: $countryID (Valid IDs: " . implode(", ", $validIDs['country']) . ")<br>";
 
             // Validate foreign key values
@@ -131,8 +131,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                 echo "Error: Invalid FoodTypeID $foodTypeID in row $rowNumber. Skipping.<br>";
                 $isValid = false;
             }
-            if (!in_array($rawCropsID, $validIDs['rawcrops'])) {
-                echo "Error: Invalid RawCropsID $rawCropsID in row $rowNumber. Skipping.<br>";
+            if (!in_array($PSID, $validIDs['rawcrops'])) {
+                echo "Error: Invalid PSID $PSID in row $rowNumber. Skipping.<br>";
                 $isValid = false;
             }
             if (!in_array($countryID, $validIDs['country'])) {
@@ -159,7 +159,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             // Bind the parameters to the statement
             $stmt->bind_param(
                 "iiiiddssssssss",
-                $vehicleID, $foodTypeID, $rawCropsID, $countryID,
+                $vehicleID, $foodTypeID, $PSID, $countryID,
                 $sourceVolume, $convertedValue, $volumeUnit, $periodicalUnit,
                 $startYear, $endYear, $accessedDate, $source, $link, $process
             );

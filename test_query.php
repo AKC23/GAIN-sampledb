@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 // Insert query
 $insert_query = "
 INSERT INTO total_local_crop_production 
-(VehicleID, FoodTypeID, RawCropsID, CountryID, SourceVolume, SourceVolumeUnit, 
+(VehicleID, FoodTypeID, PSID, CountryID, SourceVolume, SourceVolumeUnit, 
 ConvertedValue, ConvertedUnit, PeriodicalUnit, CropToFoodConvertedValue, 
 StartYear, EndYear, AccessedDate, Source, Link, Process)
 VALUES 

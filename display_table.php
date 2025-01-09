@@ -18,7 +18,7 @@ if (!empty($tableName)) {
         'measure_period',
         'measure_currency',
         'geography',
-        'raw_crops',
+        'processing_stage',
         'producer_name',
         'producers_brand_name',
         'producer_skus',

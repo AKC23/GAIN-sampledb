@@ -15,7 +15,7 @@ if ($conn->query($dropTableSQL) === TRUE) {
 }
 
 // First verify required tables exist
-$requiredTables = ['FoodType', 'FoodVehicle', 'raw_crops', 'Country'];
+$requiredTables = ['FoodType', 'FoodVehicle', 'processing_stage', 'Country'];
 foreach ($requiredTables as $table) {
     $result = $conn->query("SHOW TABLES LIKE '$table'");
     if ($result->num_rows == 0) {
@@ -29,7 +29,7 @@ $createTableSQL = "
         DataID INT PRIMARY KEY AUTO_INCREMENT,
         VehicleID INT,
         FoodTypeID INT,
-        RawCropsID INT,
+        PSID INT,
         CountryID INT,
         SourceVolumeUnit VARCHAR(50),
         SourceVolume DECIMAL(30, 2),
@@ -45,7 +45,7 @@ $createTableSQL = "
         Process VARCHAR(255),
         FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (RawCropsID) REFERENCES raw_crops(RawCropsID),
+        FOREIGN KEY (PSID) REFERENCES processing_stage(PSID),
         FOREIGN KEY (CountryID) REFERENCES Country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -67,7 +67,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // Prepare the SQL statement with placeholders for the required columns
     $stmt = $conn->prepare("INSERT INTO total_local_crop_production (
-                                VehicleID, FoodTypeID, RawCropsID, CountryID, 
+                                VehicleID, FoodTypeID, PSID, CountryID, 
                                 SourceVolumeUnit, SourceVolume, ConvertedValue, 
                                 ConvertedUnit, PeriodicalUnit, CropToFoodConvertedValue, 
                                 StartYear, EndYear, AccessedDate, Source, Link, Process
@@ -81,7 +81,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             // Extract only the required columns
             $vehicleID = (int) trim($data[1]);
             $foodTypeID = (int) trim($data[3]);
-            $rawCropsID = (int) trim($data[5]);
+            $PSID = (int) trim($data[5]);
             $countryID = (int) trim($data[7]);
             $sourceVolumeUnit = trim($data[8]);
             $sourceVolume = str_replace(',', '', trim($data[9])); // Remove any commas and preserve exact decimal
@@ -97,7 +97,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $process = trim($data[19]);
 
             // Bind the parameters
-            $stmt->bind_param("iiiissdssdssssss", $vehicleID, $foodTypeID, $rawCropsID, $countryID,
+            $stmt->bind_param("iiiissdssdssssss", $vehicleID, $foodTypeID, $PSID, $countryID,
                 $sourceVolumeUnit, $sourceVolume, $convertedValue, $convertedUnit, 
                 $periodicalUnit, $cropToFoodConvertedValue, $startYear, $endYear, 
                 $accessedDate, $source, $link, $process);

@@ -66,16 +66,16 @@ INNER JOIN
 INNER JOIN 
     FoodVehicle fv ON tlcp.VehicleID = fv.VehicleID 
 LEFT JOIN 
-    raw_crops rc ON tlcp.RawCropsID = rc.RawCropsID
+    processing_stage rc ON tlcp.PSID = rc.PSID
 LEFT JOIN 
     crude_oil co ON tlcp.VehicleID = co.VehicleID 
         AND tlcp.FoodTypeID = co.FoodTypeID 
-        AND tlcp.RawCropsID = co.RawCropsID
+        AND tlcp.PSID = co.PSID
         AND co.StartYear = tlcp.StartYear  -- Match the exact StartYear
 LEFT JOIN 
     total_local_food_production tlfp ON tlcp.VehicleID = tlfp.VehicleID 
         AND tlcp.FoodTypeID = tlfp.FoodTypeID 
-        AND tlcp.RawCropsID = tlfp.RawCropsID
+        AND tlcp.PSID = tlfp.PSID
         AND tlfp.StartYear = tlcp.StartYear  -- Match the exact StartYear
 WHERE 
     tlcp.StartYear IN ('July 2020', 'July 2021')
