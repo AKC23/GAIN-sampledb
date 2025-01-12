@@ -23,6 +23,7 @@ $createTableSQL = "
         ProducerProcessorName VARCHAR(255) NOT NULL,
         ProducerProcessorAddress VARCHAR(255) NOT NULL,
         Country_ID INT(11) NOT NULL,
+        
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
         FOREIGN KEY (Country_ID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
