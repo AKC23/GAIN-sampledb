@@ -8,6 +8,7 @@ if (!isset($tableName)) {
     exit;
 }
 
+
 if (!empty($tableName)) {
     // Remove the validTables array since it is already defined in index.php
 
