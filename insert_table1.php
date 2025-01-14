@@ -141,7 +141,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM table1 ORDER BY ItemID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ItemID']}, ItemName: {$row['ItemName']}, ReferenceID: {$row['ReferenceID']}<br>";
+            echo "ID: {$row['ItemID']}, ItemName: {$row['ItemName']}, ReferenceID: <a href='view_reference.php?reference_id=" . htmlspecialchars($row['ReferenceID']) . "' target='_blank'>" . htmlspecialchars($row['ReferenceID']) . "</a><br>";
         }
     }
 

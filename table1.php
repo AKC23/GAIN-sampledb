@@ -25,7 +25,7 @@ foreach ($data as $row) {
     echo "<tr>";
     echo "<td>" . htmlspecialchars($row['id']) . "</td>";
     echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-    echo "<td><a href='table2.php?reference_id=" . htmlspecialchars($row['reference_no']) . "'>" . htmlspecialchars($row['reference_no']) . "</a></td>";
+    echo "<td><a href='view_reference.php?reference_id=" . htmlspecialchars($row['reference_no']) . "'>" . htmlspecialchars($row['reference_no']) . "</a></td>";
     echo "</tr>";
 }
 echo "</tbody></table>";

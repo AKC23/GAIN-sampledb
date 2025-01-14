@@ -50,6 +50,8 @@
         .table-bordered th,
         .table-bordered td {
             border: 1px solid #d3a79e;
+            text-align: center; /* Center-align all table content */
+            vertical-align: middle; /* Vertically center-align all table content */
         }
     </style>
 </head>
@@ -117,7 +119,7 @@
             <!-- Last Updated Date and Time on the right side of the card -->
             <div class="current-time">
                 <?php
-                echo "Last Updated: October 25, 2024, 3:30 pm";
+                echo "Last Updated: January 15, 2025, 3:30 am";
                 ?>
             </div>
         </div>
@@ -247,12 +249,10 @@
             }
         }
 
-        // Modified connection closing
-        if (isset($conn) && $conn instanceof mysqli) {
-            if ($conn->ping()) {
-                $conn->close();
-                echo "<br>Database connection closed successfully.<br>";
-            }
+        // Ensure the connection is not closed before all operations are completed
+        if (isset($conn) && $conn instanceof mysqli && $conn->ping()) {
+            $conn->close();
+            echo "<br>Database connection closed successfully.<br>";
         }
         ?>
     </div>
