@@ -98,7 +98,9 @@
                             'distributer_list',
                             'distributer_brand',
                             'distributer_name',
-                            'distribution'  // Add this line
+                            'distribution',  // Add this line
+                            'table1',
+                            'table2'  // Ensure table2 is included
                         ];
                         while ($row = $result->fetch_array()) {
                             $table = $row[0];
@@ -170,7 +172,9 @@
                 'repacker_name',
                 'distributer_list', // Level 5 tables
                 'distributer_brand', // Level 5 tables
-                'distributer_name' // Level 5 tables
+                'distributer_name', // Level 5 tables
+                'table1', // Level 5 tables
+                'table2' // Level 5 tables
             ];
 
             foreach ($dropTables as $table) {
@@ -224,6 +228,10 @@
             include('insert_distributer_name.php');
             include('insert_distributer_brand.php');
             include('insert_distributer_list.php');
+
+            include('insert_table2.php'); // Add this line
+            include('insert_table1.php'); // Add this line
+            
 
             // Move total_local_crop_production to the very end
             // after all its dependencies are created

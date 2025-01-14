@@ -29,7 +29,8 @@ $tableNames = [
     "distributer_list" => "Distributer List",
     "distributer_brand" => "Distributer Brand",
     "distributer_name" => "Distributer Name",
-    "producer_processor" => "Producer Processor"
+    "producer_processor" => "Producer Processor",
+    "insert_table2" => "Insert Table 2",
 ];
 
 // Determine if a table name has been selected
