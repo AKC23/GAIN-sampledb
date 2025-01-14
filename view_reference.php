@@ -2,6 +2,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Include Bootstrap CSS
+echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">';
+
 // Get the ReferenceID from the GET request
 $referenceID = isset($_GET['reference_id']) ? intval($_GET['reference_id']) : 0;
 
@@ -14,6 +17,7 @@ if ($referenceID > 0) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
+        echo "<div class='container mt-5'>";
         echo "<h1>Details for ReferenceID $referenceID</h1>";
         echo "<table class='table table-bordered'>";
         echo "<tr><th>ReferenceID</th><th>WebsiteName</th><th>Date</th></tr>";
@@ -25,13 +29,14 @@ if ($referenceID > 0) {
             echo "</tr>";
         }
         echo "</table>";
+        echo "</div>";
     } else {
-        echo "No data found for ReferenceID $referenceID.<br>";
+        echo "<div class='container mt-5'><div class='alert alert-warning'>No data found for ReferenceID $referenceID.</div></div>";
     }
 
     $stmt->close();
 } else {
-    echo "Invalid ReferenceID.<br>";
+    echo "<div class='container mt-5'><div class='alert alert-danger'>Invalid ReferenceID.</div></div>";
 }
 
 ?>
