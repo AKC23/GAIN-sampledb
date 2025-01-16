@@ -78,14 +78,14 @@
                             'measure_currency',
                             'geography',
                             'processing_stage',
-                            'producer_name',
-                            'producers_brand_name',
+                            //'producer_name',
+                            //'producers_brand_name',
                             'producer_skus',
-                            'local_production_amount_oilseed',
-                            'importer_name',
-                            'importers_brand_name',
-                            'import_edible_oil',
-                            'total_local_production_amount_edible_oil',
+                            //'local_production_amount_oilseed',
+                            //'importer_name',
+                            //'importers_brand_name',
+                            //'import_edible_oil',
+                            //'total_local_production_amount_edible_oil',
                             'extraction_conversion',
                             //'distribution_channels',
                             'total_local_crop_production',
@@ -96,10 +96,10 @@
                             'entities',
                             'producer_processor',
                             'packaging_type',
-                            'repacker_name',
-                            'distributer_list',
-                            'distributer_brand',
-                            'distributer_name',
+                            //'repacker_name',
+                            //'distributer_list',
+                            //'distributer_brand',
+                            //'distributer_name',
                             'distribution',  // Add this line
                             'table1',
                             'table2'  // Ensure table2 is included
@@ -151,30 +151,30 @@
             $dropTables = [
                 'total_local_crop_production',  // Should be created last
                 'total_local_food_production',  // Should be created last
-                'total_food_import',
-                'total_crop_import',
+                'total_food_import',            // Should be created last
+                'total_crop_import',            // Should be created last
                 'extraction_conversion', 
                 'crude_oil',
                 'entities',
                 'producer_processor',
-                'producers_brand_name',
-                'importers_brand_name',
-                'importer_name',
-                'import_edible_oil',
+                //'producers_brand_name',
+                //'importers_brand_name',
+                //'importer_name',
+                //'import_edible_oil',
                 'distribution',
                 'measure_unit',
                 'measure_period',
                 'measure_currency',
                 'foodtype',
                 'processing_stage',
-                'producer_name',
+                //'producer_name',
                 'country',
                 'foodvehicle',
                 'packaging_type',
-                'repacker_name',
-                'distributer_list', // Level 5 tables
-                'distributer_brand', // Level 5 tables
-                'distributer_name', // Level 5 tables
+                //'repacker_name',
+                //'distributer_list', // Level 5 tables
+                //'distributer_brand', // Level 5 tables
+                //'distributer_name', // Level 5 tables
                 'table1', // Level 5 tables
                 'table2' // Level 5 tables
             ];
@@ -200,7 +200,7 @@
             // Level 1: Tables that depend on base tables
             echo "<h3>Creating Level 1 tables...</h3>";
             include('insert_foodtype.php');      // Depends on: FoodVehicle
-            include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
+            //include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
             include('insert_processing_stage.php');     // Depends on: FoodVehicle
             include('insert_geography.php');     // Depends on: country
 
@@ -208,28 +208,28 @@
             echo "<h3>Creating Level 2 tables...</h3>";
             include('insert_crude_oil.php');        // Depends on: processing_stage, FoodType
             include('insert_entities.php');             
-            include('insert_importer_name.php');    // Depends on: Country, producer_name
-            include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
+            //include('insert_importer_name.php');    // Depends on: Country, producer_name
+            //include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
             include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
             include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
 
             // Level 3: Tables depending on Level 2
             echo "<h3>Creating Level 3 tables...</h3>";
-            include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
-            include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
+            //include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
+            //include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
 
             // Level 4: Tables depending on Level 3 or complex dependencies
             echo "<h3>Creating Level 4 tables...</h3>";
-            include('insert_import_edible_oil.php');
+            //include('insert_import_edible_oil.php');
             include('insert_total_food_import.php');
             include('insert_total_crop_import.php');
             include('insert_packaging_type.php');
 
             // Level 5: Tables depending on Level 4 or complex dependencies
             echo "<h3>Creating Level 5 tables...</h3>";
-            include('insert_distributer_name.php');
-            include('insert_distributer_brand.php');
-            include('insert_distributer_list.php');
+            //include('insert_distributer_name.php');
+            //include('insert_distributer_brand.php');
+            //include('insert_distributer_list.php');
 
             include('insert_table2.php'); // Add this line
             include('insert_table1.php'); // Add this line

@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+/* if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
     header('Location: login.php');
     exit;
-}
+} */
 
 if (!isset($_SESSION['data'])) {
     $_SESSION['data'] = [
@@ -38,9 +38,12 @@ if (!isset($_SESSION['data'])) {
 }
 
 // Sort the data by Start Year
+
 usort($_SESSION['data'], function ($a, $b) {
     return $a[1] <=> $b[1];
 });
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +119,8 @@ usort($_SESSION['data'], function ($a, $b) {
             <div class="row">
                 <div class="col-md-3">
                     <label>Start Year:</label>
-                    <div class="checkbox-group">
+                    
+                     <div class="checkbox-group">
                         <?php for ($year = 2016; $year <= 2026; $year++): ?>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="startYear[]" id="year<?php echo $year; ?>" value="<?php echo $year; ?>">
@@ -178,8 +182,10 @@ usort($_SESSION['data'], function ($a, $b) {
                         </div>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-primary mt-3">Filter</button>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Filter</button>
+
+            
         </form>
         <div class="table-container">
             <table class="table table-striped" id="resultsTable">
