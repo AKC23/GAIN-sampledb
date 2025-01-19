@@ -4,6 +4,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
 // SQL query to drop the 'FoodType' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS FoodType";
 
@@ -14,12 +17,15 @@ if ($conn->query($dropTableSQL) === TRUE) {
     echo "Error dropping table 'FoodType': " . $conn->error . "<br>";
 }
 
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
 // SQL query to create the 'FoodType' table with a foreign key to 'FoodVehicle'
 $createTableSQL = "
     CREATE TABLE FoodType (
         FoodTypeID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        VehicleID INT(11),
         FoodTypeName VARCHAR(50) NOT NULL,
+        VehicleID INT(11),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -144,9 +150,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO FoodType (VehicleID, FoodTypeName) VALUES (?, ?)";
+        $sql = "INSERT INTO FoodType (FoodTypeName, VehicleID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $vehicleID, $foodTypeName);
+        $stmt->bind_param("si", $foodTypeName, $vehicleID);
 
         if ($stmt->execute()) {
             $foodTypeID = $conn->insert_id;

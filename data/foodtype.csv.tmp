@@ -1,4 +1,4 @@
-0,1
+FoodTypeName,VehicleID
 Whole Wheat,2
 Atta,2
 Maida,2
@@ -17,3 +17,5 @@ Super Palm,1
 Olive Oil,1
 Vegetable oil,1
 X,1
+,
+,
