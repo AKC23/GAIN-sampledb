@@ -3,12 +3,28 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+// SQL query to drop the 'processing_stage' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS processing_stage";
+
+// Execute the query to drop the table
+if ($conn->query($dropTableSQL) === TRUE) {
+    echo "Table 'processing_stage' dropped successfully.<br>";
+} else {
+    echo "Error dropping table 'processing_stage': " . $conn->error . "<br>";
+}
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
 // SQL query to create the 'processing_stage' table
 $createTableSQL = "
-    CREATE TABLE IF NOT EXISTS processing_stage (
+    CREATE TABLE processing_stage (
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        VehicleID INT(11) NOT NULL,
         Processing_Stage VARCHAR(255) NOT NULL,
+        VehicleID INT(11) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -87,8 +103,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         // Clean the data more thoroughly
-        $vehicleID = trim($data[0]);
-        $processingStage = trim($data[1]);
+        $processingStage = trim($data[0]);
+        $vehicleID = trim($data[1]);
         
         // Remove any extra spaces between the name and comma
         $processingStage = preg_replace('/\s+,/', ',', $processingStage);
@@ -96,7 +112,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         if ($vehicleID === false || $vehicleID === null) {
-            echo "Error: Invalid VehicleID format in row $rowNumber: '{$data[0]}'. Skipping.<br>";
+            echo "Error: Invalid VehicleID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
@@ -112,9 +128,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO processing_stage (VehicleID, Processing_Stage) VALUES (?, ?)";
+        $sql = "INSERT INTO processing_stage (Processing_Stage, VehicleID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $vehicleID, $processingStage);
+        $stmt->bind_param("si", $processingStage, $vehicleID);
 
         if ($stmt->execute()) {
             $psid = $conn->insert_id;
@@ -129,10 +145,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final processing_stage table contents:<br>";
-    $result = $conn->query("SELECT * FROM processing_stage ORDER BY PSID");
+    $result = $conn->query("SELECT ps.*, fv.VehicleName 
+                           FROM processing_stage ps 
+                           JOIN FoodVehicle fv ON ps.VehicleID = fv.VehicleID 
+                           ORDER BY ps.PSID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['PSID']}, VehicleID: {$row['VehicleID']}, Processing_Stage: {$row['Processing_Stage']}<br>";
+            echo "ID: {$row['PSID']}, VehicleID: {$row['VehicleID']}, " .
+                 "Vehicle: {$row['VehicleName']}, Stage: {$row['Processing_Stage']}<br>";
         }
     }
 

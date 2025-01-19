@@ -34,6 +34,80 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "Error fetching producer_processor data: " . $conn->error;
         }
+    } elseif ($tableName == 'foodtype') {
+        // Fetch all records from FoodType with joined VehicleName
+        $result = $conn->query("
+            SELECT ft.FoodTypeID, ft.FoodTypeName, fv.VehicleName
+            FROM FoodType ft
+            JOIN FoodVehicle fv ON ft.VehicleID = fv.VehicleID
+            ORDER BY ft.FoodTypeID
+        ");
+
+        if ($result) {
+            echo "<h1>FoodType Table Contents</h1>";
+            echo "<table class='table table-bordered'>";
+            echo "<tr><th>FoodTypeID</th><th>FoodTypeName</th><th>VehicleName</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['FoodTypeID']}</td>";
+                echo "<td>{$row['FoodTypeName']}</td>";
+                echo "<td>{$row['VehicleName']}</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Error fetching FoodType data: " . $conn->error;
+        }
+    } elseif ($tableName == 'processing_stage') {
+        // Fetch all records from processing_stage with joined VehicleName
+        $result = $conn->query("
+            SELECT ps.PSID, ps.Processing_Stage, fv.VehicleName
+            FROM processing_stage ps
+            JOIN FoodVehicle fv ON ps.VehicleID = fv.VehicleID
+            ORDER BY ps.PSID
+        ");
+
+        if ($result) {
+            echo "<h1>Processing Stage Table Contents</h1>";
+            echo "<table class='table table-bordered'>";
+            echo "<tr><th>PSID</th><th>Processing_Stage</th><th>VehicleName</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['PSID']}</td>";
+                echo "<td>{$row['Processing_Stage']}</td>";
+                echo "<td>{$row['VehicleName']}</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Error fetching processing_stage data: " . $conn->error;
+        }
+    } elseif ($tableName == 'geography') {
+        // Fetch all records from Geography with joined Country_Name
+        $result = $conn->query("
+            SELECT g.GeographyID, g.Zone, g.Region, g.City, c.Country_Name
+            FROM Geography g
+            JOIN country c ON g.Country_ID = c.Country_ID
+            ORDER BY g.GeographyID
+        ");
+
+        if ($result) {
+            echo "<h1>Geography Table Contents</h1>";
+            echo "<table class='table table-bordered'>";
+            echo "<tr><th>GeographyID</th><th>Zone</th><th>Region</th><th>City</th><th>Country_Name</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['GeographyID']}</td>";
+                echo "<td>{$row['Zone']}</td>";
+                echo "<td>{$row['Region']}</td>";
+                echo "<td>{$row['City']}</td>";
+                echo "<td>{$row['Country_Name']}</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Error fetching Geography data: " . $conn->error;
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
