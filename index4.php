@@ -94,6 +94,7 @@
                             'measure_currency',
                             'geography',
                             'processing_stage',
+                            'reference',  // Added reference table
                             //'producer_name',
                             //'producers_brand_name',
                             'producer_skus',
@@ -177,16 +178,13 @@
                 'crude_oil',
                 'entities',
                 'producer_processor',
-                //'producers_brand_name',
-                //'importers_brand_name',
-                //'importer_name',
-                //'import_edible_oil',
                 'distribution',
                 'measure_unit',
                 'measure_period',
                 'measure_currency',
                 'foodtype',
                 'processing_stage',
+                'reference',  // Added reference table
                 //'producer_name',
                 'country',
                 'foodvehicle',
@@ -195,8 +193,8 @@
                 //'distributer_list', // Level 5 tables
                 //'distributer_brand', // Level 5 tables
                 //'distributer_name', // Level 5 tables
-                'table1', // Level 5 tables
-                'table2' // Level 5 tables
+                'table1', // Temporary tables
+                'table2' // Temporary tables
             ];
 
             foreach ($dropTables as $table) {
@@ -216,13 +214,16 @@
             include('insert_measure_unit.php');
             include('insert_measure_period.php');
             include('insert_measure_currency.php');
-            
+            include('insert_reference.php');  
+
             // Level 1: Tables that depend on base tables
             echo "<h3>Creating Level 1 tables...</h3>";
             include('insert_foodtype.php');      // Depends on: FoodVehicle
             //include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
             include('insert_processing_stage.php');     // Depends on: FoodVehicle
             include('insert_geography.php');     // Depends on: country
+            
+
 
             // Level 2: Tables depending on Level 1
             echo "<h3>Creating Level 2 tables...</h3>";
@@ -237,6 +238,7 @@
             echo "<h3>Creating Level 3 tables...</h3>";
             //include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
             //include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
+            
 
             // Level 4: Tables depending on Level 3 or complex dependencies
             echo "<h3>Creating Level 4 tables...</h3>";

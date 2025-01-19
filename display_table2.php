@@ -108,6 +108,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "Error fetching Geography data: " . $conn->error;
         }
+    } elseif ($tableName == 'extraction_conversion') {
+        // Fetch all records from extraction_conversion with joined VehicleName, FoodTypeName, and reference details
+        $result = $conn->query("
+            SELECT ec.ExtractionID, ec.ExtractionRate, fv.VehicleName, ft.FoodTypeName, r.`Reference No.`, r.Source, r.Link, r.`Process to Obtain Data`, r.`Access Date`
+            FROM extraction_conversion ec
+            JOIN FoodVehicle fv ON ec.VehicleID = fv.VehicleID
+            JOIN FoodType ft ON ec.FoodTypeID = ft.FoodTypeID
+            JOIN reference r ON ec.ReferenceID = r.ReferenceID
+            ORDER BY ec.ExtractionID
+        ");
+
+        if ($result) {
+            echo "<h1>Extraction Conversion Table Contents</h1>";
+            echo "<table class='table table-bordered'>";
+            echo "<tr><th>ExtractionID</th><th>ExtractionRate</th><th>VehicleName</th><th>FoodTypeName</th><th>Reference No.</th><th>Source</th><th>Link</th><th>Process to Obtain Data</th><th>Access Date</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['ExtractionID']}</td>";
+                echo "<td>{$row['ExtractionRate']}</td>";
+                echo "<td>{$row['VehicleName']}</td>";
+                echo "<td>{$row['FoodTypeName']}</td>";
+                echo "<td>{$row['Reference No.']}</td>";
+                echo "<td>{$row['Source']}</td>";
+                echo "<td>{$row['Link']}</td>";
+                echo "<td>{$row['Process to Obtain Data']}</td>";
+                echo "<td>{$row['Access Date']}</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Error fetching extraction_conversion data: " . $conn->error;
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {

@@ -6,41 +6,39 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'extraction_conversion' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS extraction_conversion";
+// SQL query to drop the 'reference' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS reference";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'extraction_conversion' dropped successfully.<br>";
+    echo "Table 'reference' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'extraction_conversion': " . $conn->error . "<br>";
+    echo "Error dropping table 'reference': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'extraction_conversion' table
+// SQL query to create the 'reference' table
 $createTableSQL = "
-    CREATE TABLE extraction_conversion (
-        ExtractionID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        ExtractionRate DECIMAL(10, 2) NOT NULL,
-        VehicleID INT(11) NOT NULL,
-        FoodTypeID INT(11) NOT NULL,
-        ReferenceID INT(11) NOT NULL,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
-        FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
+    CREATE TABLE reference (
+        ReferenceID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `Reference No.` INT(11) NOT NULL,
+        Source VARCHAR(255) NOT NULL,
+        Link VARCHAR(255),
+        `Process to Obtain Data` VARCHAR(255),
+        `Access Date` DATE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'extraction_conversion' created successfully.<br>";
+    echo "Table 'reference' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
-$csvFile = 'data/extraction_conversion.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/reference.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -100,45 +98,55 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 6) {
+        if (count($data) < 5) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $extractionRate = trim($data[0]);
-        $vehicleID = trim($data[2]);
-        $foodTypeID = trim($data[4]);
-        $referenceID = trim($data[5]);
+        $referenceNo = trim($data[0]);
+        $source = trim($data[1]);
+        $link = trim($data[2]);
+        $processToObtainData = trim($data[3]);
+        $accessDate = trim($data[4]);
         
         // Remove any extra spaces between the name and comma
-        $extractionRate = preg_replace('/\s+,/', ',', $extractionRate);
+        $source = preg_replace('/\s+,/', ',', $source);
+        $link = preg_replace('/\s+,/', ',', $link);
+        $processToObtainData = preg_replace('/\s+,/', ',', $processToObtainData);
         
         // Convert to proper types
-        $extractionRate = filter_var($extractionRate, FILTER_VALIDATE_FLOAT);
-        $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
-        $foodTypeID = filter_var($foodTypeID, FILTER_VALIDATE_INT);
-        $referenceID = filter_var($referenceID, FILTER_VALIDATE_INT);
-
-        if ($extractionRate === false || $vehicleID === false || $foodTypeID === false || $referenceID === false) {
-            echo "Error: Invalid data format in row $rowNumber. Skipping.<br>";
+        $referenceNo = filter_var($referenceNo, FILTER_VALIDATE_INT);
+        if ($referenceNo === false || $referenceNo === null) {
+            echo "Error: Invalid Reference No. format in row $rowNumber: '{$data[0]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        // Debugging: Show extracted values
-        echo "ExtractionRate: $extractionRate, VehicleID: $vehicleID, FoodTypeID: $foodTypeID, ReferenceID: $referenceID<br>";
+        $source = mysqli_real_escape_string($conn, $source);
+        $link = mysqli_real_escape_string($conn, $link);
+        $processToObtainData = mysqli_real_escape_string($conn, $processToObtainData);
+        $accessDate = mysqli_real_escape_string($conn, $accessDate);
 
-        $sql = "INSERT INTO extraction_conversion (ExtractionRate, VehicleID, FoodTypeID, ReferenceID) VALUES (?, ?, ?, ?)";
+        // Debugging: Show extracted values
+        echo "Reference No.: $referenceNo, Source: '$source', Link: '$link', Process to Obtain Data: '$processToObtainData', Access Date: '$accessDate'<br>";
+
+        if (empty($source) || empty($processToObtainData) || empty($accessDate)) {
+            echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        $sql = "INSERT INTO reference (`Reference No.`, Source, Link, `Process to Obtain Data`, `Access Date`) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("diii", $extractionRate, $vehicleID, $foodTypeID, $referenceID);
+        $stmt->bind_param("issss", $referenceNo, $source, $link, $processToObtainData, $accessDate);
 
         if ($stmt->execute()) {
-            $extractionID = $conn->insert_id;
-            echo "✓ Inserted extraction conversion with ID: $extractionID<br>";
+            $referenceID = $conn->insert_id;
+            echo "✓ Inserted reference '$source' with ID: $referenceID<br>";
         } else {
-            echo "Error inserting extraction conversion: " . $stmt->error . "<br>";
+            echo "Error inserting reference: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -146,12 +154,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final extraction_conversion table contents:<br>";
-    $result = $conn->query("SELECT * FROM extraction_conversion ORDER BY ExtractionID");
+    echo "<br>Final reference table contents:<br>";
+    $result = $conn->query("SELECT * FROM reference ORDER BY ReferenceID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ExtractionID']}, ExtractionRate: {$row['ExtractionRate']}, " .
-                 "VehicleID: {$row['VehicleID']}, FoodTypeID: {$row['FoodTypeID']}, ReferenceID: {$row['ReferenceID']}<br>";
+            echo "ID: {$row['ReferenceID']}, Reference No.: {$row['Reference No.']}, Source: {$row['Source']}, Link: {$row['Link']}, Process to Obtain Data: {$row['Process to Obtain Data']}, Access Date: {$row['Access Date']}<br>";
         }
     }
 
