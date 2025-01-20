@@ -53,6 +53,37 @@
             text-align: center; /* Center-align all table content */
             vertical-align: middle; /* Vertically center-align all table content */
         }
+
+        .vehicle-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px;
+        }
+
+        .vehicle-selection-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .vehicle-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group .btn {
+            margin-top: 20px;
+        }
+
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
     <script src="js/jquery.min.js"></script>
     <script>
@@ -68,6 +99,16 @@
                     $('#table-view').html('<p class="text-center text-muted">Select a table to display data.</p>');
                 }
             });
+
+            $('input[name="vehicleName"]').on('change', function() {
+                var tableName = $('select[name="tableName"]').val();
+                var vehicleName = $('input[name="vehicleName"]:checked').val();
+                if (tableName) {
+                    $.post('display_table2.php', { tableName: tableName, vehicleName: vehicleName }, function(data) {
+                        $('#table-view').html(data);
+                    });
+                }
+            });
         });
     </script>
 </head>
@@ -78,10 +119,11 @@
 
         <div class="card">
             <!-- Dropdown or other content on the left side -->
-            <div>
-                <form method="post">
-                    <select name="tableName" class="form-control">
-                        <option value="">Select a table</option>
+            <div style="display: flex; align-items: center;">
+                <form method="post" style="display: flex; flex-direction: column;">
+                    <div class="form-group">
+                        <select name="tableName" class="form-control">
+                            <option value="">Select a table</option>
                         <?php
                         require_once('db_connect.php');  // Changed to require_once
                         $result = $conn->query("SHOW TABLES");
@@ -117,8 +159,20 @@
                             }
                         }
                         ?>
-                    </select>
-                    <button type="submit" class="btn btn-primary mt-2">Show Table</button>
+                        </select>
+                        <div class="vehicle-selection mt-3">
+                            <div class="vehicle-selection-title">Vehicle Name</div>
+                            <div class="vehicle-options form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="vehicleName" value="Edible Oil"> Edible Oil
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="vehicleName" value="Wheat"> Wheat
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Show Table</button>
                 </form>
             </div>
 
@@ -138,6 +192,7 @@
         // Display requested table (using the same connection)
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $tableName = $_POST['tableName'];
+            $vehicleName = $_POST['vehicleName'] ?? '';
             echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
 
             echo '<div class="table-responsive">';

@@ -5,16 +5,21 @@ include('db_connect.php');
 // Ensure that $tableName is set and valid
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     $tableName = $_POST['tableName'];
+    $vehicleName = $_POST['vehicleName'] ?? '';
 
     if ($tableName == 'producer_processor') {
         // Fetch all records from producer_processor with joined names
-        $result = $conn->query("
+        $sql = "
             SELECT p.ProcessorID, v.VehicleName, p.CompanyGroup, p.ProducerProcessorName, p.ProducerProcessorAddress, c.Country_Name 
             FROM producer_processor p
             JOIN FoodVehicle v ON p.VehicleID = v.VehicleID
             JOIN country c ON p.Country_ID = c.Country_ID
-            ORDER BY p.ProcessorID
-        ");
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE v.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY p.ProcessorID";
+        $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>Producer Processor Table Contents</h1>";
@@ -36,12 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         }
     } elseif ($tableName == 'foodtype') {
         // Fetch all records from FoodType with joined VehicleName
-        $result = $conn->query("
+        $sql = "
             SELECT ft.FoodTypeID, ft.FoodTypeName, fv.VehicleName
             FROM FoodType ft
             JOIN FoodVehicle fv ON ft.VehicleID = fv.VehicleID
-            ORDER BY ft.FoodTypeID
-        ");
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY ft.FoodTypeID";
+        $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>FoodType Table Contents</h1>";
@@ -60,12 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         }
     } elseif ($tableName == 'processing_stage') {
         // Fetch all records from processing_stage with joined VehicleName
-        $result = $conn->query("
+        $sql = "
             SELECT ps.PSID, ps.Processing_Stage, fv.VehicleName
             FROM processing_stage ps
             JOIN FoodVehicle fv ON ps.VehicleID = fv.VehicleID
-            ORDER BY ps.PSID
-        ");
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY ps.PSID";
+        $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>Processing Stage Table Contents</h1>";
@@ -84,12 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         }
     } elseif ($tableName == 'geography') {
         // Fetch all records from Geography with joined Country_Name
-        $result = $conn->query("
+        $sql = "
             SELECT g.GeographyID, g.Zone, g.Region, g.City, c.Country_Name
             FROM Geography g
             JOIN country c ON g.Country_ID = c.Country_ID
-            ORDER BY g.GeographyID
-        ");
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE g.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY g.GeographyID";
+        $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>Geography Table Contents</h1>";
@@ -110,14 +127,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         }
     } elseif ($tableName == 'extraction_conversion') {
         // Fetch all records from extraction_conversion with joined VehicleName, FoodTypeName, and reference details
-        $result = $conn->query("
+        $sql = "
             SELECT ec.ExtractionID, ec.ExtractionRate, fv.VehicleName, ft.FoodTypeName, r.`Reference No.`, r.Source, r.Link, r.`Process to Obtain Data`, r.`Access Date`
             FROM extraction_conversion ec
             JOIN FoodVehicle fv ON ec.VehicleID = fv.VehicleID
             JOIN FoodType ft ON ec.FoodTypeID = ft.FoodTypeID
             JOIN reference r ON ec.ReferenceID = r.ReferenceID
-            ORDER BY ec.ExtractionID
-        ");
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY ec.ExtractionID";
+        $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>Extraction Conversion Table Contents</h1>";
@@ -152,6 +173,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
             // Base SQL query to retrieve the entire table securely
             $sql = "SELECT * FROM " . $conn->real_escape_string($tableName);
+            if (!empty($vehicleName)) {
+                $sql .= " WHERE VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            }
 
             // Execute the query
             try {
