@@ -92,6 +92,6 @@ if ($tableName == 'table1') {
     }
 }
 
-// Close the database connection
-$conn->close();
+// Note: Do not close the database connection here
+// The connection will be closed by index.php
 ?>

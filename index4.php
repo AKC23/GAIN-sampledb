@@ -89,22 +89,15 @@
                             'foodvehicle',
                             'foodtype',
                             'country',
+                            'processing_stage',
+                            'reference',  // Added reference table
                             'measure_unit',
                             'measure_period',
                             'measure_currency',
                             'geography',
-                            'processing_stage',
-                            'reference',  // Added reference table
-                            //'producer_name',
-                            //'producers_brand_name',
+                            
                             'producer_skus',
-                            //'local_production_amount_oilseed',
-                            //'importer_name',
-                            //'importers_brand_name',
-                            //'import_edible_oil',
-                            //'total_local_production_amount_edible_oil',
                             'extraction_conversion',
-                            //'distribution_channels',
                             'total_local_crop_production',
                             'total_local_food_production',
                             'total_food_import',
@@ -113,10 +106,6 @@
                             'entities',
                             'producer_processor',
                             'packaging_type',
-                            //'repacker_name',
-                            //'distributer_list',
-                            //'distributer_brand',
-                            //'distributer_name',
                             'distribution',  // Add this line
                             'table1',
                             'table2'  // Ensure table2 is included
@@ -163,106 +152,98 @@
         }
 
         try {
-            // Disable foreign key checks for dropping tables
-            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+            // Ensure the connection is open before executing queries
+            if ($conn->ping()) {
+                // Disable foreign key checks for dropping tables
+                $conn->query('SET FOREIGN_KEY_CHECKS = 0');
 
-            echo "<h2 class='center-title'>Drop & Create Database Tables</h2>";
+                echo "<h2 class='center-title'>Drop & Create Database Tables</h2>";
 
-            // Update drop tables order to ensure proper dependency handling
-            $dropTables = [
-                'total_local_crop_production',  // Should be created last
-                'total_local_food_production',  // Should be created last
-                'total_food_import',            // Should be created last
-                'total_crop_import',            // Should be created last
-                'extraction_conversion', 
-                'crude_oil',
-                'entities',
-                'producer_processor',
-                'distribution',
-                'measure_unit',
-                'measure_period',
-                'measure_currency',
-                'foodtype',
-                'processing_stage',
-                'reference',  // Added reference table
-                //'producer_name',
-                'country',
-                'foodvehicle',
-                'packaging_type',
-                //'repacker_name',
-                //'distributer_list', // Level 5 tables
-                //'distributer_brand', // Level 5 tables
-                //'distributer_name', // Level 5 tables
-                'table1', // Temporary tables
-                'table2' // Temporary tables
-            ];
+                // Update drop tables order to ensure proper dependency handling
+                $dropTables = [
+                    'total_local_crop_production',  // Should be created last
+                    'total_local_food_production',  // Should be created last
+                    'total_food_import',            // Should be created last
+                    'total_crop_import',            // Should be created last
+                    'extraction_conversion', 
+                    'crude_oil',
+                    'entities',
+                    'producer_processor',
+                    'distribution',
+                    'measure_unit',
+                    'measure_period',
+                    'measure_currency',
+                    
+                    'processing_stage',
+                    'reference',  // Added reference table
+                    'producer_skus',
+                    'packaging_type',
+                    'foodvehicle',
+                    'foodtype',
+                    'country',
+                    'table1', // Temporary tables
+                    'table2' // Temporary tables
+                ];
 
-            foreach ($dropTables as $table) {
-                $sql = "DROP TABLE IF EXISTS " . $table;
-                if ($conn->query($sql) === TRUE) {
-                    echo "Table '$table' dropped successfully.<br>";
+                foreach ($dropTables as $table) {
+                    $sql = "DROP TABLE IF EXISTS " . $table;
+                    if ($conn->query($sql) === TRUE) {
+                        echo "Table '$table' dropped successfully.<br>";
+                    }
                 }
+
+                // Re-enable foreign key checks
+                $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+
+                // Level 0: Base tables with no dependencies
+                echo "<h3>Creating base tables (Level 0)...</h3>";
+                include('insert_foodvehicle.php');
+                include('insert_country.php');
+                include('insert_measure_unit.php');
+                include('insert_measure_period.php');
+                include('insert_measure_currency.php');
+                include('insert_reference.php');  
+
+                // Level 1: Tables that depend on base tables
+                echo "<h3>Creating Level 1 tables...</h3>";
+                include('insert_foodtype.php');      // Depends on: FoodVehicle
+                include('insert_processing_stage.php');     // Depends on: FoodVehicle
+                include('insert_geography.php');     // Depends on: country
+                
+
+
+                // Level 2: Tables depending on Level 1
+                echo "<h3>Creating Level 2 tables...</h3>";
+                
+                include('insert_entities.php');             
+                
+                include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
+                include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
+
+                // Level 3: Tables depending on Level 2
+                echo "<h3>Creating Level 3 tables...</h3>";
+                include('insert_total_food_import.php');
+                include('insert_total_crop_import.php');
+                include('insert_packaging_type.php');
+                
+
+                // Level 4: Tables depending on Level 3 or complex dependencies
+                
+                // Level 5: Tables depending on Level 4 or complex dependencies
+                echo "<h3>Creating Level 5 tables...</h3>";
+                //include('insert_table2.php'); // Add this line
+                //include('insert_table1.php'); // Add this line
+                
+
+                // Move total_local_crop_production to the very end
+                // after all its dependencies are created
+                echo "<h3>Creating Final Level tables...</h3>";
+                include('insert_total_local_crop_production.php');
+                include('insert_total_local_food_production.php');
+                include('insert_distribution.php'); // Add this line
+            } else {
+                throw new Exception("Database connection is closed.");
             }
-
-            // Re-enable foreign key checks
-            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
-
-            // Level 0: Base tables with no dependencies
-            echo "<h3>Creating base tables (Level 0)...</h3>";
-            include('insert_foodvehicle.php');
-            include('insert_country.php');
-            include('insert_measure_unit.php');
-            include('insert_measure_period.php');
-            include('insert_measure_currency.php');
-            include('insert_reference.php');  
-
-            // Level 1: Tables that depend on base tables
-            echo "<h3>Creating Level 1 tables...</h3>";
-            include('insert_foodtype.php');      // Depends on: FoodVehicle
-            //include('insert_producer_name.php'); // Depends on: Country, FoodVehicle
-            include('insert_processing_stage.php');     // Depends on: FoodVehicle
-            include('insert_geography.php');     // Depends on: country
-            
-
-
-            // Level 2: Tables depending on Level 1
-            echo "<h3>Creating Level 2 tables...</h3>";
-            include('insert_crude_oil.php');        // Depends on: processing_stage, FoodType
-            include('insert_entities.php');             
-            //include('insert_importer_name.php');    // Depends on: Country, producer_name
-            //include('insert_repacker_name.php');    // Depends on: FoodVehicle, FoodType
-            include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
-            include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
-
-            // Level 3: Tables depending on Level 2
-            echo "<h3>Creating Level 3 tables...</h3>";
-            //include('insert_producers_brand_name.php'); // Depends on: producer_name, FoodType
-            //include('insert_importers_brand_name.php'); // Depends on: importer_name, FoodType
-            
-
-            // Level 4: Tables depending on Level 3 or complex dependencies
-            echo "<h3>Creating Level 4 tables...</h3>";
-            //include('insert_import_edible_oil.php');
-            include('insert_total_food_import.php');
-            include('insert_total_crop_import.php');
-            include('insert_packaging_type.php');
-
-            // Level 5: Tables depending on Level 4 or complex dependencies
-            echo "<h3>Creating Level 5 tables...</h3>";
-            //include('insert_distributer_name.php');
-            //include('insert_distributer_brand.php');
-            //include('insert_distributer_list.php');
-
-            include('insert_table2.php'); // Add this line
-            include('insert_table1.php'); // Add this line
-            
-
-            // Move total_local_crop_production to the very end
-            // after all its dependencies are created
-            echo "<h3>Creating Final Level tables...</h3>";
-            //include('insert_total_local_crop_production.php');
-            //include('insert_total_local_food_production.php');
-            //include('insert_distribution.php'); // Add this line
         } catch (Exception $e) {
             echo "<br><strong>Error: " . $e->getMessage() . "</strong><br>";
             // Add detailed error logging

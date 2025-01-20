@@ -203,6 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     }
 }
 
-// Close the database connection
-$conn->close();
+// Note: Do not close the database connection here
+// The connection will be closed by index.php
 ?>
