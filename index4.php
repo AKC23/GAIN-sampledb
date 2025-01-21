@@ -58,7 +58,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin-left: 20px;
+            margin-left: 40px;
         }
 
         .vehicle-selection-title {
