@@ -211,7 +211,9 @@
             if ($conn->ping()) {
                 // Disable foreign key checks for dropping tables
                 $conn->query('SET FOREIGN_KEY_CHECKS = 0');
-
+                echo "<br>";
+                echo "<br>";
+                echo "<br>";
                 echo "<h2 class='center-title'>Drop & Create Database Tables</h2>";
 
                 // Update drop tables order to ensure proper dependency handling

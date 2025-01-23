@@ -98,9 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     } elseif ($tableName == 'geography') {
         // Fetch all records from Geography with joined Country_Name
         $sql = "
-            SELECT g.GeographyID, g.Zone, g.Region, g.City, c.Country_Name
+            SELECT g.GeographyID, g.`Admin Level 1 (Division)`, g.`Admin Level 2 (District)`, g.`Admin Level 3 (City Corporation)`, c.Country_Name
             FROM Geography g
-            JOIN country c ON g.Country_ID = c.Country_ID
+            JOIN country c ON g.CountryID = c.Country_ID
         ";
         if (!empty($vehicleName)) {
             $sql .= " WHERE g.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
@@ -111,13 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         if ($result) {
             echo "<h1>Geography Table Contents</h1>";
             echo "<table class='table table-bordered'>";
-            echo "<tr><th>GeographyID</th><th>Zone</th><th>Region</th><th>City</th><th>Country_Name</th></tr>";
+            echo "<tr><th>GeographyID</th><th>Admin Level 1 (Division)</th><th>Admin Level 2 (District)</th><th>Admin Level 3 (City Corporation)</th><th>Country_Name</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['GeographyID']}</td>";
-                echo "<td>{$row['Zone']}</td>";
-                echo "<td>{$row['Region']}</td>";
-                echo "<td>{$row['City']}</td>";
+                echo "<td>{$row['Admin Level 1 (Division)']}</td>";
+                echo "<td>{$row['Admin Level 2 (District)']}</td>";
+                echo "<td>{$row['Admin Level 3 (City Corporation)']}</td>";
                 echo "<td>{$row['Country_Name']}</td>";
                 echo "</tr>";
             }

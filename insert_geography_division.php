@@ -1,33 +1,31 @@
 <?php
-// insert_geography.php
+// insert_geography_division.php
 
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'Geography' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS Geography";
+// SQL query to drop the 'geography_division' table if it exists
+$dropDivisionTableSQL = "DROP TABLE IF EXISTS geography_division";
 
 // Execute the query to drop the table
-if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'Geography' dropped successfully.<br>";
+if ($conn->query($dropDivisionTableSQL) === TRUE) {
+    echo "Table 'geography_division' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'Geography': " . $conn->error . "<br>";
+    echo "Error dropping table 'geography_division': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'Geography' table with a foreign key to 'country'
-$createTableSQL = "
-    CREATE TABLE Geography (
-        GeographyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `Admin Level 1 (Division)` VARCHAR(50) NOT NULL,
-        `Admin Level 2 (District)` VARCHAR(50) NOT NULL,
-        `Admin Level 3 (City Corporation)` VARCHAR(50) NOT NULL,
+// SQL query to create the 'geography_division' table with a foreign key to 'country'
+$createDivisionTableSQL = "
+    CREATE TABLE geography_division (
+        ZDID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `Division Name` VARCHAR(50) NOT NULL,
         CountryID INT(11) NOT NULL,
         FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
-if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'Geography' created successfully.<br>";
+if ($conn->query($createDivisionTableSQL) === TRUE) {
+    echo "Table 'geography_division' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -46,7 +44,7 @@ if ($result) {
 }
 
 // Path to your CSV file
-$csvFile = 'data/geography.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/geography_division.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -106,38 +104,32 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 4) {
+        if (count($data) < 2) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $division = trim($data[0]);
-        $district = trim($data[1]);
-        $cityCorporation = trim($data[2]);
-        $countryID = trim($data[3]);
+        $divisionName = trim($data[0]);
+        $countryID = trim($data[1]);
         
         // Remove any extra spaces between the name and comma
-        $division = preg_replace('/\s+,/', ',', $division);
-        $district = preg_replace('/\s+,/', ',', $district);
-        $cityCorporation = preg_replace('/\s+,/', ',', $cityCorporation);
+        $divisionName = preg_replace('/\s+,/', ',', $divisionName);
         
         // Convert to proper types
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
         if ($countryID === false || $countryID === null) {
-            echo "Error: Invalid Country_ID format in row $rowNumber: '{$data[3]}'. Skipping.<br>";
+            echo "Error: Invalid Country_ID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $division = mysqli_real_escape_string($conn, $division);
-        $district = mysqli_real_escape_string($conn, $district);
-        $cityCorporation = mysqli_real_escape_string($conn, $cityCorporation);
+        $divisionName = mysqli_real_escape_string($conn, $divisionName);
 
         // Debugging: Show extracted values
         echo "Country_ID from CSV: $countryID (Valid IDs: " . implode(", ", $validCountryIDs) . ")<br>";
-        echo "Division: '$division', District: '$district', City Corporation: '$cityCorporation'<br>";
+        echo "Division Name: '$divisionName'<br>";
 
         // Validate Country_ID
         if (!in_array($countryID, $validCountryIDs)) {
@@ -146,21 +138,21 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        if (empty($division) || empty($district) || empty($cityCorporation)) {
+        if (empty($divisionName)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO Geography (`Admin Level 1 (Division)`, `Admin Level 2 (District)`, `Admin Level 3 (City Corporation)`, CountryID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO geography_division (`Division Name`, CountryID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssi", $division, $district, $cityCorporation, $countryID);
+        $stmt->bind_param("si", $divisionName, $countryID);
 
         if ($stmt->execute()) {
-            $geographyID = $conn->insert_id;
-            echo "✓ Inserted geography '$division, $district, $cityCorporation' with ID: $geographyID<br>";
+            $zdid = $conn->insert_id;
+            echo "✓ Inserted geography division '$divisionName' with ID: $zdid<br>";
         } else {
-            echo "Error inserting geography: " . $stmt->error . "<br>";
+            echo "Error inserting geography division: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -168,15 +160,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final Geography table contents:<br>";
-    $result = $conn->query("SELECT g.*, c.Country_Name 
-                           FROM Geography g 
-                           JOIN country c ON g.CountryID = c.Country_ID 
-                           ORDER BY g.GeographyID");
+    echo "<br>Final geography_division table contents:<br>";
+    $result = $conn->query("SELECT gd.*, c.Country_Name 
+                           FROM geography_division gd 
+                           JOIN country c ON gd.CountryID = c.Country_ID 
+                           ORDER BY gd.ZDID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['GeographyID']}, Division: {$row['Admin Level 1 (Division)']}, District: {$row['Admin Level 2 (District)']}, " .
-                 "City Corporation: {$row['Admin Level 3 (City Corporation)']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['ZDID']}, Division Name: {$row['Division Name']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
         }
     }
 
