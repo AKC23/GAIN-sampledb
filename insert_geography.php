@@ -18,9 +18,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE Geography (
         GeographyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `Admin Level 1 (Division)` VARCHAR(50) NOT NULL,
+        `Admin Level 1 (City Corporation)` VARCHAR(50) NOT NULL,
         `Admin Level 2 (District)` VARCHAR(50) NOT NULL,
-        `Admin Level 3 (City Corporation)` VARCHAR(50) NOT NULL,
+        `Admin Level 3 (Division)` VARCHAR(50) NOT NULL,
         CountryID INT(11) NOT NULL,
         FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -116,7 +116,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $division = trim($data[0]);
         $district = trim($data[1]);
         $cityCorporation = trim($data[2]);
-        $countryID = trim($data[3]);
+        $countryID = trim($data[4]);
         
         // Remove any extra spaces between the name and comma
         $division = preg_replace('/\s+,/', ',', $division);
@@ -152,7 +152,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO Geography (`Admin Level 1 (Division)`, `Admin Level 2 (District)`, `Admin Level 3 (City Corporation)`, CountryID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO Geography (`Admin Level 1 (City Corporation)`, `Admin Level 2 (District)`, `Admin Level 3 (Division)`, CountryID) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sssi", $division, $district, $cityCorporation, $countryID);
 
