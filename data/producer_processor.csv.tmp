@@ -1,117 +1,92 @@
-Producer/ processor name,VehicleID,Producer/ processor address,Task Done By Entity,Country_ID,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume,Reference 
-"A.Deshi Food Product Ltd, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-ACI Edible Oils Ltd,1,N/A,Distributor ,1,0,0,0,N/A
-"ACI Edible Oils Ltd, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-AMB Nosia Ltd,1,N/A,Distributor ,1,0,0,0,N/A
-Ara Food & Beverage,1,N/A,Distributor ,1,0,0,0,N/A
-Areej Veg Oils,1,N/A,Distributor ,1,0,0,0,N/A
-"Chamak Food Products, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Confidence Edible Oil Ltd, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"Gazi NPKS, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"JB Foods Service, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"Jibon Food Products, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Kanon Enterprise, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-"Madina Oil Limited, Shibpur, Narsingdi",1,N/A,Distributor ,1,0,0,0,N/A
-"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"MS Modina Oil Mills, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore Agro Ltd, Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"NM Food Product, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"NM Food Product, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Olitalia, Forli, Italy",1,N/A,Distributor ,1,0,0,0,N/A
-"Olitalia, Forli, Italy",1,N/A,Distributor ,1,0,0,0,N/A
-"Omi Food Product, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Pran Agro Ltd, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"President Food Products, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-RB Edible Food Product,1,N/A,Distributor ,1,0,0,0,N/A
-RB Edible Food Product,1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor,Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Saif Edible Food Packing, Lalbag, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-City Group ,1,N/A,Refinery,1,150000,0,0,N/A
-VOTT Oil Refineries Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Farzana Oil Refineries Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Deepa Food Products Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Meghna Group ,1,N/A,Refinery,1,200000,0,0,N/A
-United Edible Oils Ltd.,1,N/A,Refinery,1,,0,0,N/A
-Tanveer Oils Ltd.,1,N/A,Refinery,1,,0,0,N/A
-Merin Vegetables Oil Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Nurjahan Vegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Jesmin vegetable oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Jesmin Super Vegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-T.K. Group ,1,N/A,Refinery,1,150000,0,0,N/A
-Super Oil Refinery,1,N/A,Refinery,1,,0,0,N/A
-Shabnam Vaegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Bay Fishing Corporation Ltd.,1,N/A,Refinery,1,,0,0,N/A
-S. Alam Group ,1,N/A,Refinery,1,42000,0,0,N/A
-S. Alam Vegetable Oil Ltd.,1,N/A,Refinery,1,42000,0,0,N/A
-S. Alam Super Oil Vegetable,1,N/A,Refinery,1,42000,0,0,N/A
-S.A. Oil Refinery Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Kamal Vegetable Oils Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Shariza Oil Refinery Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Shamannaz Super Oil Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Elias Brothers ,1,N/A,Refinery,1,600000,0,0,N/A
-Mostofa Vegetable Oil Industries ,1,N/A,Refinery,1,150000,0,0,N/A
-M.M. Vegetable Oil Products Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Rubaya Vegetable Oil Industries ,1,N/A,Refinery,1,600000,0,0,N/A
-Bangladesh Edible Oil Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Shun Shing Edible Oil Ltd and Edible Oil Ltd.),1,N/A,Refinery,1,300000,0,0,N/A
-KBC Agro Products Pvt Ltd,1,"63/C Asad Avenue (4th
-Floor), Mohammadpur,
-Dhaka-1207",Refinery,1,30000,0,0,N/A
-Rashid Oil Mills Ltd.,1,"BSEC Bhaban, (1st Floor),
-102 Kazi Nazrul Islam
-Avenue,
-Karwan Bazar, Dhaka-
-1215",Refinery,1,18000,0,0,N/A
-"Emarald Oil
-Mills Ltd.",1,"Saiham Sky View Tower,
-Floor 15/A,
-45, Bijoynogor,
-Dhaka.",Refinery,1,18000,0,0,N/A
-"Majumdar
-Products Ltd.",1,"Planars Tower,
-Sonargaon
-Road, Dhaka",Refinery,1,48000,0,0,N/A
-Green Oil Ltd.,1,N/A,Refinery,1,15000,0,0,N/A
-"Ali Natural Oil
-Mill",1,"Sonotia Bazar, Jamalpur,
-Bangladesh",Refinery,1,18000,0,0,N/A
-"Majumdar Agro
-Products Ltd.",1,N/A,Refinery,1,18000,0,0,N/A
-"Al Noor Oil
-Company Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Weaster Agro
-Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Jamuna Agro
-Products
-Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-Agrotech,1,"House: 272 (1st Floor),
-Lane: 19 Lake Road,
-New DOHS, Mohakhali,
-Dhaka, 1206",Refinery,1,12000,0,0,N/A
-"Tamim Agro
-Industries Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Abdul
-Monem",1,N/A,Refinery,1,21000,0,0,N/A
-Bashundara,2,N/A,Refinery,1,945000,0,0,N/A
-CityGroup,2,N/A,Refinery,1,405000,0,0,N/A
-Akij,2,N/A,Refinery,1,360000,0,0,N/A
-Meghna,2,N/A,Refinery,1,393000,0,0,N/A
-TK,2,N/A,Refinery,1,270000,0,0,N/A
-Baishaki,2,N/A,Refinery,1,0,0,0,N/A
-FM flour mills,2,N/A,Refinery,1,96000,0,0,N/A
-Joy flour mills,2,N/A,Refinery,1,60000,0,0,N/A
-VIP flour mills,2,N/A,Refinery,1,54000,0,0,N/A
-Bestgarden,2,N/A,Refinery,1,66000,0,0,N/A
-Sena Kalyan,2,N/A,Refinery,1,90000,0,0,N/A
-ACI,2,N/A,Refinery,1,90000,0,0,N/A
-Nurjahan (currently leased by ACI),2,N/A,Refinery,1,75000,0,0,N/A
-IFAD,2,N/A,Refinery,1,45000,0,0,N/A
-Shajib,2,N/A,Refinery,1,90000,0,0,N/A
+PRID,Admin 1,Admin 2,Admin 3,Upazila,Task Done By Entity,Country,Country_ID,Food Vehicle,VehicleID,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),BSTI Reference Number/ID
+1,Rajshahi,Rajshahi,Rajshahi,Godagari,Distributor,Bangladesh,1,E,1,0,100,0,0
+2,Mymensingh,N/A,Mymensingh,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+3,N/A,Jamalpur,Mymensingh,Jamalpur,Distributor,Bangladesh,1,E,1,0,100,0,0
+4,Narayanganj,Narayanganj,Narayanganj,Rupganj,Distributor,Bangladesh,1,E,1,0,100,0,0
+5,Dhaka,Dhaka,Dhaka,Keranigan,Distributor,Bangladesh,1,E,1,0,100,0,0
+6,Chattogram,Chattogram,Chattogram,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+7,N/A,Narayanganj,Narayanganj,Rupganj,Distributor,Bangladesh,1,E,1,0,100,0,0
+8,Dhaka,Narayanganj,Narayanganj,Rupganj,Distributor,Bangladesh,1,E,1,0,100,0,0
+9,Rangpur,N/A,N/A,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+10,Dhaka,N/A,N/A,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+11,Rajshahi,N/A,N/A,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+12,Rajshahi,Rajshahi,Rajshahi,Godagari,Distributor,Bangladesh,1,E,1,0,100,0,0
+13,Chattogram,Chattogram,Chattogram,,Distributor,Bangladesh,1,E,1,0,100,0,0
+14,Dhaka,Dhaka,Dhaka,Dhamrai,Distributor,Bangladesh,1,E,1,0,100,0,0
+15,Dhaka,Gazipur,Gazipur,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+16,Khulna,Jessore,Khulna,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+17,Chattogram,Chattogram,Chattogram,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+18,Dhaka,Narayanganj,Dhaka,Sonargaon,Distributor,Bangladesh,1,E,1,0,100,0,0
+19,Chattogram,Chattogram,Chattogram,Sitakunda,Distributor,Bangladesh,1,E,1,0,100,0,0
+20,Mymensing,Mymensing,Mymensing,Gouripur,Distributor,Bangladesh,1,E,1,0,100,0,0
+21,Rajshahi,Sirajganj,Rajshahi,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+22,Rajshahi,Pabna,Rajshahi,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+23,Khulna,Bagerhat,Khulna,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+24,Chattogram,N/A,Chattogram,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+25,Dhaka,Narayanganj,Narayanganj,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+26,Khulna,Bagerhat,Khulna,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+27,Dhaka,Narayanganj,Narayanganj,Rupganj,Distributor,Bangladesh,1,E,1,0,100,0,0
+28,Dhaka,Narayanganj,Narayanganj,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+29,Khulna,Bagerhat,Khulna,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+30,Chittagong,Chittagong,Chittagong,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+31,Dhaka,Narayanganj,Narayanganj,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+32,Rajshahi,Bogura,Rajshahi,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+33,Chattogram,N/A,N/A,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+34,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+35,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+36,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+37,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,200000,100,0,0
+38,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+39,Chittagong,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+40,Chittagong,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+41,Chittagong,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+42,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+43,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+44,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+45,Dhaka,Narsingdi,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+46,Sylhet,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+47,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,0,100,0,0
+48,Rajshahi,Natore,N/A,N/A,Refinery,Bangladesh,1,E,1,42000,100,0,0
+49,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,42000,100,0,0
+50,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+51,Sylhet,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+52,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+53,Sylhet,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+54,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,600000,100,0,0
+55,Sylhet,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+56,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+57,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,600000,100,0,0
+58,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+59,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,300000,100,0,0
+61,,,N/A,N/A,Refinery,Bangladesh,1,E,1,18000,100,0,0
+63,Dhaka,,N/A,N/A,Refinery,Bangladesh,1,E,1,48000,100,0,0
+64,Gujarat,Gujarat,N/A,N/A,Refinery,India,4,E,1,15000,100,0,0
+65,Mymensingh,Sherpur,Mymensingh,N/A,Refinery,Bangladesh,1,E,1,18000,100,0,0
+66,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,15000,100,0,0
+67,Rangpur,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,15000,100,0,0
+68,Dhaka,N/A,N/A,Dhamrai,Refinery,Bangladesh,1,E,1,15000,100,0,0
+70,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,15000,100,0,0
+71,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,21000,100,0,0
+72,Khulna,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,945000,100,0,0
+73,Mymensingh,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,405000,100,0,0
+74,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,360000,100,0,0
+75,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,393000,100,0,0
+76,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,270000,100,0,0
+77,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,0,100,0,0
+78,Rajshahi,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,96000,100,0,0
+79,Rajshahi,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,60000,100,0,0
+80,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,54000,100,0,0
+81,Dhaka,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,66000,100,0,0
+82,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,90000,100,0,0
+,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,90000,100,0,0
+,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,75000,100,0,0
+,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,45000,100,0,0
+,N/A,N/A,N/A,N/A,Refinery,Bangladesh,1,W,1,90000,100,0,0
+60,Khulna,Mongla,N/A,N/A,Refinery,Bangladesh,1,E,1,30000,100,0,0
+62,Rajshahi,Sirajganj,N/A,N/A,Refinery,Bangladesh,1,E,1,18000,100,0,0
+60,Khulna,N/A,N/A,N/A,Refinery,Bangladesh,1,E,1,18000,100,0,0
+62,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+62,Dhaka,Narayanganj,N/A,N/A,Refinery,Bangladesh,1,E,1,150000,100,0,0
+,Mymensingh,Sherpur,Mymensingh,N/A,Distributor,Bangladesh,1,E,1,0,100,0,0
+IFAD,2,N/A,Refinery,1,45000,0,0,N/A,,,,,
+Shajib,2,N/A,Refinery,1,90000,0,0,N/A,,,,,

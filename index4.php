@@ -137,15 +137,15 @@
                             'measure_period',
                             'measure_currency',
                             'geography',
-                            
+                            'entities',
                             'producer_skus',
                             'extraction_conversion',
                             'total_local_crop_production',
                             'total_local_food_production',
                             'total_food_import',
                             'total_crop_import',
-                            'crude_oil',
-                            'entities',
+                            //'crude_oil',
+                            
                             'producer_processor',
                             'packaging_type',
                             'distribution',  // Add this line
@@ -223,14 +223,14 @@
                     'total_food_import',            // Should be created last
                     'total_crop_import',            // Should be created last
                     'extraction_conversion', 
-                    'crude_oil',
+                    //'crude_oil',
                     'entities',
+                    'geography',
                     'producer_processor',
                     'distribution',
                     'measure_unit',
                     'measure_period',
                     'measure_currency',
-                    
                     'processing_stage',
                     'reference',  // Added reference table
                     'producer_skus',
@@ -266,13 +266,12 @@
                 include('insert_foodtype.php');      // Depends on: FoodVehicle
                 include('insert_processing_stage.php');     // Depends on: FoodVehicle
                 include('insert_geography.php');     // Depends on: country
-                
-
+                include('insert_entities.php');   
 
                 // Level 2: Tables depending on Level 1
                 echo "<h3>Creating Level 2 tables...</h3>";
                 
-                include('insert_entities.php');             
+                          
                 
                 include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
                 include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType

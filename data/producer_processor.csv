@@ -1,117 +1,80 @@
-Producer/ processor name,VehicleID,Producer/ processor address,Task Done By Entity,Country_ID,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume,Reference 
-"A.Deshi Food Product Ltd, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-ACI Edible Oils Ltd,1,N/A,Distributor ,1,0,0,0,N/A
-"ACI Edible Oils Ltd, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-AMB Nosia Ltd,1,N/A,Distributor ,1,0,0,0,N/A
-Ara Food & Beverage,1,N/A,Distributor ,1,0,0,0,N/A
-Areej Veg Oils,1,N/A,Distributor ,1,0,0,0,N/A
-"Chamak Food Products, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Confidence Edible Oil Ltd, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"Gazi NPKS, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"JB Foods Service, Chittagong",1,N/A,Distributor ,1,0,0,0,N/A
-"Jibon Food Products, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Kanon Enterprise, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-M.H. Edible Products Ltd.,1,N/A,Distributor ,1,0,0,0,N/A
-"Madina Oil Limited, Shibpur, Narsingdi",1,N/A,Distributor ,1,0,0,0,N/A
-"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"MS Modina Oil Mills, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore Agro Ltd, Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"Natore, Rajshahi",1,N/A,Distributor ,1,0,0,0,N/A
-"NM Food Product, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"NM Food Product, Narayanganj, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"Olitalia, Forli, Italy",1,N/A,Distributor ,1,0,0,0,N/A
-"Olitalia, Forli, Italy",1,N/A,Distributor ,1,0,0,0,N/A
-"Omi Food Product, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Pran Agro Ltd, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-"President Food Products, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-RB Edible Food Product,1,N/A,Distributor ,1,0,0,0,N/A
-RB Edible Food Product,1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Rony Edible Oil & Food products Ltd, Gotatikor,Sylhet",1,N/A,Distributor ,1,0,0,0,N/A
-"Saif Edible Food Packing, Lalbag, Dhaka",1,N/A,Distributor ,1,0,0,0,N/A
-City Group ,1,N/A,Refinery,1,150000,0,0,N/A
-VOTT Oil Refineries Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Farzana Oil Refineries Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Deepa Food Products Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Meghna Group ,1,N/A,Refinery,1,200000,0,0,N/A
-United Edible Oils Ltd.,1,N/A,Refinery,1,,0,0,N/A
-Tanveer Oils Ltd.,1,N/A,Refinery,1,,0,0,N/A
-Merin Vegetables Oil Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Nurjahan Vegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Jesmin vegetable oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Jesmin Super Vegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-T.K. Group ,1,N/A,Refinery,1,150000,0,0,N/A
-Super Oil Refinery,1,N/A,Refinery,1,,0,0,N/A
-Shabnam Vaegetable Oil Industries,1,N/A,Refinery,1,,0,0,N/A
-Bay Fishing Corporation Ltd.,1,N/A,Refinery,1,,0,0,N/A
-S. Alam Group ,1,N/A,Refinery,1,42000,0,0,N/A
-S. Alam Vegetable Oil Ltd.,1,N/A,Refinery,1,42000,0,0,N/A
-S. Alam Super Oil Vegetable,1,N/A,Refinery,1,42000,0,0,N/A
-S.A. Oil Refinery Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Kamal Vegetable Oils Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Shariza Oil Refinery Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Shamannaz Super Oil Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Elias Brothers ,1,N/A,Refinery,1,600000,0,0,N/A
-Mostofa Vegetable Oil Industries ,1,N/A,Refinery,1,150000,0,0,N/A
-M.M. Vegetable Oil Products Ltd.,1,N/A,Refinery,1,150000,0,0,N/A
-Rubaya Vegetable Oil Industries ,1,N/A,Refinery,1,600000,0,0,N/A
-Bangladesh Edible Oil Ltd. ,1,N/A,Refinery,1,150000,0,0,N/A
-Shun Shing Edible Oil Ltd and Edible Oil Ltd.),1,N/A,Refinery,1,300000,0,0,N/A
-KBC Agro Products Pvt Ltd,1,"63/C Asad Avenue (4th
-Floor), Mohammadpur,
-Dhaka-1207",Refinery,1,30000,0,0,N/A
-Rashid Oil Mills Ltd.,1,"BSEC Bhaban, (1st Floor),
-102 Kazi Nazrul Islam
-Avenue,
-Karwan Bazar, Dhaka-
-1215",Refinery,1,18000,0,0,N/A
-"Emarald Oil
-Mills Ltd.",1,"Saiham Sky View Tower,
-Floor 15/A,
-45, Bijoynogor,
-Dhaka.",Refinery,1,18000,0,0,N/A
-"Majumdar
-Products Ltd.",1,"Planars Tower,
-Sonargaon
-Road, Dhaka",Refinery,1,48000,0,0,N/A
-Green Oil Ltd.,1,N/A,Refinery,1,15000,0,0,N/A
-"Ali Natural Oil
-Mill",1,"Sonotia Bazar, Jamalpur,
-Bangladesh",Refinery,1,18000,0,0,N/A
-"Majumdar Agro
-Products Ltd.",1,N/A,Refinery,1,18000,0,0,N/A
-"Al Noor Oil
-Company Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Weaster Agro
-Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Jamuna Agro
-Products
-Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-Agrotech,1,"House: 272 (1st Floor),
-Lane: 19 Lake Road,
-New DOHS, Mohakhali,
-Dhaka, 1206",Refinery,1,12000,0,0,N/A
-"Tamim Agro
-Industries Ltd.",1,N/A,Refinery,1,15000,0,0,N/A
-"Abdul
-Monem",1,N/A,Refinery,1,21000,0,0,N/A
-Bashundara,2,N/A,Refinery,1,945000,0,0,N/A
-CityGroup,2,N/A,Refinery,1,405000,0,0,N/A
-Akij,2,N/A,Refinery,1,360000,0,0,N/A
-Meghna,2,N/A,Refinery,1,393000,0,0,N/A
-TK,2,N/A,Refinery,1,270000,0,0,N/A
-Baishaki,2,N/A,Refinery,1,0,0,0,N/A
-FM flour mills,2,N/A,Refinery,1,96000,0,0,N/A
-Joy flour mills,2,N/A,Refinery,1,60000,0,0,N/A
-VIP flour mills,2,N/A,Refinery,1,54000,0,0,N/A
-Bestgarden,2,N/A,Refinery,1,66000,0,0,N/A
-Sena Kalyan,2,N/A,Refinery,1,90000,0,0,N/A
-ACI,2,N/A,Refinery,1,90000,0,0,N/A
-Nurjahan (currently leased by ACI),2,N/A,Refinery,1,75000,0,0,N/A
-IFAD,2,N/A,Refinery,1,45000,0,0,N/A
-Shajib,2,N/A,Refinery,1,90000,0,0,N/A
+EntityID,Task Done By Entity,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),BSTI Reference Number/ID
+1,Distributor,0,100,0,0
+2,Distributor,0,100,0,0
+3,Distributor,0,100,0,0
+4,Distributor,0,100,0,0
+5,Distributor,0,100,0,0
+6,Distributor,0,100,0,0
+7,Distributor,0,100,0,0
+8,Distributor,0,100,0,0
+9,Distributor,0,100,0,0
+10,Distributor,0,100,0,0
+11,Distributor,0,100,0,0
+12,Distributor,0,100,0,0
+13,Distributor,0,100,0,0
+14,Distributor,0,100,0,0
+15,Distributor,0,100,0,0
+16,Distributor,0,100,0,0
+17,Distributor,0,100,0,0
+18,Distributor,0,100,0,0
+19,Distributor,0,100,0,0
+20,Distributor,0,100,0,0
+21,Distributor,0,100,0,0
+22,Distributor,0,100,0,0
+23,Distributor,0,100,0,0
+24,Distributor,0,100,0,0
+25,Distributor,0,100,0,0
+26,Distributor,0,100,0,0
+27,Distributor,0,100,0,0
+28,Distributor,0,100,0,0
+29,Distributor,0,100,0,0
+30,Distributor,0,100,0,0
+31,Distributor,0,100,0,0
+32,Distributor,0,100,0,0
+33,Distributor,0,100,0,0
+34,Refinery,150000,100,0,0
+35,Refinery,150000,100,0,0
+36,Refinery,150000,100,0,0
+37,Refinery,200000,100,0,0
+38,Refinery,0,100,0,0
+39,Refinery,0,100,0,0
+40,Refinery,150000,100,0,0
+41,Refinery,0,100,0,0
+42,Refinery,0,100,0,0
+43,Refinery,0,100,0,0
+44,Refinery,150000,100,0,0
+45,Refinery,0,100,0,0
+46,Refinery,0,100,0,0
+47,Refinery,0,100,0,0
+48,Refinery,42000,100,0,0
+49,Refinery,42000,100,0,0
+50,Refinery,150000,100,0,0
+51,Refinery,150000,100,0,0
+52,Refinery,150000,100,0,0
+53,Refinery,150000,100,0,0
+54,Refinery,600000,100,0,0
+55,Refinery,150000,100,0,0
+56,Refinery,150000,100,0,0
+57,Refinery,600000,100,0,0
+58,Refinery,150000,100,0,0
+59,Refinery,300000,100,0,0
+61,Refinery,18000,100,0,0
+63,Refinery,48000,100,0,0
+64,Refinery,15000,100,0,0
+65,Refinery,18000,100,0,0
+66,Refinery,15000,100,0,0
+67,Refinery,15000,100,0,0
+68,Refinery,15000,100,0,0
+70,Refinery,15000,100,0,0
+71,Refinery,21000,100,0,0
+72,Refinery,945000,100,0,0
+73,Refinery,405000,100,0,0
+74,Refinery,360000,100,0,0
+75,Refinery,393000,100,0,0
+76,Refinery,270000,100,0,0
+77,Refinery,0,100,0,0
+78,Refinery,96000,100,0,0
+79,Refinery,60000,100,0,0
+80,Refinery,54000,100,0,0
+81,Refinery,66000,100,0,0
+82,Refinery,90000,100,0,0

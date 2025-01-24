@@ -161,6 +161,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "Error fetching extraction_conversion data: " . $conn->error;
         }
+    } elseif ($tableName == 'entities') {
+        // Fetch all records from entities with joined VehicleName and Country_Name
+        $sql = "
+            SELECT e.EntityID, e.`Producer / Processor name`, e.`Company group`, fv.VehicleName, e.`Admin 1`, e.`Admin 2`, e.`Admin 3`, e.UDC, e.Thana, e.Upazila, c.Country_Name
+            FROM entities e
+            JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
+            JOIN country c ON e.CountryID = c.Country_ID
+        ";
+        if (!empty($vehicleName)) {
+            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        $sql .= " ORDER BY e.EntityID";
+        $result = $conn->query($sql);
+
+        if ($result) {
+            echo "<h1>Entities Table Contents</h1>";
+            echo "<table class='table table-bordered'>";
+            echo "<tr><th>EntityID</th><th>Producer / Processor name</th><th>Company group</th><th>VehicleName</th><th>Admin 1</th><th>Admin 2</th><th>Admin 3</th><th>UDC</th><th>Thana</th><th>Upazila</th><th>Country_Name</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['EntityID']}</td>";
+                echo "<td>{$row['Producer / Processor name']}</td>";
+                echo "<td>{$row['Company group']}</td>";
+                echo "<td>{$row['VehicleName']}</td>";
+                echo "<td>{$row['Admin 1']}</td>";
+                echo "<td>{$row['Admin 2']}</td>";
+                echo "<td>{$row['Admin 3']}</td>";
+                echo "<td>{$row['UDC']}</td>";
+                echo "<td>{$row['Thana']}</td>";
+                echo "<td>{$row['Upazila']}</td>";
+                echo "<td>{$row['Country_Name']}</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Error fetching entities data: " . $conn->error;
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {

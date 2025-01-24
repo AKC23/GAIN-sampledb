@@ -18,14 +18,18 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE entities (
         EntityID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `Producer / Processor name` VARCHAR(255) NOT NULL,
+        `Company group` VARCHAR(255),
         VehicleID INT(11) NOT NULL,
-        CompanyGroup VARCHAR(255),
-        ProducerProcessorName VARCHAR(255) NOT NULL,
-        ProducerProcessorAddress VARCHAR(255) NOT NULL,
-        Country_ID INT(11) NOT NULL,
-        
+        `Admin 1` VARCHAR(255),
+        `Admin 2` VARCHAR(255),
+        `Admin 3` VARCHAR(255),
+        UDC VARCHAR(255),
+        Thana VARCHAR(255),
+        Upazila VARCHAR(255),
+        CountryID INT(11) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (Country_ID) REFERENCES country(Country_ID)
+        FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -33,6 +37,28 @@ if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'entities' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
+}
+
+// Get valid VehicleIDs and CountryIDs
+$validVehicleIDs = array();
+$validCountryIDs = array();
+
+$result = $conn->query("SELECT VehicleID FROM FoodVehicle");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validVehicleIDs[] = $row['VehicleID'];
+    }
+} else {
+    echo "Error getting valid VehicleIDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT Country_ID FROM country");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validCountryIDs[] = $row['Country_ID'];
+    }
+} else {
+    echo "Error getting valid CountryIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -96,49 +122,76 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 5) {
+        if (count($data) < 10) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $vehicleID = trim($data[0]);
+        $producerProcessorName = trim($data[0]);
         $companyGroup = trim($data[1]);
-        $producerProcessorName = trim($data[2]);
-        $producerProcessorAddress = trim($data[3]);
-        $countryID = trim($data[4]);
+        $vehicleID = trim($data[3]);
+        $admin1 = trim($data[4]);
+        $admin2 = trim($data[5]);
+        $admin3 = trim($data[6]);
+        $udc = trim($data[7]);
+        $thana = trim($data[8]);
+        $upazila = trim($data[9]);
+        $countryID = trim($data[11]);
         
         // Remove any extra spaces between the name and comma
         $companyGroup = preg_replace('/\s+,/', ',', $companyGroup);
         $producerProcessorName = preg_replace('/\s+,/', ',', $producerProcessorName);
-        $producerProcessorAddress = preg_replace('/\s+,/', ',', $producerProcessorAddress);
+        $admin1 = preg_replace('/\s+,/', ',', $admin1);
+        $admin2 = preg_replace('/\s+,/', ',', $admin2);
+        $admin3 = preg_replace('/\s+,/', ',', $admin3);
+        $udc = preg_replace('/\s+,/', ',', $udc);
+        $thana = preg_replace('/\s+,/', ',', $thana);
+        $upazila = preg_replace('/\s+,/', ',', $upazila);
         
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
         if ($vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
-            echo "Error: Invalid VehicleID or Country_ID format in row $rowNumber. Skipping.<br>";
+            echo "Error: Invalid VehicleID or CountryID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         $companyGroup = mysqli_real_escape_string($conn, $companyGroup);
         $producerProcessorName = mysqli_real_escape_string($conn, $producerProcessorName);
-        $producerProcessorAddress = mysqli_real_escape_string($conn, $producerProcessorAddress);
+        $admin1 = mysqli_real_escape_string($conn, $admin1);
+        $admin2 = mysqli_real_escape_string($conn, $admin2);
+        $admin3 = mysqli_real_escape_string($conn, $admin3);
+        $udc = mysqli_real_escape_string($conn, $udc);
+        $thana = mysqli_real_escape_string($conn, $thana);
+        $upazila = mysqli_real_escape_string($conn, $upazila);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, CompanyGroup: '$companyGroup', ProducerProcessorName: '$producerProcessorName', ProducerProcessorAddress: '$producerProcessorAddress', Country_ID: $countryID<br>";
+        echo "Producer / Processor name: '$producerProcessorName', Company group: '$companyGroup', VehicleID: $vehicleID, Admin 1: '$admin1', Admin 2: '$admin2', Admin 3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
 
-        if (empty($producerProcessorName) || empty($producerProcessorAddress)) {
+        // Validate VehicleID and CountryID
+        if (!in_array($vehicleID, $validVehicleIDs)) {
+            echo "Error: VehicleID $vehicleID does not exist in FoodVehicle table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if (!in_array($countryID, $validCountryIDs)) {
+            echo "Error: CountryID $countryID does not exist in country table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        if (empty($producerProcessorName)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO entities (VehicleID, CompanyGroup, ProducerProcessorName, ProducerProcessorAddress, Country_ID) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO entities (`Producer / Processor name`, `Company group`, VehicleID, `Admin 1`, `Admin 2`, `Admin 3`, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isssi", $vehicleID, $companyGroup, $producerProcessorName, $producerProcessorAddress, $countryID);
+        $stmt->bind_param("ssissssssi", $producerProcessorName, $companyGroup, $vehicleID, $admin1, $admin2, $admin3, $udc, $thana, $upazila, $countryID);
 
         if ($stmt->execute()) {
             $entityID = $conn->insert_id;
@@ -153,13 +206,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final entities table contents:<br>";
-    $result = $conn->query("SELECT e.*, c.Country_Name 
+    $result = $conn->query("SELECT e.*, fv.VehicleName, c.Country_Name 
                            FROM entities e 
-                           JOIN country c ON e.Country_ID = c.Country_ID 
+                           JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID 
+                           JOIN country c ON e.CountryID = c.Country_ID 
                            ORDER BY e.EntityID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['EntityID']}, VehicleID: {$row['VehicleID']}, CompanyGroup: {$row['CompanyGroup']}, ProducerProcessorName: {$row['ProducerProcessorName']}, ProducerProcessorAddress: {$row['ProducerProcessorAddress']}, Country_ID: {$row['Country_ID']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['EntityID']}, Producer / Processor name: {$row['Producer / Processor name']}, Company group: {$row['Company group']}, VehicleID: {$row['VehicleID']}, Admin 1: {$row['Admin 1']}, Admin 2: {$row['Admin 2']}, Admin 3: {$row['Admin 3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
         }
     }
 

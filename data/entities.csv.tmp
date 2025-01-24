@@ -1,144 +1,143 @@
-VehicleID,Company group,Producer/ processor name,Producer/ processor address,Country_ID
-1,N/A,ACI Logistics Limited,"Godagari, Rajshahi.",1
-1,Agrotech International Limited,Agrotech International Limited,"Sadar, Mymensingh.",1
-1,Ali Natural Oil Mills & Agro Industries Limited,Ali Natural Oil Mills & Agro Industries Limited,"Sonotia Bazar, Jamalpur",1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,"Rupganj, Narayanganj.",1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,"Rupganj, Narayanganj.",1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,"Rupganj, Narayanganj.",1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,"Rupganj, Narayanganj.",1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,Mongla Bagerhat.,1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,Mongla Bagerhat.,1
-1,Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,Mongla Bagerhat.,1
-1,Bashundhara Group of Industries,Bashundhara Multi Food Products Limited,"Pangaon, Konda, South Keraniganj, Dhaka",1
-1,Bashundhara Group of Industries,Bashundhara Multi Food Products Limited,"Pangaon, Konda, South Keraniganj, Dhaka",1
-1,Bashundhara Group of Industries,Bashundhara Multi Food Products Limited,"Pangaon, Konda, South Keraniganj, Dhaka",1
-1,Bashundhara Group of Industries,Bashundhara Multi Food Products Limited,"Pangaon, Konda, South Keraniganj, Dhaka",1
-1,TK Group of Industries,Bay Fishing Corporation Limited,"Airport Road, East Patenga, Chattogram",1
-1,TK Group of Industries,Bay Fishing Corporation Limited,"Airport Road, East Patenga, Chattogram",1
-1,City Group,City Edible Oil Limited,"City Economic Zone, North Rupshi, Rupganj, Narayanganj",1
-1,City Group,City Edible Oil Limited,"City Economic Zone, North Rupshi, Rupganj, Narayanganj",1
-1,City Group,City Edible Oil Limited,"City Economic Zone, North Rupshi, Rupganj, Narayanganj",1
-1,City Group,City Edible Oil Limited,"City Economic Zone, North Rupshi, Rupganj, Narayanganj",1
-1,,Emerald Oil Industries Limited,"West Sheripara, Sherpur.",1
-1,Globe Pharma Group of Companies,Globe Edible Oil Limited,"Ganganagar, Murapara, Rupganj, Narayanganj",1
-1,Globe Pharma Group of Companies,Globe Edible Oil Limited,"Ganganagar, Murapara, Rupganj, Narayanganj",1
-1,Green Oil Poultry & Feed Industries,Green Oil Poultry & Feed Limited,"Kotowali, Rangpur.",1
-1,N/A,IFAD Multi Products Limited,"Savar, Dhaka.",1
-1,Jamuna Industrial Agro Group,Jamuna Edible Oil Industries Limited,"Godagari, Rajshahi.",1
-1,Jamuna Industrial Agro Group,Jamuna Edible Oil Industries Limited,"Godagari, Rajshahi.",1
-1,Jamuna Industrial Agro Group,Jamuna Edible Oil Industries Limited (Unit-2),"Unit-2, Boiragitola, Godagari, Rajshahi.",1
-1,Jamuna Industrial Agro Group,Jamuna Edible Oil Industries Limited (Unit-2),"Unit-2, Boiragitola, Godagari, Rajshahi.",1
-1,Nurjahan Group,Jasmir Super Oil Limited,"Sagorika Road, Pahartoli, Chattogram",1
-1,Mahbub Group of Industries,KBC Agro Products Private Limited,"Sutipara, Bathuli, Shahabelishwar, Dhamrai, Dhaka",1
-1,Mahbub Group of Industries,KBC Agro Products Private Limited,"Sutipara, Bathuli, Shahabelishwar, Dhamrai, Dhaka",1
-1,N/A,Marico Bangladesh Limited,"Kaliakoir, Gazipur.",1
-1,Majumder Group,Mazumdar Bran Oil Mills Limited,"Naoapara, Jessore.",1
-1,N/A,Meer Banaspati Products,"East Kalurghat, Kadurkhil, Boalkhali, Chattogram",1
-1,N/A,Meer Banaspati Products,"East Kalurghat, Kadurkhil, Boalkhali, Chattogram",1
-1,Meghna Group of Industries,Meghna Edible Oils Refinery Limited,"Meghnaghat, Sonargaon, Narayanganj.",1
-1,Meghna Group of Industries,Meghna Edible Oils Refinery Limited,"Meghnaghat, Sonargaon, Narayanganj",1
-1,Meghna Group of Industries,Meghna Edible Oils Refinery Limited,"Meghnaghat, Sonargaon, Narayanganj",1
-1,Mostafa Group of Industries,M.M. Vegitable Oil Products Limited,"Sitakunda, Chattogram.",1
-1,Mostafa Group of Industries,M.M. Vegitable Oil Products Limited,"Sitakunda, Chattogram.",1
-1,Mostafa Group of Industries,M.M. Vegitable Oil Products Limited,"Sitakunda, Chattogram.",1
-1,MRT Group of Industries,MRT Agro Products BD Limited,"Gouripur, Mymensing",1
-1,MRT Group of Industries,MRT Agro Products BD Limited,"Gouripur, Mymensing",1
-1,M & J Group,Northern Consumer Products Limited,"Sadar, Sirajganj.",1
-1,M & J Group,Northern Consumer Products Limited,"Sadar, Sirajganj.",1
-1,M & J Group,Northern Consumer Products Limited,"Sadar, Sirajganj.",1
-1,Rashid Group of Industries,Rashid Oil Mills Limited,"Iswardi, Pabna.",1
-1,,Rupsha Edible Oil Refinery Limited,"Mongla, Bagerhat.",1
-1,S.A. Group of Industries,S. Alam Super Edible Oil Limited,"Karnafully, Chattogram.",1
-1,S.A. Group of Industries,S. Alam Super Edible Oil Limited,"Karnafully, Chattogram.",1
-1,S.A. Group of Industries,S. Alam Vegetable Oil Limited,"Karnafully, Chattogram.",1
-1,S.A. Group of Industries,S. Alam Vegetable Oil Limited,"Karnafully, Chattogram.",1
-1,N/A,Sena Edible Oil Industries,"Fatullah, Narayanganj.",1
-1,N/A,Sena Edible Oil Industries,"Fatullah, Narayanganj.",1
-1,N/A,SG Oil Refineries Limited,"Mongla, Bagerhat.",1
-1,N/A,SG Oil Refineries Limited,"Mongla, Bagerhat.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",1
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",5
-1,TK Group,Shabnam Vegetable Oil Industries Limited,"Rupganj, Narayanganj.",5
-1,N/A,Shakti Edible Products Limited,"Araihazar, Narayanganj.",1
-1,N/A,Shakti Edible Products Limited,"Araihazar, Narayanganj.",1
-1,Bangladesh Edible Oil Limited,Shun Shing Edible Oil Limited,"Mongla, Bagerhat.",1
-1,N/A,Smile Food Products,"4619, North Patenga, Chittagong.",1
-1,N/A,Smile Food Products,"4619, North Patenga, Chittagong.",1
-1,N/A,Smile Food Products,"4619, North Patenga, Chittagong.",1
-1,TK Group,Super Oil Refinery Limited,"Siddhirganj, Narayanganj.",1
-1,TK Group,Super Oil Refinery Limited,"Siddhirganj, Narayanganj.",1
-1,TK Group,Super Oil Refinery Limited,"Siddhirganj, Narayanganj.",1
-1,TK Group,Super Oil Refinery Limited,"Siddhirganj, Narayanganj.",1
-1,TK Group,Super Oil Refinery Limited,"Siddhirganj, Narayanganj.",1
-1,Tamim Group,Tamim Agro Industries Limited,"Shajahanpur, Bogura.",1
-1,City Group,VOTT Oil Refineries Limited,"Patenga, Chattogram.",1
-1,City Group,VOTT Oil Refineries Limited,"Patenga, Chattogram.",1
-1,N/A,"A.Deshi Food Product Ltd, Dhaka",N/A,1
-1,N/A,ACI Edible Oils Ltd,N/A,1
-1,N/A,"ACI Edible Oils Ltd, Narayanganj, Dhaka",N/A,1
-1,N/A,AMB Nosia Ltd,N/A,1
-1,N/A,Ara Food & Beverage,N/A,1
-1,N/A,Areej Veg Oils,N/A,1
-1,N/A,"Chamak Food Products, Narayanganj, Dhaka",N/A,1
-1,N/A,"Confidence Edible Oil Ltd, Chittagong",N/A,1
-1,N/A,"Gazi NPKS, Chittagong",N/A,1
-1,N/A,"JB Foods Service, Chittagong",N/A,1
-1,N/A,"Jibon Food Products, Narayanganj, Dhaka",N/A,1
-1,N/A,"Kanon Enterprise, Dhaka",N/A,1
-1,N/A,M.H. Edible Products Ltd.,N/A,1
-1,N/A,M.H. Edible Products Ltd.,N/A,1
-1,N/A,M.H. Edible Products Ltd.,N/A,1
-1,N/A,"Madina Oil Limited, Shibpur, Narsingdi",N/A,1
-1,N/A,"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",N/A,1
-1,N/A,"Monjil Multi Food Product Ltd, Gotatikor, Sylhet",N/A,1
-1,N/A,"MS Modina Oil Mills, Narayanganj, Dhaka",N/A,1
-1,N/A,"Natore Agro Ltd, Natore, Rajshahi",N/A,1
-1,N/A,"Natore, Rajshahi",N/A,1
-1,N/A,"Natore, Rajshahi",N/A,1
-1,N/A,"NM Food Product, Narayanganj, Dhaka",N/A,1
-1,N/A,"NM Food Product, Narayanganj, Dhaka",N/A,1
-1,N/A,"Olitalia, Forli, Italy",N/A,8
-1,N/A,"Olitalia, Forli, Italy",N/A,8
-1,N/A,"Omi Food Product, Sylhet",N/A,1
-1,N/A,"Pran Agro Ltd, Dhaka",N/A,1
-1,N/A,"President Food Products, Sylhet",N/A,1
-1,N/A,RB Edible Food Product,N/A,1
-1,N/A,RB Edible Food Product,N/A,1
-1,N/A,"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",N/A,1
-1,N/A,"Rony Edible Oil & Food products Ltd, Gotatikor, Sylhet",N/A,1
-1,N/A,"Rony Edible Oil & Food products Ltd, Gotatikor,Sylhet",N/A,1
-1,N/A,"Saif Edible Food Packing, Lalbag, Dhaka",N/A,1
-1,N/A,M.M. Vegetable Oil Industries,"Narayanganj, Dhaka",1
-1,N/A,Deepa Food Products Ltd,"Narayanganj, Dhaka",1
-1,N/A,Tanveer/United Edible Oil Mills,"Narayanganj, Dhaka",1
-1,N/A,Bangladesh Edible Oil Ltd,"Narayanganj, Dhaka",1
-1,N/A,Shun Shing Edible oil Ltd,"Mongla, Khulna",1
-1,N/A,S. Alam Vegetable Oil Ltd,Chittagong,1
-1,N/A,Marine Edible Oil Ltd,Chittagong,1
-1,N/A,ACI Edible Oils Ltd,"Sirajganj, Rajshahi",1
-1,N/A,Ali Natural Oil Mills & Agro Industries Ltd,"Jamalpur, Mymensingh",1
-1,N/A,AM Bran Oil Company Ltd,"Shagordighi, Dhaka",1
-1,N/A,Adani Wilmar Ltd,"Gujarat, India",4
-1,N/A,Shun Shing Edible oil Ltd,"Mongla, Khulna",1
-1,N/A,Emarald Oil Ltd,"Sherpur, Mymensingh",1
-1,N/A,Lam Soon Edible Oil Industries Sdn Bhd,Malaysia,5
-1,N/A,Green Oil Ltd,"Hajir Hat, Rangpur",1
-1,N/A,KBC Agro Products Ltd,"Dhamrai, Dhaka",1
-1,N/A,Jamuna Edible Oil Industries Ltd,"Godagari, Rajshahi",1
-1,N/A,Kadooglu yag san,Turkey,9
-1,N/A,Kucukbay Oil Industry Inc,Turkey,9
-1,N/A,Majumder Group of Industries,"Jessore, Khulna",1
-1,N/A,MRT Agro Product Ltd,"Gouripur, Mymensingh",1
-1,N/A,Mateo SA,Spain,7
-1,N/A,United Edible Oil Ltd,"Narayanganj, Dhaka",1
-1,N/A,Chemical Oil Refineries,Chittagong,1
-1,N/A,Borges Agricultural and Industrial Edible Oils,Spain,7
-1,N/A,Rashid Oil Mills Ltd,"Pabna, Rajshahi",1
-1,N/A,Khan Food & Aquarcy Ltd,"Pabna, Rajshahi",1
-1,N/A,Shabnam Vegetable Oil Industries Ltd,"Narayanganj, Dhaka",1
-1,N/A,Super Oil Refinery Ltd,"Narayanganj, Dhaka",1
-1,N/A,"Helvacidade Food, Pharma and  Chemicals Incorporation",Turkey,9
+Producer / Processor name,Company group,Food Vehicle,VehicleID,Admin 1,Admin 2,Admin 3,UDC,Thana,Upazila,Country of Producer / Processor,CountryID
+ACI Logistics Limited,N/A,E,1,Rajshahi,Rajshahi,Rajshahi,N/A,N/A,Godagari,Bangladesh,1
+Agrotech International Limited,Agrotech International Limited,E,1,Mymensingh,N/A,Mymensingh,N/A,N/A,N/A,Bangladesh,1
+Ali Natural Oil Mills & Agro Industries Limited,Ali Natural Oil Mills & Agro Industries Limited,E,1,Mymensingh,Jamalpur,N/A,N/A,N/A,Jamalpur,Bangladesh,1
+Bangladesh Edible Oil Limited,Bangladesh Edible Oil Limited,E,1,Narayanganj,Narayanganj,Narayanganj,N/A,N/A,Rupganj,Bangladesh,1
+Bashundhara Multi Food Products Limited,Bashundhara Group of Industries,E,1,Dhaka,Dhaka,Dhaka,Konda,South Keranigan,Keranigan,Bangladesh,1
+Bay Fishing Corporation Limited,TK Group of Industries,E,1,Chattogram,Chattogram,Chattogram,East Patenga,East Patenga,N/A,Bangladesh,1
+City Edible Oil Limited,City Group,E,1,Narayanganj,Narayanganj,N/A,North Rupshi,N/A,Rupganj,Bangladesh,1
+Globe Edible Oil Limited,Globe Pharma Group of Companies,E,1,Narayanganj,Narayanganj,Dhaka,Murapara,N/A,Rupganj,Bangladesh,1
+Green Oil Poultry & Feed Limited,Green Oil Poultry & Feed Industries,E,1,N/A,N/A,Rangpur,N/A,N/A,N/A,Bangladesh,1
+IFAD Multi Products Limited,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Jamuna Edible Oil Industries Limited,Jamuna Industrial Agro Group,E,1,N/A,N/A,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+Jamuna Edible Oil Industries Limited (Unit-2),Jamuna Industrial Agro Group,E,1,Rajshahi,Rajshahi,Rajshahi,Boiragitola,N/A,Godagari,Bangladesh,1
+Jasmir Super Oil Limited,Nurjahan Group,E,1,Chattogram,Chattogram,Chattogram,N/A,Pahartoli,N/A,Bangladesh,1
+KBC Agro Products Private Limited,Mahbub Group of Industries,E,1,Dhaka,Dhaka,Dhaka,N/A,N/A,Dhamrai,Bangladesh,1
+Marico Bangladesh Limited,N/A,E,1,Gazipur,Gazipur,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Mazumdar Bran Oil Mills Limited,Majumder Group,E,1,Khulna,Jessore,Khulna,N/A,N/A,N/A,Bangladesh,1
+Meer Banaspati Products,N/A,E,1,Chattogram,Chattogram,Chattogram,Kadurkhil,Boalkhali,N/A,Bangladesh,1
+Meghna Edible Oils Refinery Limited,Meghna Group of Industries,E,1,Dhaka,Narayanganj,Dhaka,N/A,N/A,Sonargaon,Bangladesh,1
+MM Vegitable Oil Products Limited,Mostafa Group of Industries,E,1,Chattogram,Chattogram,Chattogram,N/A,N/A,Sitakunda,Bangladesh,1
+MRT Agro Products BD Limited,MRT Group of Industries,E,1,Mymensing,Mymensing,Mymensing,N/A,N/A,Gouripur,Bangladesh,1
+Northern Consumer Products Limited,M & J Group,E,1,Rajshahi,Sirajganj,Rajshahi,N/A,Sirajganj,N/A,Bangladesh,1
+Rashid Oil Mills Limited,Rashid Group of Industries,E,1,Rajshahi,Pabna,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+Rupsha Edible Oil Refinery Limited,N/A,E,1,Khulna,Bagerhat,Khulna,N/A,N/A,N/A,Bangladesh,1
+S Alam Super Edible Oil Limited,SA Group of Industries,E,1,Chattogram,N/A,Chattogram,N/A,N/A,N/A,Bangladesh,1
+Sena Edible Oil Industries,N/A,E,1,Narayanganj,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+SG Oil Refineries Limited,N/A,E,1,Khulna,Bagerhat,Khulna,N/A,N/A,N/A,Bangladesh,1
+Shabnam Vegetable Oil Industries Limited,TK Group,E,1,Narayanganj,Narayanganj,Dhaka,N/A,N/A,Rupganj,Bangladesh,1
+Shakti Edible Products Limited,N/A,E,1,Narayanganj,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Shun Shing Edible Oil Limited,Bangladesh Edible Oil Limited,E,1,Khulna,Bagerhat,Khulna,N/A,N/A,N/A,Bangladesh,1
+Smile Food Products,N/A,E,1,Chittagong,Chittagong,Chittagong,North Patenga,N/A,N/A,Bangladesh,1
+Super Oil Refinery Limited,TK Group,E,1,Narayanganj,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Tamim Agro Industries Limited,Tamim Group,E,1,Rajshahi,Bogura,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+VOTT Oil Refineries Limited,City Group,E,1,N/A,N/A,Chattogram,Patenga,N/A,N/A,Bangladesh,1
+A Deshi Food Product Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+AMB Nosia Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Ara Food & Beverage,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Areej Veg Oils,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Chamak Food Products,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Confidence Edible Oil Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Gazi NPKS,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+JB Foods Service,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Jibon Food Products,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Kanon Enterprise,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+MH Edible Products Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Madina Oil Limited,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Monjil Multi Food Product Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+MS Modina Oil Mills,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Natore Agro Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+NM Food Product,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Olitalia,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Omi Food Product,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Pran Agro Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+President Food Products,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+RB Edible Food Product,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Rony Edible Oil & Food products Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Saif Edible Food Packing,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+MM Vegetable Oil Industries,N/A,E,1,N/A,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Deepa Food Products Ltd,N/A,E,1,N/A,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Tanveer/United Edible Oil Mills,N/A,E,1,N/A,Narayanganj,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Shun Shing Edible oil Ltd,N/A,E,1,N/A,Mongla,Khulna,N/A,N/A,N/A,Bangladesh,1
+Marine Edible Oil Ltd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+ACI Edible Oils Ltd,N/A,E,1,N/A,Sirajganj,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+AM Bran Oil Company Ltd,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Adani Wilmar Ltd,N/A,E,1,N/A,Gujarat,Gujarat,N/A,N/A,N/A,Bangladesh,1
+Emarald Oil Ltd,N/A,E,1,Mymensingh,Sherpur,Mymensingh,N/A,N/A,N/A,Bangladesh,1
+Lam Soon Edible Oil Industries Sdn Bhd,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Malaysia,5
+Green Oil Ltd,N/A,E,1,N/A,N/A,Rangpur,N/A,N/A,N/A,Bangladesh,1
+KBC Agro Products Ltd,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,Dhamrai,Bangladesh,1
+Jamuna Edible Oil Industries Ltd,N/A,E,1,N/A,N/A,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+Kadooglu yag san,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Kucukbay Oil Industry Inc,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Majumder Group of Industries,N/A,E,1,N/A,N/A,Khulna,N/A,N/A,N/A,Bangladesh,1
+MRT Agro Product Ltd,N/A,E,1,N/A,N/A,Mymensingh,N/A,N/A,N/A,Bangladesh,1
+Mateo SA,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Spain,7
+United Edible Oil Ltd,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Chemical Oil Refineries,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Borges Agricultural and Industrial Edible Oils,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+Rashid Oil Mills Ltd,N/A,E,1,N/A,N/A,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+Khan Food & Aquarcy Ltd,N/A,E,1,N/A,N/A,Rajshahi,N/A,N/A,N/A,Bangladesh,1
+Shabnam Vegetable Oil Industries Ltd,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,N/A,Bangladesh,1
+Super Oil Refinery Ltd,N/A,E,1,N/A,N/A,Dhaka,N/A,N/A,N/A,Bangladesh,1
+"Helvacidade Food, Pharma and Chemicals Incorporation",N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Turkey,9
+,N/A,E,1,N/A,N/A,N/A,N/A,N/A,N/A,Bangladesh,1
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,8,,,,,,,,,
+N/A,N/A,8,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,N/A,1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,"Mongla, Khulna",1,,,,,,,,,
+N/A,Chittagong,1,,,,,,,,,
+N/A,Chittagong,1,,,,,,,,,
+N/A,"Sirajganj, Rajshahi",1,,,,,,,,,
+N/A,"Jamalpur, Mymensingh",1,,,,,,,,,
+N/A,"Shagordighi, Dhaka",1,,,,,,,,,
+N/A,"Gujarat, India",4,,,,,,,,,
+N/A,"Mongla, Khulna",1,,,,,,,,,
+N/A,"Sherpur, Mymensingh",1,,,,,,,,,
+N/A,Malaysia,5,,,,,,,,,
+N/A,"Hajir Hat, Rangpur",1,,,,,,,,,
+N/A,"Dhamrai, Dhaka",1,,,,,,,,,
+N/A,"Godagari, Rajshahi",1,,,,,,,,,
+N/A,Turkey,9,,,,,,,,,
+N/A,Turkey,9,,,,,,,,,
+N/A,"Jessore, Khulna",1,,,,,,,,,
+N/A,"Gouripur, Mymensingh",1,,,,,,,,,
+N/A,Spain,7,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,Chittagong,1,,,,,,,,,
+N/A,Spain,7,,,,,,,,,
+N/A,"Pabna, Rajshahi",1,,,,,,,,,
+N/A,"Pabna, Rajshahi",1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,"Narayanganj, Dhaka",1,,,,,,,,,
+N/A,Turkey,9,,,,,,,,,
