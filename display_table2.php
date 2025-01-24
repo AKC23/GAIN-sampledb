@@ -10,29 +10,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     if ($tableName == 'producer_processor') {
         // Fetch all records from producer_processor with joined names
         $sql = "
-            SELECT p.ProcessorID, v.VehicleName, p.CompanyGroup, p.ProducerProcessorName, p.ProducerProcessorAddress, c.Country_Name 
-            FROM producer_processor p
-            JOIN FoodVehicle v ON p.VehicleID = v.VehicleID
-            JOIN country c ON p.Country_ID = c.Country_ID
+            SELECT pp.ProcessorID, e.`Producer / Processor name`, e.`Company group`, fv.VehicleName, e.`Admin 1`, e.`Admin 2`, e.`Admin 3`, c.Country_Name, pp.`Task Done By Entity`, pp.`Production capacity volume (MT/Y)`, pp.`% of capacity used`, pp.`Annual production/ supply Volume (MT/Y)`, pp.`BSTI Reference Number`
+            FROM producer_processor pp
+            JOIN entities e ON pp.EntityID = e.EntityID
+            JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
+            JOIN country c ON e.CountryID = c.Country_ID
         ";
         if (!empty($vehicleName)) {
-            $sql .= " WHERE v.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
         }
-        $sql .= " ORDER BY p.ProcessorID";
+        $sql .= " ORDER BY pp.ProcessorID";
         $result = $conn->query($sql);
 
         if ($result) {
             echo "<h1>Producer Processor Table Contents</h1>";
             echo "<table class='table table-bordered'>";
-            echo "<tr><th>ProcessorID</th><th>VehicleName</th><th>CompanyGroup</th><th>ProducerProcessorName</th><th>ProducerProcessorAddress</th><th>Country_Name</th></tr>";
+            echo "<tr><th>ProcessorID</th><th>Producer / Processor name</th><th>Company group</th><th>VehicleName</th><th>Admin 1</th><th>Admin 2</th><th>Admin 3</th><th>Country_Name</th><th>Task Done By Entity</th><th>Production capacity volume (MT/Y)</th><th>% of capacity used</th><th>Annual production/ supply Volume (MT/Y)</th><th>BSTI Reference Number</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['ProcessorID']}</td>";
+                echo "<td>{$row['Producer / Processor name']}</td>";
+                echo "<td>{$row['Company group']}</td>";
                 echo "<td>{$row['VehicleName']}</td>";
-                echo "<td>{$row['CompanyGroup']}</td>";
-                echo "<td>{$row['ProducerProcessorName']}</td>";
-                echo "<td>{$row['ProducerProcessorAddress']}</td>";
+                echo "<td>{$row['Admin 1']}</td>";
+                echo "<td>{$row['Admin 2']}</td>";
+                echo "<td>{$row['Admin 3']}</td>";
                 echo "<td>{$row['Country_Name']}</td>";
+                echo "<td>{$row['Task Done By Entity']}</td>";
+                echo "<td>{$row['Production capacity volume (MT/Y)']}</td>";
+                echo "<td>{$row['% of capacity used']}</td>";
+                echo "<td>{$row['Annual production/ supply Volume (MT/Y)']}</td>";
+                echo "<td>{$row['BSTI Reference Number']}</td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -164,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     } elseif ($tableName == 'entities') {
         // Fetch all records from entities with joined VehicleName and Country_Name
         $sql = "
-            SELECT e.EntityID, e.`Producer / Processor name`, e.`Company group`, fv.VehicleName, e.`Admin 1`, e.`Admin 2`, e.`Admin 3`, e.UDC, e.Thana, e.Upazila, c.Country_Name
+            SELECT e.EntityID, e.`Producer / Processor name`, e.`Company group`, fv.VehicleName, e.`Admin 1`, e.`Admin 2`, e.`Admin 3`, c.Country_Name
             FROM entities e
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
             JOIN country c ON e.CountryID = c.Country_ID
@@ -178,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         if ($result) {
             echo "<h1>Entities Table Contents</h1>";
             echo "<table class='table table-bordered'>";
-            echo "<tr><th>EntityID</th><th>Producer / Processor name</th><th>Company group</th><th>VehicleName</th><th>Admin 1</th><th>Admin 2</th><th>Admin 3</th><th>UDC</th><th>Thana</th><th>Upazila</th><th>Country_Name</th></tr>";
+            echo "<tr><th>EntityID</th><th>Producer / Processor name</th><th>Company group</th><th>VehicleName</th><th>Admin 1</th><th>Admin 2</th><th>Admin 3</th><th>Country_Name</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['EntityID']}</td>";
@@ -188,9 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['Admin 1']}</td>";
                 echo "<td>{$row['Admin 2']}</td>";
                 echo "<td>{$row['Admin 3']}</td>";
-                echo "<td>{$row['UDC']}</td>";
-                echo "<td>{$row['Thana']}</td>";
-                echo "<td>{$row['Upazila']}</td>";
                 echo "<td>{$row['Country_Name']}</td>";
                 echo "</tr>";
             }

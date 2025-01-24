@@ -18,13 +18,13 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE producer_processor (
         ProcessorID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        VehicleID INT(11) NOT NULL,
-        CompanyGroup VARCHAR(255),
-        ProducerProcessorName VARCHAR(255) NOT NULL,
-        ProducerProcessorAddress VARCHAR(255) NOT NULL,
-        Country_ID INT(11) NOT NULL,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (Country_ID) REFERENCES country(Country_ID)
+        EntityID INT(11) NOT NULL,
+        `Task Done By Entity` VARCHAR(255),
+        `Production capacity volume (MT/Y)` DECIMAL(10, 2),
+        `% of capacity used` DECIMAL(5, 2),
+        `Annual production/ supply Volume (MT/Y)` DECIMAL(10, 2),
+        `BSTI Reference Number` VARCHAR(255),
+        FOREIGN KEY (EntityID) REFERENCES entities(EntityID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -32,6 +32,17 @@ if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'producer_processor' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
+}
+
+// Get valid EntityIDs
+$validEntityIDs = array();
+$result = $conn->query("SELECT EntityID FROM entities");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validEntityIDs[] = $row['EntityID'];
+    }
+} else {
+    echo "Error getting valid EntityIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -95,53 +106,55 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 5) {
+        if (count($data) < 6) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $vehicleID = trim($data[0]);
-        $companyGroup = trim($data[1]);
-        $producerProcessorName = trim($data[2]);
-        $producerProcessorAddress = trim($data[3]);
-        $countryID = trim($data[4]);
+        $entityID = trim($data[0]);
+        $taskDoneByEntity = trim($data[1]);
+        $productionCapacityVolume = trim($data[2]);
+        $capacityUsed = trim($data[3]);
+        $annualProductionVolume = trim($data[4]);
+        $bstiReferenceNumber = trim($data[5]);
         
         // Remove any extra spaces between the name and comma
-        $companyGroup = preg_replace('/\s+,/', ',', $companyGroup);
-        $producerProcessorName = preg_replace('/\s+,/', ',', $producerProcessorName);
-        $producerProcessorAddress = preg_replace('/\s+,/', ',', $producerProcessorAddress);
+        $taskDoneByEntity = preg_replace('/\s+,/', ',', $taskDoneByEntity);
+        $bstiReferenceNumber = preg_replace('/\s+,/', ',', $bstiReferenceNumber);
         
         // Convert to proper types
-        $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
-        $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
-        if ($vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
-            echo "Error: Invalid VehicleID or Country_ID format in row $rowNumber. Skipping.<br>";
+        $entityID = filter_var($entityID, FILTER_VALIDATE_INT);
+        $productionCapacityVolume = filter_var($productionCapacityVolume, FILTER_VALIDATE_FLOAT);
+        $capacityUsed = filter_var($capacityUsed, FILTER_VALIDATE_FLOAT);
+        $annualProductionVolume = filter_var($annualProductionVolume, FILTER_VALIDATE_FLOAT);
+        if ($entityID === false || $entityID === null) {
+            echo "Error: Invalid EntityID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $companyGroup = mysqli_real_escape_string($conn, $companyGroup);
-        $producerProcessorName = mysqli_real_escape_string($conn, $producerProcessorName);
-        $producerProcessorAddress = mysqli_real_escape_string($conn, $producerProcessorAddress);
+        $taskDoneByEntity = mysqli_real_escape_string($conn, $taskDoneByEntity);
+        $bstiReferenceNumber = mysqli_real_escape_string($conn, $bstiReferenceNumber);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, CompanyGroup: '$companyGroup', ProducerProcessorName: '$producerProcessorName', ProducerProcessorAddress: '$producerProcessorAddress', Country_ID: $countryID<br>";
+        echo "EntityID: $entityID, Task Done By Entity: '$taskDoneByEntity', Production capacity volume (MT/Y): $productionCapacityVolume, % of capacity used: $capacityUsed, Annual production/ supply Volume (MT/Y): $annualProductionVolume, BSTI Reference Number: '$bstiReferenceNumber'<br>";
 
-        if (empty($producerProcessorName) || empty($producerProcessorAddress)) {
-            echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
+        // Validate EntityID
+        if (!in_array($entityID, $validEntityIDs)) {
+            echo "Error: EntityID $entityID does not exist in entities table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO producer_processor (VehicleID, CompanyGroup, ProducerProcessorName, ProducerProcessorAddress, Country_ID) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producer_processor (EntityID, `Task Done By Entity`, `Production capacity volume (MT/Y)`, `% of capacity used`, `Annual production/ supply Volume (MT/Y)`, `BSTI Reference Number`) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isssi", $vehicleID, $companyGroup, $producerProcessorName, $producerProcessorAddress, $countryID);
+        $stmt->bind_param("isddds", $entityID, $taskDoneByEntity, $productionCapacityVolume, $capacityUsed, $annualProductionVolume, $bstiReferenceNumber);
 
         if ($stmt->execute()) {
             $processorID = $conn->insert_id;
-            echo "✓ Inserted producer/processor '$producerProcessorName' with ID: $processorID<br>";
+            echo "✓ Inserted producer/processor with ID: $processorID<br>";
         } else {
             echo "Error inserting producer/processor: " . $stmt->error . "<br>";
         }
@@ -152,13 +165,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final producer_processor table contents:<br>";
-    $result = $conn->query("SELECT p.*, c.Country_Name 
-                           FROM producer_processor p 
-                           JOIN country c ON p.Country_ID = c.Country_ID 
-                           ORDER BY p.ProcessorID");
+    $result = $conn->query("SELECT pp.*, e.`Producer / Processor name` 
+                           FROM producer_processor pp 
+                           JOIN entities e ON pp.EntityID = e.EntityID 
+                           ORDER BY pp.ProcessorID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProcessorID']}, VehicleID: {$row['VehicleID']}, CompanyGroup: {$row['CompanyGroup']}, ProducerProcessorName: {$row['ProducerProcessorName']}, ProducerProcessorAddress: {$row['ProducerProcessorAddress']}, Country_ID: {$row['Country_ID']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['Task Done By Entity']}, Production capacity volume (MT/Y): {$row['Production capacity volume (MT/Y)']}, % of capacity used: {$row['% of capacity used']}, Annual production/ supply Volume (MT/Y): {$row['Annual production/ supply Volume (MT/Y)']}, BSTI Reference Number: {$row['BSTI Reference Number']}, Producer / Processor name: {$row['Producer / Processor name']}<br>";
         }
     }
 
