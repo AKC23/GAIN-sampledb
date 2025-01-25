@@ -73,7 +73,8 @@
 
         .form-group {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .form-group .btn {
@@ -109,6 +110,10 @@
                     });
                 }
             });
+
+            $('#update-table-btn').on('click', function() {
+                window.location.href = 'input_table.php';
+            });
         });
     </script>
 </head>
@@ -120,8 +125,9 @@
         <div class="card">
             <!-- Dropdown or other content on the left side -->
             <div style="display: flex; align-items: center;">
-                <form method="post" style="display: flex; flex-direction: column;">
+                <form method="post" style="display: flex; flex-direction: column; gap: 20px;">
                     <div class="form-group">
+                        <label for="tableName">Select a table</label>
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                         <?php
@@ -140,10 +146,10 @@
                             'entities',
                             'producer_skus',
                             'extraction_conversion',
-                            'total_local_crop_production',
-                            'total_local_food_production',
-                            'total_food_import',
-                            'total_crop_import',
+                            //'total_local_crop_production',
+                            //'total_local_food_production',
+                            //'total_food_import',
+                            //'total_crop_import',
                             //'crude_oil',
                             
                             'producer_processor',
@@ -152,27 +158,30 @@
                             'table1',
                             'table2'  // Ensure table2 is included
                         ];
+                        $selectedTable = $_POST['tableName'] ?? '';
                         while ($row = $result->fetch_array()) {
                             $table = $row[0];
+                            $selected = ($table == $selectedTable) ? 'selected' : '';
                             if (in_array($table, $validTables)) {
-                                echo "<option value='$table'>" . htmlspecialchars($table) . "</option>";
+                                echo "<option value='$table' $selected>" . htmlspecialchars($table) . "</option>";
                             }
                         }
                         ?>
                         </select>
-                        <div class="vehicle-selection mt-3">
-                            <div class="vehicle-selection-title">Vehicle Name</div>
-                            <div class="vehicle-options form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="vehicleName" value="Edible Oil"> Edible Oil
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="vehicleName" value="Wheat"> Wheat
-                                </label>
-                            </div>
+                    </div>
+                    <button type="button" id="update-table-btn" class="btn btn-secondary">Update Table</button>
+                    <div class="vehicle-selection">
+                        <div class="vehicle-selection-title">Vehicle Name</div>
+                        <div class="vehicle-options form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="vehicleName" value="Edible Oil"> Edible Oil
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="vehicleName" value="Wheat"> Wheat
+                            </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Show Table</button>
+                    <button type="submit" class="btn btn-primary">Show Table</button>
                 </form>
             </div>
 

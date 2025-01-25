@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
 
             // Base SQL query to retrieve the entire table securely
-            $sql = "SELECT * FROM " . $conn->real_escape_string($tableName);
+            $sql = "SELECT * FROM `" . $conn->real_escape_string($tableName) . "`";
             if (!empty($vehicleName)) {
                 $sql .= " WHERE VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
             }
