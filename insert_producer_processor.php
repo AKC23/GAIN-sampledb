@@ -19,11 +19,11 @@ $createTableSQL = "
     CREATE TABLE producer_processor (
         ProcessorID INT(11) AUTO_INCREMENT PRIMARY KEY,
         EntityID INT(11) NOT NULL,
-        `Task Done By Entity` VARCHAR(255),
-        `Production capacity volume (MT/Y)` DECIMAL(10, 2),
-        `% of capacity used` DECIMAL(5, 2),
-        `Annual production/ supply Volume (MT/Y)` DECIMAL(10, 2),
-        `BSTI Reference Number` VARCHAR(255),
+        TaskDoneByEntity VARCHAR(255),
+        Productioncapacityvolume DECIMAL(10, 2),
+        PercentageOfCapacityUsed DECIMAL(5, 2),
+        AnnualProductionSupplyVolume DECIMAL(10, 2),
+        BSTIReferenceNo VARCHAR(255),
         FOREIGN KEY (EntityID) REFERENCES entities(EntityID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -148,7 +148,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO producer_processor (EntityID, `Task Done By Entity`, `Production capacity volume (MT/Y)`, `% of capacity used`, `Annual production/ supply Volume (MT/Y)`, `BSTI Reference Number`) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producer_processor (EntityID, TaskDoneByEntity, Productioncapacityvolume, PercentageOfCapacityUsed, AnnualProductionSupplyVolume, BSTIReferenceNo) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("isddds", $entityID, $taskDoneByEntity, $productionCapacityVolume, $capacityUsed, $annualProductionVolume, $bstiReferenceNumber);
 
@@ -171,7 +171,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                            ORDER BY pp.ProcessorID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['Task Done By Entity']}, Production capacity volume (MT/Y): {$row['Production capacity volume (MT/Y)']}, % of capacity used: {$row['% of capacity used']}, Annual production/ supply Volume (MT/Y): {$row['Annual production/ supply Volume (MT/Y)']}, BSTI Reference Number: {$row['BSTI Reference Number']}, Producer / Processor name: {$row['Producer / Processor name']}<br>";
+            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['TaskDoneByEntity']}, Production capacity volume (MT/Y): {$row['Productioncapacityvolume']}, % of capacity used: {$row['PercentageOfCapacityUsed']}, Annual production/ supply Volume (MT/Y): {$row['AnnualProductionSupplyVolume']}, BSTI Reference Number: {$row['BSTIReferenceNo']}, Producer / Processor name: {$row['Producer / Processor name']}<br>";
         }
     }
 

@@ -18,9 +18,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE Geography (
         GeographyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `Admin Level 1 (City Corporation)` VARCHAR(50) NOT NULL,
-        `Admin Level 2 (District)` VARCHAR(50) NOT NULL,
-        `Admin Level 3 (Division)` VARCHAR(50) NOT NULL,
+        AdminLevel1 VARCHAR(50) NOT NULL,
+        AdminLevel2 VARCHAR(50) NOT NULL,
+        AdminLevel3 VARCHAR(50) NOT NULL,
         CountryID INT(11) NOT NULL,
         FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -152,7 +152,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO Geography (`Admin Level 1 (City Corporation)`, `Admin Level 2 (District)`, `Admin Level 3 (Division)`, CountryID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO Geography (AdminLevel1, AdminLevel2, AdminLevel3, CountryID) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sssi", $division, $district, $cityCorporation, $countryID);
 
@@ -175,8 +175,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                            ORDER BY g.GeographyID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['GeographyID']}, Division: {$row['Admin Level 1 (Division)']}, District: {$row['Admin Level 2 (District)']}, " .
-                 "City Corporation: {$row['Admin Level 3 (City Corporation)']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['GeographyID']}, Division: {$row['AdminLevel1']}, District: {$row['AdminLevel2']}, " .
+                 "City Corporation: {$row['AdminLevel3']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
         }
     }
 

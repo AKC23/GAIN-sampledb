@@ -18,12 +18,12 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE entities (
         EntityID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `Producer / Processor name` VARCHAR(255) NOT NULL,
-        `Company group` VARCHAR(255),
+        ProducerProcessorName VARCHAR(255) NOT NULL,
+        CompanyGroup VARCHAR(255),
         VehicleID INT(11) NOT NULL,
-        `Admin 1` VARCHAR(255),
-        `Admin 2` VARCHAR(255),
-        `Admin 3` VARCHAR(255),
+        AdminLevel1 VARCHAR(255),
+        AdminLevel2 VARCHAR(255),
+        AdminLevel3 VARCHAR(255),
         UDC VARCHAR(255),
         Thana VARCHAR(255),
         Upazila VARCHAR(255),
@@ -169,7 +169,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $upazila = mysqli_real_escape_string($conn, $upazila);
 
         // Debugging: Show extracted values
-        echo "Producer / Processor name: '$producerProcessorName', Company group: '$companyGroup', VehicleID: $vehicleID, Admin 1: '$admin1', Admin 2: '$admin2', Admin 3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
+        echo "ProducerProcessorName: '$producerProcessorName', CompanyGroup: '$companyGroup', VehicleID: $vehicleID, AdminLevel1: '$admin1', AdminLevel2: '$admin2', AdminLevel3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
 
         // Validate VehicleID and CountryID
         if (!in_array($vehicleID, $validVehicleIDs)) {
@@ -189,7 +189,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO entities (`Producer / Processor name`, `Company group`, VehicleID, `Admin 1`, `Admin 2`, `Admin 3`, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO entities (ProducerProcessorName, CompanyGroup, VehicleID, AdminLevel1, AdminLevel2, AdminLevel3, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssissssssi", $producerProcessorName, $companyGroup, $vehicleID, $admin1, $admin2, $admin3, $udc, $thana, $upazila, $countryID);
 
@@ -213,7 +213,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                            ORDER BY e.EntityID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['EntityID']}, Producer / Processor name: {$row['Producer / Processor name']}, Company group: {$row['Company group']}, VehicleID: {$row['VehicleID']}, Admin 1: {$row['Admin 1']}, Admin 2: {$row['Admin 2']}, Admin 3: {$row['Admin 3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['EntityID']}, ProducerProcessorName: {$row['ProducerProcessorName']}, CompanyGroup: {$row['CompanyGroup']}, VehicleID: {$row['VehicleID']}, AdminLevel1: {$row['AdminLevel1']}, AdminLevel2: {$row['AdminLevel2']}, AdminLevel3: {$row['AdminLevel3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
         }
     }
 

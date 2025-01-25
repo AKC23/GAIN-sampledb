@@ -126,6 +126,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                     }
                                     ?>
                                 </select>
+                            <?php elseif ($column == 'AdminLevel1'): ?>
+                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                    <?php
+                                    $result = $conn->query("SELECT AdminLevel1_ID, AdminLevel1_Name FROM AdminLevel1");
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='{$row['AdminLevel1_ID']}'>{$row['AdminLevel1_Name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            <?php elseif ($column == 'AdminLevel2'): ?>
+                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                    <?php
+                                    $result = $conn->query("SELECT AdminLevel2_ID, AdminLevel2_Name FROM AdminLevel2");
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='{$row['AdminLevel2_ID']}'>{$row['AdminLevel2_Name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            <?php elseif ($column == 'AdminLevel3'): ?>
+                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                    <?php
+                                    $result = $conn->query("SELECT AdminLevel3_ID, AdminLevel3_Name FROM AdminLevel3");
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='{$row['AdminLevel3_ID']}'>{$row['AdminLevel3_Name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            <?php elseif ($column == 'TaskDoneByEntity'): ?>
+                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                    <?php
+                                    $result = $conn->query("SELECT EntityID, EntityName FROM EntityTable");
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='{$row['EntityID']}'>{$row['EntityName']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            <?php elseif ($column == 'Productioncapacityvolume'): ?>
+                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                            <?php elseif ($column == 'PercentageOfCapacityUsed'): ?>
+                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                            <?php elseif ($column == 'AnnualProductionSupplyVolume'): ?>
+                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                            <?php elseif ($column == 'BSTIReferenceNo'): ?>
+                                <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                             <?php else: ?>
                                 <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                             <?php endif; ?>
