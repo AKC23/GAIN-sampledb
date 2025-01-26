@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oil & Wheat Database - BD</title>
     <!-- Bootstrap CSS -->
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -30,10 +29,10 @@
 
         .card {
             margin-top: 20px;
-            padding: 20px;
+            padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #c8e5bf;
-            border-radius: 8px;
+            border-radius: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -85,7 +84,7 @@
         }
 
         .table-responsive {
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -96,14 +95,15 @@
             z-index: 1;
         }
     </style>
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
             $('form').on('submit', function(event) {
                 event.preventDefault();
                 var tableName = $('select[name="tableName"]').val();
+                var countryName = $('select[name="countryName"]').val();
                 if (tableName) {
-                    $.post('display_table2.php', { tableName: tableName }, function(data) {
+                    $.post('display_table2.php', { tableName: tableName, countryName: countryName }, function(data) {
                         $('#table-view').html(data);
                     });
                 } else {
@@ -114,8 +114,20 @@
             $('input[name="vehicleName"]').on('change', function() {
                 var tableName = $('select[name="tableName"]').val();
                 var vehicleName = $('input[name="vehicleName"]:checked').val();
+                var countryName = $('select[name="countryName"]').val();
                 if (tableName) {
-                    $.post('display_table2.php', { tableName: tableName, vehicleName: vehicleName }, function(data) {
+                    $.post('display_table2.php', { tableName: tableName, vehicleName: vehicleName, countryName: countryName }, function(data) {
+                        $('#table-view').html(data);
+                    });
+                }
+            });
+
+            $('select[name="countryName"]').on('change', function() {
+                var tableName = $('select[name="tableName"]').val();
+                var vehicleName = $('input[name="vehicleName"]:checked').val();
+                var countryName = $('select[name="countryName"]').val();
+                if (tableName) {
+                    $.post('display_table2.php', { tableName: tableName, vehicleName: vehicleName, countryName: countryName }, function(data) {
                         $('#table-view').html(data);
                     });
                 }
@@ -137,46 +149,37 @@
             <div style="display: flex; align-items: center; width: 100%;">
                 <form method="post" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
                     <div class="form-group" style="flex: 1;">
-                        <label for="tableName">Select a table</label>
+                        <label for="tableName"><strong>Choose Table</strong></label>
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
-                        <?php
-                        require_once('db_connect.php');  // Changed to require_once
-                        $result = $conn->query("SHOW TABLES");
-                        $validTables = [
-                            'foodvehicle',
-                            'foodtype',
-                            'country',
-                            'processing_stage',
-                            'reference',  // Added reference table
-                            'measure_unit',
-                            'measure_period',
-                            'measure_currency',
-                            'geography',
-                            'entities',
-                            'producer_skus',
-                            'extraction_conversion',
-                            //'total_local_crop_production',
-                            //'total_local_food_production',
-                            //'total_food_import',
-                            //'total_crop_import',
-                            //'crude_oil',
-                            
-                            'producer_processor',
-                            'packaging_type',
-                            'distribution',  // Add this line
-                            'table1',
-                            'table2'  // Ensure table2 is included
-                        ];
-                        $selectedTable = $_POST['tableName'] ?? '';
-                        while ($row = $result->fetch_array()) {
-                            $table = $row[0];
-                            $selected = ($table == $selectedTable) ? 'selected' : '';
-                            if (in_array($table, $validTables)) {
-                                echo "<option value='$table' $selected>" . htmlspecialchars($table) . "</option>";
+                            <?php
+                            require_once('db_connect.php');  // Changed to require_once
+                            $result = $conn->query("SHOW TABLES");
+                            $validTables = [
+                                'foodvehicle',
+                                'foodtype',
+                                'country',
+                                'processing_stage',
+                                'reference',  // Added reference table
+                                'measure_unit',
+                                'measure_period',
+                                'measure_currency',
+                                'geography',
+                                'entities',
+                                'producer_skus',
+                                'extraction_conversion',
+                                'producer_processor',
+                                'packaging_type'
+                            ];
+                            $selectedTable = $_POST['tableName'] ?? '';
+                            while ($row = $result->fetch_array()) {
+                                $table = $row[0];
+                                $selected = ($table == $selectedTable) ? 'selected' : '';
+                                if (in_array($table, $validTables)) {
+                                    echo "<option value='$table' $selected>" . htmlspecialchars($table) . "</option>";
+                                }
                             }
-                        }
-                        ?>
+                            ?>
                         </select>
                         <button type="submit" class="btn btn-primary mt-2">Show Table</button>
                     </div>
@@ -197,13 +200,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="countryName"><strong>Choose Country</strong></label>
+                        <select name="countryName" id="countryName" class="form-control">
+                            <option value="">Select Country</option>
+                            <?php
+                            include('db_connect.php');
+                            $countryQuery = "SELECT DISTINCT Country_Name FROM country ORDER BY Country_Name";
+                            $countryResult = $conn->query($countryQuery);
+                            if ($countryResult->num_rows > 0) {
+                                while ($row = $countryResult->fetch_assoc()) {
+                                    echo "<option value='" . htmlspecialchars($row['Country_Name']) . "'>" . htmlspecialchars($row['Country_Name']) . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </form>
             </div>
 
             <!-- Last Updated Date and Time on the right side of the card -->
             <div class="current-time">
                 <?php
-                echo "Last Updated: January 15, 2025, 3:30 am";
+                echo "Last Updated: January 26, 2025, 12:30 am";
                 ?>
             </div>
         </div>
@@ -215,6 +234,7 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $tableName = $_POST['tableName'];
             $vehicleName = $_POST['vehicleName'] ?? '';
+            $countryName = $_POST['countryName'] ?? '';
             echo "<h2 class='text-left card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
 
             echo '<div class="table-responsive" style="margin-top: 20px;">';
@@ -224,9 +244,7 @@
                 echo "<div class='alert alert-danger'>Error displaying table: " . htmlspecialchars($e->getMessage()) . "</div>";
             }
             echo '</div>';
-        } else {
-            echo "<p class='text-center text-muted'>Select a table to display data.</p>";
-        }
+        } 
 
         try {
             // Ensure the connection is open before executing queries
@@ -240,16 +258,10 @@
 
                 // Update drop tables order to ensure proper dependency handling
                 $dropTables = [
-                    'total_local_crop_production',  // Should be created last
-                    'total_local_food_production',  // Should be created last
-                    'total_food_import',            // Should be created last
-                    'total_crop_import',            // Should be created last
                     'extraction_conversion', 
-                    //'crude_oil',
                     'entities',
                     'geography',
                     'producer_processor',
-                    'distribution',
                     'measure_unit',
                     'measure_period',
                     'measure_currency',
@@ -294,7 +306,6 @@
                 echo "<h3>Creating Level 2 tables...</h3>";
                 
                           
-                
                 include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
                 include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
 
@@ -316,9 +327,9 @@
                 // Move total_local_crop_production to the very end
                 // after all its dependencies are created
                 echo "<h3>Creating Final Level tables...</h3>";
-                include('insert_total_local_crop_production.php');
-                include('insert_total_local_food_production.php');
-                include('insert_distribution.php'); // Add this line
+                //include('insert_total_local_crop_production.php');
+                //include('insert_total_local_food_production.php');
+                // include('insert_distribution.php'); // Add this line
             } else {
                 throw new Exception("Database connection is closed.");
             }
@@ -339,9 +350,6 @@
     </div>
 
     <!-- Bootstrap and jQuery scripts -->
-    <!-- <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script> -->
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

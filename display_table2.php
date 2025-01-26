@@ -6,6 +6,7 @@ include('db_connect.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     $tableName = $_POST['tableName'];
     $vehicleName = $_POST['vehicleName'] ?? '';
+    $countryName = $_POST['countryName'] ?? '';
 
     if ($tableName == 'producer_processor') {
         // Fetch all records from producer_processor with joined names
@@ -16,8 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
             JOIN country c ON e.CountryID = c.Country_ID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY pp.ProcessorID";
         $result = $conn->query($sql);
@@ -53,8 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             FROM FoodType ft
             JOIN FoodVehicle fv ON ft.VehicleID = fv.VehicleID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY ft.FoodTypeID";
         $result = $conn->query($sql);
@@ -80,8 +95,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             FROM processing_stage ps
             JOIN FoodVehicle fv ON ps.VehicleID = fv.VehicleID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY ps.PSID";
         $result = $conn->query($sql);
@@ -107,8 +129,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             FROM geography g
             JOIN country c ON g.CountryID = c.Country_ID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE g.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "g.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY g.GeographyID";
         $result = $conn->query($sql);
@@ -138,8 +167,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             JOIN FoodType ft ON ec.FoodTypeID = ft.FoodTypeID
             JOIN reference r ON ec.ReferenceID = r.ReferenceID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY ec.ExtractionID";
         $result = $conn->query($sql);
@@ -172,8 +208,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
             JOIN country c ON e.CountryID = c.Country_ID
         ";
+        $conditions = [];
         if (!empty($vehicleName)) {
-            $sql .= " WHERE fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            $conditions[] = "fv.VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY e.EntityID";
         $result = $conn->query($sql);
@@ -209,8 +252,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
             // Base SQL query to retrieve the entire table securely
             $sql = "SELECT * FROM `" . $conn->real_escape_string($tableName) . "`";
+            $conditions = [];
             if (!empty($vehicleName)) {
-                $sql .= " WHERE VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+                $conditions[] = "VehicleName = '" . $conn->real_escape_string($vehicleName) . "'";
+            }
+            if (!empty($countryName)) {
+                $conditions[] = "Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            }
+            if (!empty($conditions)) {
+                $sql .= " WHERE " . implode(" AND ", $conditions);
             }
 
             // Execute the query

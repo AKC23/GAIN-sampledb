@@ -165,13 +165,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final producer_processor table contents:<br>";
-    $result = $conn->query("SELECT pp.*, e.`Producer / Processor name` 
+    $result = $conn->query("SELECT pp.*, e.ProducerProcessorName 
                            FROM producer_processor pp 
                            JOIN entities e ON pp.EntityID = e.EntityID 
                            ORDER BY pp.ProcessorID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['TaskDoneByEntity']}, Production capacity volume (MT/Y): {$row['Productioncapacityvolume']}, % of capacity used: {$row['PercentageOfCapacityUsed']}, Annual production/ supply Volume (MT/Y): {$row['AnnualProductionSupplyVolume']}, BSTI Reference Number: {$row['BSTIReferenceNo']}, Producer / Processor name: {$row['Producer / Processor name']}<br>";
+            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['TaskDoneByEntity']}, Production capacity volume (MT/Y): {$row['Productioncapacityvolume']}, % of capacity used: {$row['PercentageOfCapacityUsed']}, Annual production/ supply Volume (MT/Y): {$row['AnnualProductionSupplyVolume']}, BSTI Reference Number: {$row['BSTIReferenceNo']}, ProducerProcessorName: {$row['ProducerProcessorName']}<br>";
         }
     }
 

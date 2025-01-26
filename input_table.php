@@ -54,6 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         }
     }
 
+    // Ensure CountryID exists in the country table, but skip this check for the country table itself
+    if ($tableName != 'country') {
+        $countryID = $_POST['CountryID'] ?? '';
+        $countryCheckQuery = "SELECT Country_ID FROM country WHERE Country_ID = '" . $conn->real_escape_string($countryID) . "'";
+        $countryCheckResult = $conn->query($countryCheckQuery);
+        if ($countryCheckResult->num_rows == 0) {
+            echo "<div class='alert alert-danger'>Error: CountryID '" . htmlspecialchars($countryID) . "' does not exist in the country table.</div>";
+            exit;
+        }
+    }
+
     // Insert new record
     $columnsEscaped = array_map(function($col) use ($conn) {
         return "`" . $conn->real_escape_string($col) . "`";
@@ -69,6 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         echo "Error creating record: " . $conn->error;
     }
 }
+
+// Fetch company group if entityID is provided
+$companyGroup = '';
+$entityID = $_GET['entityID'] ?? '';
+if (!empty($entityID)) {
+    $entityID = $conn->real_escape_string($entityID);
+    $result = $conn->query("SELECT CompanyGroup FROM entities WHERE EntityID = '$entityID'");
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $companyGroup = $row['CompanyGroup'];
+    } else {
+        $companyGroup = "Error fetching company group: " . $conn->error;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,12 +103,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Table Data</title>
     <!-- Bootstrap CSS -->
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function updateForm() {
             const tableName = document.getElementById('tableName').value;
             window.location.href = 'input_table.php?table=' + tableName;
+        }
+
+        function updateCompanyGroup() {
+            const entityID = document.getElementById('EntityID').value;
+            window.location.href = 'input_table.php?table=producer_processor&entityID=' + entityID;
         }
     </script>
 </head>
@@ -95,11 +124,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <label for="tableName" class="form-label">Select a table</label>
                 <select id="tableName" name="tableName" class="form-control" onchange="updateForm()">
                     <option value="">Select a table</option>
-                    <?php foreach ($tables as $table): ?>
-                        <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($table); ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <?php
+                    $validTables = [
+                        'foodvehicle',
+                        'foodtype',
+                        'country',
+                        'processing_stage',
+                        'reference',
+                        'measure_unit',
+                        'measure_period',
+                        'measure_currency',
+                        'geography',
+                        'entities',
+                        'producer_skus',
+                        'extraction_conversion',
+                        'producer_processor',
+                        'packaging_type'
+                    ];
+                    foreach ($tables as $table):
+                        if (in_array($table, $validTables)): ?>
+                            <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($table); ?>
+                            </option>
+                        <?php endif;
+                    endforeach; ?>
                 </select>
             </div>
             <?php if (!empty($successMessage)): ?>
@@ -175,6 +223,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             }
                             ?>
                         </select>
+                    </div>
+                <?php elseif ($tableName == 'producer_processor'): ?>
+                    <div class="mb-3">
+                        <label for="ProcessorID" class="form-label">Processor ID</label>
+                        <input type="text" name="ProcessorID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="EntityID" class="form-label">Producer Processor Name</label>
+                        <select id="EntityID" name="EntityID" class="form-control" onchange="updateCompanyGroup()">
+                            <?php
+                            $result = $conn->query("SELECT EntityID, ProducerProcessorName FROM entities ORDER BY ProducerProcessorName ASC");
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='{$row['EntityID']}'>{$row['ProducerProcessorName']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CompanyGroup" class="form-label">Company Group</label>
+                        <input type="text" id="CompanyGroup" name="CompanyGroup" class="form-control" value="<?php echo htmlspecialchars($companyGroup); ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TaskDoneByEntity" class="form-label">Task Done By Entity</label>
+                        <select name="TaskDoneByEntity" class="form-control">
+                            <?php
+                            $result = $conn->query("SELECT DISTINCT TaskDoneByEntity FROM producer_processor ORDER BY TaskDoneByEntity ASC");
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='{$row['TaskDoneByEntity']}'>{$row['TaskDoneByEntity']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Productioncapacityvolume" class="form-label">Production Capacity Volume</label>
+                        <input type="number" name="Productioncapacityvolume" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="PercentageOfCapacityUsed" class="form-label">Percentage Of Capacity Used</label>
+                        <input type="number" name="PercentageOfCapacityUsed" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="AnnualProductionSupplyVolume" class="form-label">Annual Production Supply Volume</label>
+                        <input type="number" name="AnnualProductionSupplyVolume" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BSTIReferenceNo" class="form-label">BSTI Reference No</label>
+                        <input type="text" name="BSTIReferenceNo" class="form-control">
                     </div>
                 <?php else: ?>
                     <?php foreach ($columns as $column): ?>
