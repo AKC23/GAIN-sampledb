@@ -23,9 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>Producer Processor Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>ProcessorID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th><th>TaskDoneByEntity</th><th>Productioncapacityvolume</th><th>PercentageOfCapacityUsed</th><th>AnnualProductionSupplyVolume</th><th>BSTIReferenceNo</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>ProcessorID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th><th>TaskDoneByEntity</th><th>Productioncapacityvolume</th><th>PercentageOfCapacityUsed</th><th>AnnualProductionSupplyVolume</th><th>BSTIReferenceNo</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['ProcessorID']}</td>";
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['BSTIReferenceNo']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching producer_processor data: " . $conn->error;
         }
@@ -61,9 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>FoodType Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>FoodTypeID</th><th>FoodTypeName</th><th>VehicleName</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>FoodTypeID</th><th>FoodTypeName</th><th>VehicleName</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['FoodTypeID']}</td>";
@@ -71,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['VehicleName']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching FoodType data: " . $conn->error;
         }
@@ -89,9 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>Processing Stage Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>PSID</th><th>Processing_Stage</th><th>VehicleName</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>PSID</th><th>Processing_Stage</th><th>VehicleName</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['PSID']}</td>";
@@ -99,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['VehicleName']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching processing_stage data: " . $conn->error;
         }
@@ -117,9 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>Geography Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['GeographyID']}</td>";
@@ -129,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['Country_Name']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching Geography data: " . $conn->error;
         }
@@ -149,9 +145,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>Extraction Conversion Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>ExtractionID</th><th>ExtractionRate</th><th>VehicleName</th><th>FoodTypeName</th><th>Reference No.</th><th>Source</th><th>Link</th><th>Process to Obtain Data</th><th>Access Date</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>ExtractionID</th><th>ExtractionRate</th><th>VehicleName</th><th>FoodTypeName</th><th>Reference No.</th><th>Source</th><th>Link</th><th>Process to Obtain Data</th><th>Access Date</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['ExtractionID']}</td>";
@@ -165,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['Access Date']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching extraction_conversion data: " . $conn->error;
         }
@@ -184,9 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $result = $conn->query($sql);
 
         if ($result) {
-            echo "<h1>Entities Table Contents</h1>";
-            echo "<table class='table table-bordered'>";
-            echo "<tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr>";
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['EntityID']}</td>";
@@ -199,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['Country_Name']}</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</tbody></table></div>";
         } else {
             echo "Error fetching entities data: " . $conn->error;
         }
@@ -232,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
             // Check if there are results and display the table
             if ($result && $result->num_rows > 0) {
-                echo "<table class='table table-bordered table-striped'>";
+                echo "<div class='table-responsive'><table class='table table-bordered table-striped'>";
                 echo "<thead class='thead-dark'><tr>";
                 
                 // Fetch field names dynamically
@@ -261,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     }
                     echo "</tr>";
                 }
-                echo "</tbody></table>";
+                echo "</tbody></table></div>";
             } else {
                 echo "<div class='alert alert-warning'>No records found in the selected table.</div>";
             }

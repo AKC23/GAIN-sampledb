@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oil & Wheat Database - BD</title>
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -36,6 +37,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         .table-selection {
@@ -44,6 +46,7 @@
 
         .card-title {
             color: #17a2b8;
+            margin-bottom: 20px;
         }
 
         /* Table styling for borders */
@@ -85,6 +88,13 @@
             max-height: 400px;
             overflow-y: auto;
         }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 1;
+        }
     </style>
     <script src="js/jquery.min.js"></script>
     <script>
@@ -97,7 +107,7 @@
                         $('#table-view').html(data);
                     });
                 } else {
-                    $('#table-view').html('<p class="text-center text-muted">Select a table to display data.</p>');
+                    $('#table-view').html('');
                 }
             });
 
@@ -124,9 +134,9 @@
 
         <div class="card">
             <!-- Dropdown or other content on the left side -->
-            <div style="display: flex; align-items: center;">
-                <form method="post" style="display: flex; flex-direction: column; gap: 20px;">
-                    <div class="form-group">
+            <div style="display: flex; align-items: center; width: 100%;">
+                <form method="post" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+                    <div class="form-group" style="flex: 1;">
                         <label for="tableName">Select a table</label>
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
@@ -168,20 +178,25 @@
                         }
                         ?>
                         </select>
+                        <button type="submit" class="btn btn-primary mt-2">Show Table</button>
                     </div>
-                    <button type="button" id="update-table-btn" class="btn btn-secondary">Update Table</button>
-                    <div class="vehicle-selection">
+                    <div class="vehicle-selection" style="flex: 1;">
                         <div class="vehicle-selection-title">Vehicle Name</div>
-                        <div class="vehicle-options form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="vehicleName" value="Edible Oil"> Edible Oil
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="vehicleName" value="Wheat"> Wheat
-                            </label>
+                        <div class="vehicle-options">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="vehicleName" value="Edible Oil" id="vehicleEdibleOil">
+                                <label class="form-check-label" for="vehicleEdibleOil">
+                                    Edible Oil
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="vehicleName" value="Wheat" id="vehicleWheat">
+                                <label class="form-check-label" for="vehicleWheat">
+                                    Wheat
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Show Table</button>
                 </form>
             </div>
 
@@ -193,18 +208,16 @@
             </div>
         </div>
 
-        <div id="table-view">
-            <p class="text-center text-muted">Select a table to display data.</p>
-        </div>
+        <div id="table-view" style="margin-top: 20px;"></div>
 
         <?php
         // Display requested table (using the same connection)
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $tableName = $_POST['tableName'];
             $vehicleName = $_POST['vehicleName'] ?? '';
-            echo "<h2 class='text-center card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
+            echo "<h2 class='text-left card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
 
-            echo '<div class="table-responsive">';
+            echo '<div class="table-responsive" style="margin-top: 20px;">';
             try {
                 include('display_table2.php');
             } catch (Exception $e) {
@@ -326,8 +339,11 @@
     </div>
 
     <!-- Bootstrap and jQuery scripts -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

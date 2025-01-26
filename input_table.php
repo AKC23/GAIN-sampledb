@@ -44,6 +44,7 @@ if (!empty($tableName)) {
 }
 
 // Handle form submission
+$successMessage = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $tableName = $_POST['tableName'];
     $data = [];
@@ -60,7 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $valuesEscaped = array_map([$conn, 'real_escape_string'], array_values($data));
     $insertSQL = "INSERT INTO `" . $conn->real_escape_string($tableName) . "` (" . implode(", ", $columnsEscaped) . ") VALUES ('" . implode("', '", $valuesEscaped) . "')";
     if ($conn->query($insertSQL) === TRUE) {
-        echo "New record created successfully.";
+        $successMessage = "New record created successfully.";
+        // Reset tableName to show 'Select a table' option again
+        $tableName = '';
+        $columns = [];
     } else {
         echo "Error creating record: " . $conn->error;
     }
@@ -69,13 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Table Data</title>
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function updateForm() {
             const tableName = document.getElementById('tableName').value;
@@ -83,35 +87,105 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         }
     </script>
 </head>
-
 <body>
     <div class="container">
         <h1 class="center-title">Input Data for Table</h1>
         <form method="post">
-            <div class="form-group row">
-                <label for="tableName" class="col-sm-2 col-form-label">Select a table</label>
-                <div class="col-sm-10">
-                    <select id="tableName" name="tableName" class="form-control" onchange="updateForm()">
-                        <option value="">Select a table</option>
-                        <?php foreach ($tables as $table): ?>
-                            <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($table); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+            <div class="mb-3">
+                <label for="tableName" class="form-label">Select a table</label>
+                <select id="tableName" name="tableName" class="form-control" onchange="updateForm()">
+                    <option value="">Select a table</option>
+                    <?php foreach ($tables as $table): ?>
+                        <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($table); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
+            <?php if (!empty($successMessage)): ?>
+                <div class="alert alert-success" role="alert" style="color: red;">
+                    <?php echo $successMessage; ?>
+                </div>
+            <?php endif; ?>
             <?php if (!empty($columns)): ?>
-                <?php foreach ($columns as $column): ?>
-                    <div class="form-group row">
-                        <label for="<?php echo htmlspecialchars($column); ?>" class="col-sm-2 col-form-label"><?php echo htmlspecialchars($column); ?></label>
-                        <div class="col-sm-10">
+                <?php if ($tableName == 'country'): ?>
+                    <div class="mb-3">
+                        <label for="Country_ID" class="form-label">Country ID</label>
+                        <input type="text" name="Country_ID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Country_Name" class="form-label">Country Name</label>
+                        <input type="text" name="Country_Name" class="form-control">
+                    </div>
+                <?php elseif ($tableName == 'entities'): ?>
+                    <div class="mb-3">
+                        <label for="EntityID" class="form-label">Entity ID</label>
+                        <input type="text" name="EntityID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ProducerProcessorName" class="form-label">Producer / Processor Name</label>
+                        <input type="text" name="ProducerProcessorName" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="CompanyGroup" class="form-label">Company Group</label>
+                        <input type="text" name="CompanyGroup" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="VehicleID" class="form-label">Vehicle Name</label>
+                        <select name="VehicleID" class="form-control">
+                            <?php
+                            $result = $conn->query("SELECT VehicleID, VehicleName FROM FoodVehicle ORDER BY VehicleName ASC");
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='{$row['VehicleID']}'>{$row['VehicleName']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="AdminLevel1" class="form-label">Admin Level 1 (Zone / District)</label>
+                        <input type="text" name="AdminLevel1" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="AdminLevel2" class="form-label">Admin Level 2 (Region / State)</label>
+                        <input type="text" name="AdminLevel2" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="AdminLevel3" class="form-label">Admin Level 3 (City / City Corporation)</label>
+                        <input type="text" name="AdminLevel3" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="UDC" class="form-label">UDC</label>
+                        <input type="text" name="UDC" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Thana" class="form-label">Thana</label>
+                        <input type="text" name="Thana" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Upazila" class="form-label">Upazila</label>
+                        <input type="text" name="Upazila" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="CountryID" class="form-label">Country Name</label>
+                        <select name="CountryID" class="form-control">
+                            <?php
+                            $result = $conn->query("SELECT Country_ID, Country_Name FROM country ORDER BY Country_Name ASC");
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='{$row['Country_ID']}'>{$row['Country_Name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($columns as $column): ?>
+                        <div class="mb-3">
+                            <label for="<?php echo htmlspecialchars($column); ?>" class="form-label"><?php echo htmlspecialchars($column); ?></label>
                             <?php if ($column == $primaryKey): ?>
                                 <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
                             <?php elseif ($column == 'CountryID'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT Country_ID, Country_Name FROM country");
+                                    $result = $conn->query("SELECT Country_ID, Country_Name FROM country ORDER BY Country_Name ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['Country_ID']}'>{$row['Country_Name']}</option>";
                                     }
@@ -120,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php elseif ($column == 'VehicleID'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT VehicleID, VehicleName FROM FoodVehicle");
+                                    $result = $conn->query("SELECT VehicleID, VehicleName FROM FoodVehicle ORDER BY VehicleName ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['VehicleID']}'>{$row['VehicleName']}</option>";
                                     }
@@ -129,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php elseif ($column == 'AdminLevel1'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT AdminLevel1_ID, AdminLevel1_Name FROM AdminLevel1");
+                                    $result = $conn->query("SELECT AdminLevel1_ID, AdminLevel1_Name FROM AdminLevel1 ORDER BY AdminLevel1_Name ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['AdminLevel1_ID']}'>{$row['AdminLevel1_Name']}</option>";
                                     }
@@ -138,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php elseif ($column == 'AdminLevel2'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT AdminLevel2_ID, AdminLevel2_Name FROM AdminLevel2");
+                                    $result = $conn->query("SELECT AdminLevel2_ID, AdminLevel2_Name FROM AdminLevel2 ORDER BY AdminLevel2_Name ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['AdminLevel2_ID']}'>{$row['AdminLevel2_Name']}</option>";
                                     }
@@ -147,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php elseif ($column == 'AdminLevel3'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT AdminLevel3_ID, AdminLevel3_Name FROM AdminLevel3");
+                                    $result = $conn->query("SELECT AdminLevel3_ID, AdminLevel3_Name FROM AdminLevel3 ORDER BY AdminLevel3_Name ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['AdminLevel3_ID']}'>{$row['AdminLevel3_Name']}</option>";
                                     }
@@ -156,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php elseif ($column == 'TaskDoneByEntity'): ?>
                                 <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                     <?php
-                                    $result = $conn->query("SELECT EntityID, EntityName FROM EntityTable");
+                                    $result = $conn->query("SELECT EntityID, EntityName FROM EntityTable ORDER BY EntityName ASC");
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value='{$row['EntityID']}'>{$row['EntityName']}</option>";
                                     }
@@ -174,18 +248,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                 <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                             <?php endif; ?>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-                <div class="form-group row">
-                    <div class="col-sm-10 offset-sm-2">
-                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                    </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <div class="mb-3">
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </div>
             <?php endif; ?>
         </form>
     </div>
+    
+     <!-- Optional JavaScript and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="js/bootstrap.bundle.min.js"></script>
+<!--     <script src="js/bootstrap.bundle.min.js"></script> -->
 </body>
-
 </html>
