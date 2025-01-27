@@ -96,6 +96,12 @@
             background-color: #fff;
             z-index: 1;
         }
+
+        .download-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
@@ -113,10 +119,22 @@
                         countryName: countryName,
                         vehicleNames: vehicleNames
                     }, function(data) {
-                        $('#table-view').html(data);
+                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
+                        $('.download-buttons').show();
+                        $('#download-csv-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
+                        $('#download-excel-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
                     });
                 } else {
                     $('#table-view').html('');
+                    $('.download-buttons').hide();
                 }
             });
 
@@ -132,7 +150,18 @@
                         vehicleNames: vehicleNames,
                         countryName: countryName
                     }, function(data) {
-                        $('#table-view').html(data);
+                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
+                        $('.download-buttons').show();
+                        $('#download-csv-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
+                        $('#download-excel-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
                     });
                 }
             });
@@ -149,7 +178,18 @@
                         vehicleNames: vehicleNames,
                         countryName: countryName
                     }, function(data) {
-                        $('#table-view').html(data);
+                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
+                        $('.download-buttons').show();
+                        $('#download-csv-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
+                        $('#download-excel-btn').data('params', {
+                            tableName: tableName,
+                            countryName: countryName,
+                            vehicleNames: vehicleNames
+                        });
                     });
                 }
             });
@@ -157,6 +197,38 @@
             $('#update-table-btn').on('click', function() {
                 window.location.href = 'input_table.php';
             });
+
+            $('#download-csv-btn').on('click', function() {
+                var params = $(this).data('params');
+                if (params) {
+                    $('<form>', {
+                        "id": "downloadForm",
+                        "html": '<input type="hidden" name="format" value="csv">' +
+                                '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
+                                '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
+                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">',
+                        "action": 'download.php',
+                        "method": 'post'
+                    }).appendTo(document.body).submit();
+                }
+            });
+
+            $('#download-excel-btn').on('click', function() {
+                var params = $(this).data('params');
+                if (params) {
+                    $('<form>', {
+                        "id": "downloadForm",
+                        "html": '<input type="hidden" name="format" value="excel">' +
+                                '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
+                                '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
+                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">',
+                        "action": 'download.php',
+                        "method": 'post'
+                    }).appendTo(document.body).submit();
+                }
+            });
+
+            $('.download-buttons').hide();
         });
     </script>
 </head>
@@ -249,14 +321,17 @@
         </div>
 
         <div id="table-view" style="margin-top: 20px;"></div>
-
+        <div class="download-buttons">
+            <button id="download-csv-btn" class="btn btn-success">Download CSV</button>
+            <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
+        </div>
         <?php
         // Display requested table (using the same connection)
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $tableName = $_POST['tableName'];
             $vehicleNames = $_POST['vehicleName'] ?? [];
             $countryName = $_POST['countryName'] ?? '';
-            echo "<h2 class='text-left card-title'>Data Table: " . htmlspecialchars($tableName) . "</h2>";
+            echo "<h2 class='text-left card-title'>Table Name: " . htmlspecialchars($tableName) . "</h2>";
 
             echo '<div class="table-responsive" style="margin-top: 20px;">';
             try {
@@ -270,12 +345,12 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-        include('debug_table.php');
+        // include('debug_table.php');
 
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {
-            //$conn->close();
+            $conn->close();
             //echo "<br>Database connection closed successfully.<br>";
         }
 
