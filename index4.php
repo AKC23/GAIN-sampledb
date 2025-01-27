@@ -262,7 +262,8 @@
                                 'producer_skus',
                                 'extraction_conversion',
                                 'producer_processor',
-                                'packaging_type'
+                                'packaging_type',
+                                'distribution'
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -350,7 +351,7 @@
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {
-            $conn->close();
+            //$conn->close();
             //echo "<br>Database connection closed successfully.<br>";
         }
 

@@ -18,18 +18,16 @@ $createTableSQL = "
         VehicleID INT(11),
         DistributionChannel VARCHAR(255),
         SubDistributionChannel VARCHAR(255),
+        PeriodicalUnit VARCHAR(255),
+        SourceVolumeUnit VARCHAR(255),
         Volume FLOAT,
-        UnitID INT(11),
-        PeriodID INT(11),
+        YearType VARCHAR(50),
         StartYear VARCHAR(50),
+        StartMonth VARCHAR(50),
         EndYear VARCHAR(50),
-        AccessedDate DATE,
-        Source VARCHAR(255),
-        Link VARCHAR(255),
-        ProcessToObtainData VARCHAR(255),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (UnitID) REFERENCES measure_unit(UnitID),
-        FOREIGN KEY (PeriodID) REFERENCES measure_period(PeriodID)
+        EndMonth VARCHAR(50),
+        ReferenceNo VARCHAR(255),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -55,49 +53,49 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $vehicleID = (int)trim($data[0]);
-        $distChannel = mysqli_real_escape_string($conn, trim($data[1]));
-        $subDistChannel = mysqli_real_escape_string($conn, trim($data[2]));
-        $volume = (float)trim($data[3]);
-        $unitID = (int)trim($data[4]);
-        $periodID = (int)trim($data[5]);
-        $startYear = trim($data[6]);
-        $endYear = trim($data[7]);
-        $accessedDate = date('Y-m-d', strtotime(trim($data[8])));
-        $source = mysqli_real_escape_string($conn, trim($data[9]));
-        $link = mysqli_real_escape_string($conn, trim($data[10]));
-        $processData = mysqli_real_escape_string($conn, trim($data[11]));
+        $distChannel = mysqli_real_escape_string($conn, trim($data[0]));
+        $subDistChannel = mysqli_real_escape_string($conn, trim($data[1]));
+        $vehicleID = (int)trim($data[2]);
+        $periodicalUnit = mysqli_real_escape_string($conn, trim($data[4]));
+        $sourceVolumeUnit = mysqli_real_escape_string($conn, trim($data[5]));
+        $volume = (float)trim($data[6]);
+        $yearType = mysqli_real_escape_string($conn, trim($data[7]));
+        $startYear = trim($data[8]);
+        $startMonth = trim($data[9]);
+        $endYear = trim($data[10]);
+        $endMonth = trim($data[11]);
+        $referenceNo = mysqli_real_escape_string($conn, trim($data[12]));
 
         $sql = "INSERT INTO distribution (
-                    VehicleID,
                     DistributionChannel,
                     SubDistributionChannel,
+                    VehicleID,
+                    PeriodicalUnit,
+                    SourceVolumeUnit,
                     Volume,
-                    UnitID,
-                    PeriodID,
+                    YearType,
                     StartYear,
+                    StartMonth,
                     EndYear,
-                    AccessedDate,
-                    Source,
-                    Link,
-                    ProcessToObtainData
+                    EndMonth,
+                    ReferenceNo
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "issfiissssss",
-            $vehicleID,
+            "ssiissdsssss",
             $distChannel,
             $subDistChannel,
+            $vehicleID,
+            $periodicalUnit,
+            $sourceVolumeUnit,
             $volume,
-            $unitID,
-            $periodID,
+            $yearType,
             $startYear,
+            $startMonth,
             $endYear,
-            $accessedDate,
-            $source,
-            $link,
-            $processData
+            $endMonth,
+            $referenceNo
         );
 
         if ($stmt->execute()) {

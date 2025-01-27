@@ -27,6 +27,7 @@ try {
             'foodvehicle',
             'foodtype',
             'country',
+            'distribution',
             'table1', // Temporary tables
             'table2' // Temporary tables
         ];

@@ -400,6 +400,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "Error fetching entities data: " . $conn->error;
             }
         }
+    } elseif ($tableName == 'distribution') {
+        // Fetch all records from distribution with joined VehicleName
+        $sql = "
+            SELECT d.DistributionID, d.DistributionChannel, d.SubDistributionChannel, fv.VehicleName, d.PeriodicalUnit, d.SourceVolumeUnit, d.Volume, d.YearType, d.StartYear, d.StartMonth, d.EndYear, d.EndMonth, d.ReferenceNo
+            FROM distribution d 
+            LEFT JOIN foodvehicle fv ON d.VehicleID = fv.VehicleID
+        ";
+        $conditions = [];
+        if (!empty($countryName)) {
+            $conditions[] = "Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($vehicleNames)) {
+            $vehicleConditions = array_map(function($vehicle) use ($conn) {
+                return "fv.VehicleName = '" . $conn->real_escape_string($vehicle) . "'";
+            }, $vehicleNames);
+            $conditions[] = '(' . implode(' OR ', $vehicleConditions) . ')';
+        }
+        if (!empty($conditions)) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo '<thead><tr>';
+            $columns = array_keys($result->fetch_assoc());
+            foreach ($columns as $column) {
+                echo "<th>$column</th>";
+            }
+            echo '</tr></thead>';
+            $result->data_seek(0);
+            echo '<tbody>';
+            while ($row = $result->fetch_assoc()) {
+                echo '<tr>';
+                foreach ($row as $cell) {
+                    echo "<td>$cell</td>";
+                }
+                echo '</tr>';
+            }
+            echo '</tbody>';
+            echo '</table></div>';
+        } else {
+            echo 'No data found';
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
