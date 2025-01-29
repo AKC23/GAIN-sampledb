@@ -19,7 +19,7 @@ $createTableSQL = "
     CREATE TABLE entities (
         EntityID INT(11) AUTO_INCREMENT PRIMARY KEY,
         ProducerProcessorName VARCHAR(255) NOT NULL,
-        CompanyGroup VARCHAR(255),
+        CompanyID INT(11) NOT NULL,
         VehicleID INT(11) NOT NULL,
         AdminLevel1 VARCHAR(255),
         AdminLevel2 VARCHAR(255),
@@ -28,6 +28,7 @@ $createTableSQL = "
         Thana VARCHAR(255),
         Upazila VARCHAR(255),
         CountryID INT(11) NOT NULL,
+        FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
         FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -39,9 +40,19 @@ if ($conn->query($createTableSQL) === TRUE) {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid VehicleIDs and CountryIDs
+// Get valid CompanyIDs, VehicleIDs, and CountryIDs
+$validCompanyIDs = array();
 $validVehicleIDs = array();
 $validCountryIDs = array();
+
+$result = $conn->query("SELECT CompanyID FROM company");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validCompanyIDs[] = $row['CompanyID'];
+    }
+} else {
+    echo "Error getting valid CompanyIDs: " . $conn->error . "<br>";
+}
 
 $result = $conn->query("SELECT VehicleID FROM FoodVehicle");
 if ($result) {
@@ -130,7 +141,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Clean the data more thoroughly
         $producerProcessorName = trim($data[0]);
-        $companyGroup = trim($data[1]);
+        $companyID = trim($data[1]);
         $vehicleID = trim($data[3]);
         $admin1 = trim($data[4]);
         $admin2 = trim($data[5]);
@@ -141,7 +152,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $countryID = trim($data[11]);
         
         // Remove any extra spaces between the name and comma
-        $companyGroup = preg_replace('/\s+,/', ',', $companyGroup);
+        $companyID = preg_replace('/\s+,/', ',', $companyID);
         $producerProcessorName = preg_replace('/\s+,/', ',', $producerProcessorName);
         $admin1 = preg_replace('/\s+,/', ',', $admin1);
         $admin2 = preg_replace('/\s+,/', ',', $admin2);
@@ -151,15 +162,15 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $upazila = preg_replace('/\s+,/', ',', $upazila);
         
         // Convert to proper types
+        $companyID = filter_var($companyID, FILTER_VALIDATE_INT);
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
-        if ($vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
-            echo "Error: Invalid VehicleID or CountryID format in row $rowNumber. Skipping.<br>";
+        if ($companyID === false || $companyID === null || $vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
+            echo "Error: Invalid CompanyID, VehicleID or CountryID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $companyGroup = mysqli_real_escape_string($conn, $companyGroup);
         $producerProcessorName = mysqli_real_escape_string($conn, $producerProcessorName);
         $admin1 = mysqli_real_escape_string($conn, $admin1);
         $admin2 = mysqli_real_escape_string($conn, $admin2);
@@ -169,9 +180,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $upazila = mysqli_real_escape_string($conn, $upazila);
 
         // Debugging: Show extracted values
-        echo "ProducerProcessorName: '$producerProcessorName', CompanyGroup: '$companyGroup', VehicleID: $vehicleID, AdminLevel1: '$admin1', AdminLevel2: '$admin2', AdminLevel3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
+        echo "ProducerProcessorName: '$producerProcessorName', CompanyID: '$companyID', VehicleID: $vehicleID, AdminLevel1: '$admin1', AdminLevel2: '$admin2', AdminLevel3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
 
-        // Validate VehicleID and CountryID
+        // Validate CompanyID, VehicleID and CountryID
+        if (!in_array($companyID, $validCompanyIDs)) {
+            echo "Error: CompanyID $companyID does not exist in company table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
         if (!in_array($vehicleID, $validVehicleIDs)) {
             echo "Error: VehicleID $vehicleID does not exist in FoodVehicle table. Skipping row.<br>";
             $rowNumber++;
@@ -189,9 +205,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO entities (ProducerProcessorName, CompanyGroup, VehicleID, AdminLevel1, AdminLevel2, AdminLevel3, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO entities (ProducerProcessorName, CompanyID, VehicleID, AdminLevel1, AdminLevel2, AdminLevel3, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssissssssi", $producerProcessorName, $companyGroup, $vehicleID, $admin1, $admin2, $admin3, $udc, $thana, $upazila, $countryID);
+        $stmt->bind_param("siissssssi", $producerProcessorName, $companyID, $vehicleID, $admin1, $admin2, $admin3, $udc, $thana, $upazila, $countryID);
 
         if ($stmt->execute()) {
             $entityID = $conn->insert_id;
@@ -206,14 +222,15 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
     // After inserting, show what's in the table
     echo "<br>Final entities table contents:<br>";
-    $result = $conn->query("SELECT e.*, fv.VehicleName, c.Country_Name 
+    $result = $conn->query("SELECT e.*, c.CompanyGroup, fv.VehicleName, co.Country_Name 
                            FROM entities e 
+                           JOIN company c ON e.CompanyID = c.CompanyID 
                            JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID 
-                           JOIN country c ON e.CountryID = c.Country_ID 
+                           JOIN country co ON e.CountryID = co.Country_ID 
                            ORDER BY e.EntityID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['EntityID']}, ProducerProcessorName: {$row['ProducerProcessorName']}, CompanyGroup: {$row['CompanyGroup']}, VehicleID: {$row['VehicleID']}, AdminLevel1: {$row['AdminLevel1']}, AdminLevel2: {$row['AdminLevel2']}, AdminLevel3: {$row['AdminLevel3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['EntityID']}, ProducerProcessorName: {$row['ProducerProcessorName']}, CompanyID: {$row['CompanyID']}, CompanyGroup: {$row['CompanyGroup']}, VehicleID: {$row['VehicleID']}, AdminLevel1: {$row['AdminLevel1']}, AdminLevel2: {$row['AdminLevel2']}, AdminLevel3: {$row['AdminLevel3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
         }
     }
 

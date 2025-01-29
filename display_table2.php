@@ -11,11 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     if ($tableName == 'producer_processor') {
         // Fetch all records from producer_processor with joined names
         $sql = "
-            SELECT pp.ProcessorID, e.ProducerProcessorName, e.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, c.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
+            SELECT pp.ProcessorID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
             FROM producer_processor pp
             JOIN entities e ON pp.EntityID = e.EntityID
+            JOIN company c ON e.CompanyID = c.CompanyID
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-            JOIN country c ON e.CountryID = c.Country_ID
+            JOIN country co ON e.CountryID = co.Country_ID
         ";
         $conditions = [];
         if (!empty($vehicleNames)) {
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -55,11 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             // Show default data if no results found
             $sql = "
-                SELECT pp.ProcessorID, e.ProducerProcessorName, e.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, c.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
+                SELECT pp.ProcessorID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
                 FROM producer_processor pp
                 JOIN entities e ON pp.EntityID = e.EntityID
+                JOIN company c ON e.CompanyID = c.CompanyID
                 JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-                JOIN country c ON e.CountryID = c.Country_ID
+                JOIN country co ON e.CountryID = co.Country_ID
                 ORDER BY pp.ProcessorID
             ";
             $result = $conn->query($sql);
@@ -335,10 +337,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     } elseif ($tableName == 'entities') {
         // Fetch all records from entities with joined VehicleName and Country_Name
         $sql = "
-            SELECT e.EntityID, e.ProducerProcessorName, e.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, c.Country_Name
+            SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name
             FROM entities e
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-            JOIN country c ON e.CountryID = c.Country_ID
+            JOIN company c ON e.CompanyID = c.CompanyID
+            JOIN country co ON e.CountryID = co.Country_ID
         ";
         $conditions = [];
         if (!empty($vehicleNames)) {
@@ -346,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -373,10 +376,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             // Show default data if no results found
             $sql = "
-                SELECT e.EntityID, e.ProducerProcessorName, e.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, c.Country_Name
+                SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name
                 FROM entities e
                 JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-                JOIN country c ON e.CountryID = c.Country_ID
+                JOIN company c ON e.CompanyID = c.CompanyID
+                JOIN country co ON e.CountryID = co.Country_ID
                 ORDER BY e.EntityID
             ";
             $result = $conn->query($sql);
@@ -442,6 +446,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             echo '</table></div>';
         } else {
             echo 'No data found';
+        }
+    } elseif ($tableName == 'company') {
+        // Fetch all records from company
+        $sql = "SELECT * FROM company";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>CompanyID</th><th>CompanyGroup</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['CompanyID']}</td>";
+                echo "<td>{$row['CompanyGroup']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
         }
     } else {
         // Handle other tables

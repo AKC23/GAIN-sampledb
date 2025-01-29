@@ -28,6 +28,7 @@ try {
             'foodtype',
             'country',
             'distribution',
+            'company',
             'table1', // Temporary tables
             'table2' // Temporary tables
         ];
@@ -50,6 +51,7 @@ try {
         include('insert_measure_period.php');
         include('insert_measure_currency.php');
         include('insert_reference.php');  
+        include('insert_company.php');
 
         // Level 1: Tables that depend on base tables
         echo "<h3>Creating Level 1 tables...</h3>";
@@ -57,6 +59,7 @@ try {
         include('insert_processing_stage.php');     // Depends on: FoodVehicle
         include('insert_geography.php');     // Depends on: country
         include('insert_entities.php');   
+        
 
         // Level 2: Tables depending on Level 1
         echo "<h3>Creating Level 2 tables...</h3>";
@@ -67,8 +70,8 @@ try {
 
         // Level 3: Tables depending on Level 2
         echo "<h3>Creating Level 3 tables...</h3>";
-        include('insert_total_food_import.php');
-        include('insert_total_crop_import.php');
+        //include('insert_total_food_import.php');
+        //include('insert_total_crop_import.php');
         include('insert_packaging_type.php');
         
 
