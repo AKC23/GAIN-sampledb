@@ -259,7 +259,7 @@
                                 'measure_currency',
                                 'geography',
                                 'entities',
-                                'producer_skus',
+                                'producer_sku',  // Added producer_sku table
                                 'extraction_conversion',
                                 'producer_processor',
                                 'packaging_type',
@@ -347,7 +347,7 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-        include('debug_table.php');
+        // include('debug_table.php');
 
 
         // Ensure the connection is not closed before all operations are completed

@@ -22,7 +22,7 @@ try {
             'measure_currency',
             'processing_stage',
             'reference',  // Added reference table
-            'producer_skus',
+            'producer_sku',  // Added producer_sku table
             'packaging_type',
             'foodvehicle',
             'foodtype',
@@ -70,25 +70,20 @@ try {
 
         // Level 3: Tables depending on Level 2
         echo "<h3>Creating Level 3 tables...</h3>";
-        //include('insert_total_food_import.php');
-        //include('insert_total_crop_import.php');
         include('insert_packaging_type.php');
+        include('insert_producer_sku.php');  // Added producer_sku table
         
 
         // Level 4: Tables depending on Level 3 or complex dependencies
         
         // Level 5: Tables depending on Level 4 or complex dependencies
         echo "<h3>Creating Level 5 tables...</h3>";
-        //include('insert_table2.php'); // Add this line
-        //include('insert_table1.php'); // Add this line
         
 
         // Move total_local_crop_production to the very end
         // after all its dependencies are created
         echo "<h3>Creating Final Level tables...</h3>";
-        //include('insert_total_local_crop_production.php');
-        //include('insert_total_local_food_production.php');
-        // include('insert_distribution.php'); // Add this line
+        
     } else {
         throw new Exception("Database connection is closed.");
     }

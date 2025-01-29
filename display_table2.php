@@ -54,41 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
             echo "</tbody></table></div>";
         } else {
-            // Show default data if no results found
-            $sql = "
-                SELECT pp.ProcessorID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
-                FROM producer_processor pp
-                JOIN entities e ON pp.EntityID = e.EntityID
-                JOIN company c ON e.CompanyID = c.CompanyID
-                JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-                JOIN country co ON e.CountryID = co.Country_ID
-                ORDER BY pp.ProcessorID
-            ";
-            $result = $conn->query($sql);
-            if ($result) {
-                echo "<div class='table-responsive'><table class='table table-bordered'>";
-                echo "<thead><tr><th>ProcessorID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th><th>TaskDoneByEntity</th><th>Productioncapacityvolume</th><th>PercentageOfCapacityUsed</th><th>AnnualProductionSupplyVolume</th><th>BSTIReferenceNo</th></tr></thead><tbody>";
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>{$row['ProcessorID']}</td>";
-                    echo "<td>{$row['ProducerProcessorName']}</td>";
-                    echo "<td>{$row['CompanyGroup']}</td>";
-                    echo "<td>{$row['VehicleName']}</td>";
-                    echo "<td>{$row['AdminLevel1']}</td>";
-                    echo "<td>{$row['AdminLevel2']}</td>";
-                    echo "<td>{$row['AdminLevel3']}</td>";
-                    echo "<td>{$row['Country_Name']}</td>";
-                    echo "<td>{$row['TaskDoneByEntity']}</td>";
-                    echo "<td>{$row['Productioncapacityvolume']}</td>";
-                    echo "<td>{$row['PercentageOfCapacityUsed']}</td>";
-                    echo "<td>{$row['AnnualProductionSupplyVolume']}</td>";
-                    echo "<td>{$row['BSTIReferenceNo']}</td>";
-                    echo "</tr>";
-                }
-                echo "</tbody></table></div>";
-            } else {
-                echo "Error fetching producer_processor data: " . $conn->error;
-            }
+            echo "No data found";
         }
     } elseif ($tableName == 'foodtype') {
         // Fetch all records from FoodType with joined VehicleName
@@ -465,6 +431,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "No data found";
         }
+    } elseif ($tableName == 'producer_sku') {
+        // Fetch all records from producer_sku with joined names
+        $sql = "
+            SELECT ps.BrandID, ps.BrandName, c.CompanyGroup, ps.SKU, ps.Unit, pt.Packaging_Type, ps.Price, mc.CurrencySelection, r.`Reference No.`, r.Source, r.Link, r.`Process to Obtain Data`, r.`Access Date`
+            FROM producer_sku ps
+            JOIN company c ON ps.CompanyID = c.CompanyID
+            JOIN packaging_type pt ON ps.Packaging_Type_ID = pt.Packaging_Type_ID
+            JOIN measure_currency mc ON ps.CurrencyID = mc.CurrencyID
+            JOIN reference r ON ps.ReferenceID = r.ReferenceID
+        ";
+        $conditions = [];
+        if (!empty($vehicleNames)) {
+            $vehicleNamesEscaped = array_map([$conn, 'real_escape_string'], $vehicleNames);
+            $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+        $sql .= " ORDER BY ps.BrandID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>BrandID</th><th>BrandName</th><th>CompanyGroup</th><th>SKU</th><th>Unit</th><th>Packaging_Type</th><th>Price</th><th>CurrencySelection</th><th>Reference No.</th><th>Source</th><th>Link</th><th>Process to Obtain Data</th><th>Access Date</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['BrandID']}</td>";
+                echo "<td>{$row['BrandName']}</td>";
+                echo "<td>{$row['CompanyGroup']}</td>";
+                echo "<td>{$row['SKU']}</td>";
+                echo "<td>{$row['Unit']}</td>";
+                echo "<td>{$row['Packaging_Type']}</td>";
+                echo "<td>{$row['Price']}</td>";
+                echo "<td>{$row['CurrencySelection']}</td>";
+                echo "<td>{$row['Reference No.']}</td>";
+                echo "<td>{$row['Source']}</td>";
+                echo "<td>{$row['Link']}</td>";
+                echo "<td>{$row['Process to Obtain Data']}</td>";
+                echo "<td>{$row['Access Date']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
@@ -533,43 +547,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 }
                 echo "</tbody></table></div>";
             } else {
-                // Show default data if no results found
-                $sql = "SELECT * FROM `" . $conn->real_escape_string($tableName) . "` ORDER BY 1";
-                $result = $conn->query($sql);
-                if ($result) {
-                    echo "<div class='table-responsive'><table class='table table-bordered table-striped'>";
-                    echo "<thead class='thead-dark'><tr>";
-                    
-                    // Fetch field names dynamically
-                    $fieldTypes = [];
-                    while ($fieldinfo = $result->fetch_field()) {
-                        $fieldTypes[$fieldinfo->name] = $fieldinfo->type;
-                        echo "<th>" . htmlspecialchars($fieldinfo->name) . "</th>";
-                    }
-                    
-                    echo "</tr></thead><tbody>";
-
-                    // Display data rows
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        foreach ($row as $field => $data) {
-                            // Apply alignment based on column type
-                            $alignStyle = '';
-                            if ($fieldTypes[$field] == MYSQLI_TYPE_LONG) { // Integer values (assuming ID is integer)
-                                $alignStyle = "text-align: center;";
-                            } elseif (is_numeric($data)) { // Any numeric values (align right)
-                                $alignStyle = "text-align: center;";
-                            } else { // Default alignment for text (align left)
-                                $alignStyle = "text-align: center;";
-                            }
-                            echo "<td style='background-color: #f8f9fa; $alignStyle'>" . htmlspecialchars($data) . "</td>";
-                        }
-                        echo "</tr>";
-                    }
-                    echo "</tbody></table></div>";
-                } else {
-                    echo "<div class='alert alert-warning'>No records found in the selected table.</div>";
-                }
+                echo "<div class='alert alert-warning'>No records found in the selected table.</div>";
             }
         }
     }
