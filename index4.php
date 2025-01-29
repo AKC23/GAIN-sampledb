@@ -263,8 +263,10 @@
                                 'extraction_conversion',
                                 'producer_processor',
                                 'packaging_type',
-                                'distribution',
-                                'company'  // Added company table
+                                //'distribution',
+                                'company',  // Added company table
+                                'distribution_channel',  // Added distribution_channel table
+                                'sub_distribution_channel'  // Added sub_distribution_channel table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -347,7 +349,7 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-        // include('debug_table.php');
+         include('debug_table.php');
 
 
         // Ensure the connection is not closed before all operations are completed

@@ -27,8 +27,10 @@ try {
             'foodvehicle',
             'foodtype',
             'country',
-            'distribution',
+            //'distribution',
             'company',
+            'distribution_channel',  // Added distribution_channel table
+            'sub_distribution_channel',  // Added sub_distribution_channel table
             'table1', // Temporary tables
             'table2' // Temporary tables
         ];
@@ -78,6 +80,8 @@ try {
         
         // Level 5: Tables depending on Level 4 or complex dependencies
         echo "<h3>Creating Level 5 tables...</h3>";
+        include('insert_distribution_channel.php');  // Added distribution_channel table
+        include('insert_sub_distribution_channel.php');  // Added sub_distribution_channel table
         
 
         // Move total_local_crop_production to the very end

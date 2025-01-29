@@ -479,6 +479,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "No data found";
         }
+    } elseif ($tableName == 'distribution_channel') {
+        // Fetch all records from distribution_channel
+        $sql = "SELECT * FROM distribution_channel ORDER BY DistributionChannelID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>DistributionChannelID</th><th>DistributionChannelName</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['DistributionChannelID']}</td>";
+                echo "<td>{$row['DistributionChannelName']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'sub_distribution_channel') {
+        // Fetch all records from sub_distribution_channel
+        $sql = "SELECT * FROM sub_distribution_channel ORDER BY SubDistributionChannelID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>SubDistributionChannelID</th><th>SubDistributionChannelName</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['SubDistributionChannelID']}</td>";
+                echo "<td>{$row['SubDistributionChannelName']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
