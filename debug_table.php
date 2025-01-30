@@ -27,10 +27,11 @@ try {
             'foodvehicle',
             'foodtype',
             'country',
-            //'distribution',
+            'distribution',  // Added distribution table
             'company',
             'distribution_channel',  // Added distribution_channel table
             'sub_distribution_channel',  // Added sub_distribution_channel table
+            'year_type',  // Added year_type table
             'table1', // Temporary tables
             'table2' // Temporary tables
         ];
@@ -82,6 +83,8 @@ try {
         echo "<h3>Creating Level 5 tables...</h3>";
         include('insert_distribution_channel.php');  // Added distribution_channel table
         include('insert_sub_distribution_channel.php');  // Added sub_distribution_channel table
+        include('insert_year_type.php');  // Added year_type table
+        include('insert_distribution.php');  // Added distribution table
         
 
         // Move total_local_crop_production to the very end

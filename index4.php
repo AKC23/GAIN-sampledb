@@ -263,10 +263,11 @@
                                 'extraction_conversion',
                                 'producer_processor',
                                 'packaging_type',
-                                //'distribution',
+                                'distribution',  // Added distribution table
                                 'company',  // Added company table
                                 'distribution_channel',  // Added distribution_channel table
-                                'sub_distribution_channel'  // Added sub_distribution_channel table
+                                'sub_distribution_channel',  // Added sub_distribution_channel table
+                                'year_type'  // Added year_type table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -290,7 +291,7 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Wheat" id="vehicleWheat">
+                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Wheat Flour" id="vehicleWheat">
                                 <label class="form-check-label" for="vehicleWheat">
                                     Wheat
                                 </label>

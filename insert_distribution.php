@@ -15,19 +15,21 @@ if ($conn->query($dropTableSQL) === TRUE) {
 $createTableSQL = "
     CREATE TABLE distribution (
         DistributionID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        DistributionChannelID INT(11),
+        SubDistributionChannelID INT(11),
         VehicleID INT(11),
-        DistributionChannel VARCHAR(255),
-        SubDistributionChannel VARCHAR(255),
         PeriodicalUnit VARCHAR(255),
         SourceVolumeUnit VARCHAR(255),
         Volume FLOAT,
-        YearType VARCHAR(50),
+        YearTypeID INT(11),
         StartYear VARCHAR(50),
-        StartMonth VARCHAR(50),
         EndYear VARCHAR(50),
-        EndMonth VARCHAR(50),
-        ReferenceNo VARCHAR(255),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        ReferenceNo INT(11),
+        FOREIGN KEY (DistributionChannelID) REFERENCES distribution_channel(DistributionChannelID),
+        FOREIGN KEY (SubDistributionChannelID) REFERENCES sub_distribution_channel(SubDistributionChannelID),
+        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+        FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID),
+        FOREIGN KEY (ReferenceNo) REFERENCES reference(ReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -53,48 +55,75 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $distChannel = mysqli_real_escape_string($conn, trim($data[0]));
-        $subDistChannel = mysqli_real_escape_string($conn, trim($data[1]));
-        $vehicleID = (int)trim($data[2]);
-        $periodicalUnit = mysqli_real_escape_string($conn, trim($data[4]));
-        $sourceVolumeUnit = mysqli_real_escape_string($conn, trim($data[5]));
-        $volume = (float)trim($data[6]);
-        $yearType = mysqli_real_escape_string($conn, trim($data[7]));
-        $startYear = trim($data[8]);
-        $startMonth = trim($data[9]);
-        $endYear = trim($data[10]);
-        $endMonth = trim($data[11]);
-        $referenceNo = mysqli_real_escape_string($conn, trim($data[12]));
+        $distributionChannelID = (int)trim($data[0]);
+        $subDistributionChannelID = (int)trim($data[2]);
+        $vehicleID = (int)trim($data[4]);
+        $periodicalUnit = mysqli_real_escape_string($conn, trim($data[6]));
+        $sourceVolumeUnit = mysqli_real_escape_string($conn, trim($data[7]));
+        $volume = (float)trim($data[8]);
+        $yearTypeID = (int)trim($data[9]);
+        $startYear = trim($data[13]);
+        $endYear = trim($data[14]);
+        $referenceNo = (int)trim($data[15]);
+
+        // Check if referenced values exist
+        $checkDistributionChannel = $conn->query("SELECT 1 FROM distribution_channel WHERE DistributionChannelID = $distributionChannelID");
+        $checkSubDistributionChannel = $conn->query("SELECT 1 FROM sub_distribution_channel WHERE SubDistributionChannelID = $subDistributionChannelID");
+        $checkVehicle = $conn->query("SELECT 1 FROM FoodVehicle WHERE VehicleID = $vehicleID");
+        $checkYearType = $conn->query("SELECT 1 FROM year_type WHERE YearTypeID = $yearTypeID");
+        $checkReference = $conn->query("SELECT 1 FROM reference WHERE ReferenceID = $referenceNo");
+
+        if ($checkDistributionChannel->num_rows == 0) {
+            echo "Error: DistributionChannelID $distributionChannelID does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if ($checkSubDistributionChannel->num_rows == 0) {
+            echo "Error: SubDistributionChannelID $subDistributionChannelID does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if ($checkVehicle->num_rows == 0) {
+            echo "Error: VehicleID $vehicleID does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if ($checkYearType->num_rows == 0) {
+            echo "Error: YearTypeID $yearTypeID does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if ($checkReference->num_rows == 0) {
+            echo "Error: ReferenceNo $referenceNo does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
 
         $sql = "INSERT INTO distribution (
-                    DistributionChannel,
-                    SubDistributionChannel,
+                    DistributionChannelID,
+                    SubDistributionChannelID,
                     VehicleID,
                     PeriodicalUnit,
                     SourceVolumeUnit,
                     Volume,
-                    YearType,
+                    YearTypeID,
                     StartYear,
-                    StartMonth,
                     EndYear,
-                    EndMonth,
                     ReferenceNo
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "ssiissdsssss",
-            $distChannel,
-            $subDistChannel,
+            "iiissdisss",
+            $distributionChannelID,
+            $subDistributionChannelID,
             $vehicleID,
             $periodicalUnit,
             $sourceVolumeUnit,
             $volume,
-            $yearType,
+            $yearTypeID,
             $startYear,
-            $startMonth,
             $endYear,
-            $endMonth,
             $referenceNo
         );
 

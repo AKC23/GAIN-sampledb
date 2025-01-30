@@ -1,16 +1,16 @@
-Distribution Channel,Sub Distribution Channel,VehicleID,VehicleName,Periodical Unit,Source Volume Unit,Volume,Year Type,Start Year,Start Month,End Year,End Month,Reference No.
-Retail,Retail Shop,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Retail,Wholesale,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Retail,Supermarket,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Institutional,Government Ration,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Institutional,OMS,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Food Service,Bakery,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Food Service,Hotels,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Food Service,Restaurants,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-Food Service,Fast Food,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-B2B,Small 2nd level processing Manufacturing,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-B2B,Large Manufacturing,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-B2B,Bakery,1,Edible Oil,Month,Metric Ton,0,Calendar,2015,January,2015,December,1
-B2B,Small 2nd level processing Manufacturing,2,Wheat,Month,Metric Ton,0,Fiscal,2015,July,2016,June,1
-B2B,Large Manufacturing,2,Wheat,Month,Metric Ton,0,Fiscal,2015,July,2016,June,1
-B2B,Bakery,2,Wheat,Month,Metric Ton,0,Fiscal,2015,July,2016,June,1
+DistributionChannelID,Distribution Channel,SubDistributionChannelID,Sub Distribution Channel,VehicleID,VehicleName,Periodical Unit,Source Volume Unit,Volume,Year Type ID,Year Type,Start Month,End Month,Start Year,End Year,Reference No.
+1,Retail,1,Retail Shop,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+1,Retail,2,Wholesale,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+1,Retail,3,Supermarket,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+2,Institutional,4,Government Ration,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+2,Institutional,5,OMS,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+3,Food Service,6,Bakery,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+3,Food Service,7,Hotels,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+3,Food Service,8,Restaurants,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+3,Food Service,9,Fast Food,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+4,B2B,10,Small 2nd level processing Manufacturing,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+4,B2B,11,Large Manufacturing,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+4,B2B,6,Bakery,1,Edible Oil,Year,Metric Ton,0,2,Calendar,January,December,2015,2015,1
+4,B2B,10,Small 2nd level processing Manufacturing,2,Wheat,Year,Metric Ton,0,1,Fiscal,July,June,2015,2016,1
+4,B2B,11,Large Manufacturing,2,Wheat,Year,Metric Ton,0,1,Fiscal,July,June,2015,2016,1
+4,B2B,6,Bakery,2,Wheat,Year,Metric Ton,0,1,Fiscal,July,June,2015,2016,1

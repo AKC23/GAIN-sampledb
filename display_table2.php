@@ -371,47 +371,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
         }
     } elseif ($tableName == 'distribution') {
-        // Fetch all records from distribution with joined VehicleName
+        // Fetch all records from distribution with joined names
         $sql = "
-            SELECT d.DistributionID, d.DistributionChannel, d.SubDistributionChannel, fv.VehicleName, d.PeriodicalUnit, d.SourceVolumeUnit, d.Volume, d.YearType, d.StartYear, d.StartMonth, d.EndYear, d.EndMonth, d.ReferenceNo
-            FROM distribution d 
-            LEFT JOIN foodvehicle fv ON d.VehicleID = fv.VehicleID
+            SELECT d.DistributionID, dc.DistributionChannelName, sdc.SubDistributionChannelName, fv.VehicleName, d.PeriodicalUnit, d.SourceVolumeUnit, d.Volume, yt.YearType, d.StartYear, d.EndYear, r.`Reference No.`
+            FROM distribution d
+            JOIN distribution_channel dc ON d.DistributionChannelID = dc.DistributionChannelID
+            JOIN sub_distribution_channel sdc ON d.SubDistributionChannelID = sdc.SubDistributionChannelID
+            JOIN FoodVehicle fv ON d.VehicleID = fv.VehicleID
+            JOIN year_type yt ON d.YearTypeID = yt.YearTypeID
+            JOIN reference r ON d.ReferenceNo = r.ReferenceID
         ";
         $conditions = [];
-        if (!empty($countryName)) {
-            $conditions[] = "Country_Name = '" . $conn->real_escape_string($countryName) . "'";
-        }
         if (!empty($vehicleNames)) {
-            $vehicleConditions = array_map(function($vehicle) use ($conn) {
-                return "fv.VehicleName = '" . $conn->real_escape_string($vehicle) . "'";
-            }, $vehicleNames);
-            $conditions[] = '(' . implode(' OR ', $vehicleConditions) . ')';
+            $vehicleNamesEscaped = array_map([$conn, 'real_escape_string'], $vehicleNames);
+            $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
-            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+            $sql .= " WHERE " . implode(" AND ", $conditions);
         }
+        $sql .= " ORDER BY d.DistributionID";
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+
+        if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo '<thead><tr>';
-            $columns = array_keys($result->fetch_assoc());
-            foreach ($columns as $column) {
-                echo "<th>$column</th>";
-            }
-            echo '</tr></thead>';
-            $result->data_seek(0);
-            echo '<tbody>';
+            echo "<thead><tr><th>DistributionID</th><th>DistributionChannelName</th><th>SubDistributionChannelName</th><th>VehicleName</th><th>PeriodicalUnit</th><th>SourceVolumeUnit</th><th>Volume</th><th>YearType</th><th>StartYear</th><th>EndYear</th><th>Reference No.</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
-                echo '<tr>';
-                foreach ($row as $cell) {
-                    echo "<td>$cell</td>";
-                }
-                echo '</tr>';
+                echo "<tr>";
+                echo "<td>{$row['DistributionID']}</td>";
+                echo "<td>{$row['DistributionChannelName']}</td>";
+                echo "<td>{$row['SubDistributionChannelName']}</td>";
+                echo "<td>{$row['VehicleName']}</td>";
+                echo "<td>{$row['PeriodicalUnit']}</td>";
+                echo "<td>{$row['SourceVolumeUnit']}</td>";
+                echo "<td>{$row['Volume']}</td>";
+                echo "<td>{$row['YearType']}</td>";
+                echo "<td>{$row['StartYear']}</td>";
+                echo "<td>{$row['EndYear']}</td>";
+                echo "<td>{$row['Reference No.']}</td>";
+                echo "</tr>";
             }
-            echo '</tbody>';
-            echo '</table></div>';
+            echo "</tbody></table></div>";
         } else {
-            echo 'No data found';
+            echo "No data found";
         }
     } elseif ($tableName == 'company') {
         // Fetch all records from company
@@ -509,6 +513,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<tr>";
                 echo "<td>{$row['SubDistributionChannelID']}</td>";
                 echo "<td>{$row['SubDistributionChannelName']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'year_type') {
+        // Fetch all records from year_type
+        $sql = "SELECT * FROM year_type ORDER BY YearTypeID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>YearTypeID</th><th>YearType</th><th>StartMonth</th><th>EndMonth</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['YearTypeID']}</td>";
+                echo "<td>{$row['YearType']}</td>";
+                echo "<td>{$row['StartMonth']}</td>";
+                echo "<td>{$row['EndMonth']}</td>";
                 echo "</tr>";
             }
             echo "</tbody></table></div>";
