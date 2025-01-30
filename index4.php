@@ -113,23 +113,27 @@
                 var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
                     return this.value;
                 }).get();
+                var yearType = $('select[name="yearType"]').val();
                 if (tableName) {
                     $.post('display_table2.php', {
                         tableName: tableName,
                         countryName: countryName,
-                        vehicleNames: vehicleNames
+                        vehicleNames: vehicleNames,
+                        yearType: yearType
                     }, function(data) {
                         $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
                             tableName: tableName,
                             countryName: countryName,
-                            vehicleNames: vehicleNames
+                            vehicleNames: vehicleNames,
+                            yearType: yearType
                         });
                         $('#download-excel-btn').data('params', {
                             tableName: tableName,
                             countryName: countryName,
-                            vehicleNames: vehicleNames
+                            vehicleNames: vehicleNames,
+                            yearType: yearType
                         });
                     });
                 } else {
@@ -138,57 +142,33 @@
                 }
             });
 
-            $('input[name="vehicleName[]"]').on('change', function() {
+            $('input[name="vehicleName[]"], select[name="yearType"]').on('change', function() {
                 var tableName = $('select[name="tableName"]').val();
                 var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
                     return this.value;
                 }).get();
                 var countryName = $('select[name="countryName"]').val();
+                var yearType = $('select[name="yearType"]').val();
                 if (tableName) {
                     $.post('display_table2.php', {
                         tableName: tableName,
                         vehicleNames: vehicleNames,
-                        countryName: countryName
+                        countryName: countryName,
+                        yearType: yearType
                     }, function(data) {
                         $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
                             tableName: tableName,
                             countryName: countryName,
-                            vehicleNames: vehicleNames
+                            vehicleNames: vehicleNames,
+                            yearType: yearType
                         });
                         $('#download-excel-btn').data('params', {
                             tableName: tableName,
                             countryName: countryName,
-                            vehicleNames: vehicleNames
-                        });
-                    });
-                }
-            });
-
-            $('select[name="countryName"]').on('change', function() {
-                var tableName = $('select[name="tableName"]').val();
-                var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
-                    return this.value;
-                }).get();
-                var countryName = $('select[name="countryName"]').val();
-                if (tableName) {
-                    $.post('display_table2.php', {
-                        tableName: tableName,
-                        vehicleNames: vehicleNames,
-                        countryName: countryName
-                    }, function(data) {
-                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
-                        $('.download-buttons').show();
-                        $('#download-csv-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames
-                        });
-                        $('#download-excel-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames
+                            vehicleNames: vehicleNames,
+                            yearType: yearType
                         });
                     });
                 }
@@ -206,7 +186,8 @@
                         "html": '<input type="hidden" name="format" value="csv">' +
                                 '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
                                 '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
-                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">',
+                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">' +
+                                '<input type="hidden" name="yearType" value="' + params.yearType + '">',
                         "action": 'download.php',
                         "method": 'post'
                     }).appendTo(document.body).submit();
@@ -221,7 +202,8 @@
                         "html": '<input type="hidden" name="format" value="excel">' +
                                 '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
                                 '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
-                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">',
+                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">' +
+                                '<input type="hidden" name="yearType" value="' + params.yearType + '">',
                         "action": 'download.php',
                         "method": 'post'
                     }).appendTo(document.body).submit();
@@ -267,7 +249,8 @@
                                 'company',  // Added company table
                                 'distribution_channel',  // Added distribution_channel table
                                 'sub_distribution_channel',  // Added sub_distribution_channel table
-                                'year_type'  // Added year_type table
+                                'year_type',  // Added year_type table
+                                'population'  // Added population table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -299,6 +282,14 @@
                         </div>
                     </div>
                     <div class="form-group" style="flex: 1;">
+                        <label for="yearType"><strong>Year Type</strong></label>
+                        <select name="yearType" id="yearType" class="form-control">
+                            <option value="">Select Year Type</option>
+                            <option value="Fiscal">Fiscal</option>
+                            <option value="Calendar">Calendar</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
                         <label for="countryName"><strong>Choose Country</strong></label>
                         <select name="countryName" id="countryName" class="form-control">
                             <option value="">Select Country</option>
@@ -320,7 +311,7 @@
             <!-- Last Updated Date and Time on the right side of the card -->
             <div class="current-time">
                 <?php
-                echo "Last Updated: January 26, 2025, 12:30 am";
+                echo "Last Updated: January 30, 2025, 12:50 pm";
                 ?>
             </div>
         </div>
@@ -336,6 +327,7 @@
             $tableName = $_POST['tableName'];
             $vehicleNames = $_POST['vehicleName'] ?? [];
             $countryName = $_POST['countryName'] ?? '';
+            $yearType = $_POST['yearType'] ?? '';
             echo "<h2 class='text-left card-title'>Table Name: " . htmlspecialchars($tableName) . "</h2>";
 
             echo '<div class="table-responsive" style="margin-top: 20px;">';
@@ -350,7 +342,7 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-         include('debug_table.php');
+        include('debug_table.php');
 
 
         // Ensure the connection is not closed before all operations are completed

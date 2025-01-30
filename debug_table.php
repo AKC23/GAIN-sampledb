@@ -32,6 +32,7 @@ try {
             'distribution_channel',  // Added distribution_channel table
             'sub_distribution_channel',  // Added sub_distribution_channel table
             'year_type',  // Added year_type table
+            'population',  // Added population table
             'table1', // Temporary tables
             'table2' // Temporary tables
         ];
@@ -85,6 +86,7 @@ try {
         include('insert_sub_distribution_channel.php');  // Added sub_distribution_channel table
         include('insert_year_type.php');  // Added year_type table
         include('insert_distribution.php');  // Added distribution table
+        include('insert_population.php');  // Added population table
         
 
         // Move total_local_crop_production to the very end

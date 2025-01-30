@@ -24,12 +24,12 @@ $createTableSQL = "
         YearTypeID INT(11),
         StartYear VARCHAR(50),
         EndYear VARCHAR(50),
-        ReferenceNo INT(11),
+        ReferenceID INT(11),
         FOREIGN KEY (DistributionChannelID) REFERENCES distribution_channel(DistributionChannelID),
         FOREIGN KEY (SubDistributionChannelID) REFERENCES sub_distribution_channel(SubDistributionChannelID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
         FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID),
-        FOREIGN KEY (ReferenceNo) REFERENCES reference(ReferenceID)
+        FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -64,14 +64,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $yearTypeID = (int)trim($data[9]);
         $startYear = trim($data[13]);
         $endYear = trim($data[14]);
-        $referenceNo = (int)trim($data[15]);
+        $referenceID = (int)trim($data[15]);
 
         // Check if referenced values exist
         $checkDistributionChannel = $conn->query("SELECT 1 FROM distribution_channel WHERE DistributionChannelID = $distributionChannelID");
         $checkSubDistributionChannel = $conn->query("SELECT 1 FROM sub_distribution_channel WHERE SubDistributionChannelID = $subDistributionChannelID");
         $checkVehicle = $conn->query("SELECT 1 FROM FoodVehicle WHERE VehicleID = $vehicleID");
         $checkYearType = $conn->query("SELECT 1 FROM year_type WHERE YearTypeID = $yearTypeID");
-        $checkReference = $conn->query("SELECT 1 FROM reference WHERE ReferenceID = $referenceNo");
+        $checkReference = $conn->query("SELECT 1 FROM reference WHERE ReferenceID = $referenceID");
 
         if ($checkDistributionChannel->num_rows == 0) {
             echo "Error: DistributionChannelID $distributionChannelID does not exist. Skipping row $rowNumber.<br>";
@@ -94,7 +94,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
         if ($checkReference->num_rows == 0) {
-            echo "Error: ReferenceNo $referenceNo does not exist. Skipping row $rowNumber.<br>";
+            echo "Error: ReferenceID $referenceID does not exist. Skipping row $rowNumber.<br>";
             $rowNumber++;
             continue;
         }
@@ -109,7 +109,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                     YearTypeID,
                     StartYear,
                     EndYear,
-                    ReferenceNo
+                    ReferenceID
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
@@ -124,7 +124,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $yearTypeID,
             $startYear,
             $endYear,
-            $referenceNo
+            $referenceID
         );
 
         if ($stmt->execute()) {

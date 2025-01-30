@@ -23,11 +23,11 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE reference (
         ReferenceID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `Reference No.` INT(11) NOT NULL,
+        ReferenceNumber INT(11) NOT NULL,
         Source VARCHAR(255) NOT NULL,
         Link VARCHAR(255),
-        `Process to Obtain Data` VARCHAR(255),
-        `Access Date` DATE
+        ProcessToObtainData VARCHAR(255),
+        AccessDate DATE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -105,7 +105,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         // Clean the data more thoroughly
-        $referenceNo = trim($data[0]);
+        $referenceNumber = trim($data[0]);
         $source = trim($data[1]);
         $link = trim($data[2]);
         $processToObtainData = trim($data[3]);
@@ -117,9 +117,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $processToObtainData = preg_replace('/\s+,/', ',', $processToObtainData);
         
         // Convert to proper types
-        $referenceNo = filter_var($referenceNo, FILTER_VALIDATE_INT);
-        if ($referenceNo === false || $referenceNo === null) {
-            echo "Error: Invalid Reference No. format in row $rowNumber: '{$data[0]}'. Skipping.<br>";
+        $referenceNumber = filter_var($referenceNumber, FILTER_VALIDATE_INT);
+        if ($referenceNumber === false || $referenceNumber === null) {
+            echo "Error: Invalid Reference Number format in row $rowNumber: '{$data[0]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
@@ -130,7 +130,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $accessDate = mysqli_real_escape_string($conn, $accessDate);
 
         // Debugging: Show extracted values
-        echo "Reference No.: $referenceNo, Source: '$source', Link: '$link', Process to Obtain Data: '$processToObtainData', Access Date: '$accessDate'<br>";
+        echo "Reference Number: $referenceNumber, Source: '$source', Link: '$link', Process to Obtain Data: '$processToObtainData', Access Date: '$accessDate'<br>";
 
         if (empty($source) || empty($processToObtainData) || empty($accessDate)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
@@ -138,9 +138,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO reference (`Reference No.`, Source, Link, `Process to Obtain Data`, `Access Date`) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO reference (ReferenceNumber, Source, Link, ProcessToObtainData, AccessDate) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("issss", $referenceNo, $source, $link, $processToObtainData, $accessDate);
+        $stmt->bind_param("issss", $referenceNumber, $source, $link, $processToObtainData, $accessDate);
 
         if ($stmt->execute()) {
             $referenceID = $conn->insert_id;
@@ -158,7 +158,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM reference ORDER BY ReferenceID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ReferenceID']}, Reference No.: {$row['Reference No.']}, Source: {$row['Source']}, Link: {$row['Link']}, Process to Obtain Data: {$row['Process to Obtain Data']}, Access Date: {$row['Access Date']}<br>";
+            echo "ID: {$row['ReferenceID']}, Reference Number: {$row['ReferenceNumber']}, Source: {$row['Source']}, Link: {$row['Link']}, Process to Obtain Data: {$row['ProcessToObtainData']}, Access Date: {$row['AccessDate']}<br>";
         }
     }
 
