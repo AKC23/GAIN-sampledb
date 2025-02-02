@@ -236,7 +236,8 @@
                                 'country',
                                 'processing_stage',
                                 'reference',  // Added reference table
-                                'measure_unit',
+                                'measure_unit1',
+                                'measure_unit2',
                                 'measure_period',
                                 'measure_currency',
                                 'geography',
@@ -251,6 +252,7 @@
                                 'sub_distribution_channel',  // Added sub_distribution_channel table
                                 'year_type',  // Added year_type table
                                 'population'  // Added population table
+                                
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -343,7 +345,6 @@
 
         // Include debug_table.php for debugging information
         include('debug_table.php');
-
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {

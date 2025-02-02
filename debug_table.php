@@ -17,7 +17,8 @@ try {
             'entities',
             'geography',
             'producer_processor',
-            'measure_unit',
+            'measure_unit2',
+            'measure_unit1',
             'measure_period',
             'measure_currency',
             'processing_stage',
@@ -51,7 +52,8 @@ try {
         echo "<h3>Creating base tables (Level 0)...</h3>";
         include('insert_foodvehicle.php');
         include('insert_country.php');
-        include('insert_measure_unit.php');
+        include('insert_measure_unit2.php');
+        include('insert_measure_unit1.php');
         include('insert_measure_period.php');
         include('insert_measure_currency.php');
         include('insert_reference.php');  

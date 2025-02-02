@@ -594,6 +594,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         } else {
             echo "No data found";
         }
+    } elseif ($tableName == 'measure_unit1') {
+        // Fetch all records from measure_unit1
+        $sql = "SELECT UCID, SupplyVolumeUnit, PeriodicalUnit, UnitValue FROM measure_unit1 ORDER BY UCID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>UCID</th><th>SupplyVolumeUnit</th><th>PeriodicalUnit</th><th>UnitValue</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['UCID']}</td>";
+                echo "<td>{$row['SupplyVolumeUnit']}</td>";
+                echo "<td>{$row['PeriodicalUnit']}</td>";
+                echo "<td>{$row['UnitValue']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'measure_unit2') {
+        // Fetch all records from measure_unit2
+        $sql = "SELECT UnitID, UnitSelection, UnitValue FROM measure_unit2 ORDER BY UnitID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>UnitID</th><th>UnitSelection</th><th>UnitValue</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['UnitID']}</td>";
+                echo "<td>{$row['UnitSelection']}</td>";
+                echo "<td>{$row['UnitValue']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
@@ -673,4 +712,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
-?>
+

@@ -1,4 +1,3 @@
-
 <?php
 
 // Include the database connection
@@ -31,6 +30,9 @@ $csvFilePath = 'data/packaging_type.csv'; // Update with the exact path of your 
 
 // Open the CSV file for reading
 if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
+    // Skip header row
+    fgetcsv($handle, 1000, ",");
+
     // Prepare the SQL statement with placeholders
     $stmt = $conn->prepare("
         INSERT INTO packaging_type (
