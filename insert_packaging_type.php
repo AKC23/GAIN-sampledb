@@ -14,7 +14,7 @@ if ($conn->query($dropTableSQL) === TRUE) {
 // SQL query to create the 'packaging_type' table
 $createTableSQL = "
     CREATE TABLE packaging_type (
-        Packaging_Type_ID INT AUTO_INCREMENT PRIMARY KEY,
+        PackagingTypeID INT AUTO_INCREMENT PRIMARY KEY,
         Packaging_Type VARCHAR(50)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 

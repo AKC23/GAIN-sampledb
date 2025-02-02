@@ -1,9 +1,10 @@
 Extraction Rate,Food Vehicle,VehicleID,Foodtype,FoodTypeID,ReferenceID
-17.5,E,1,Sesame,8,1
-17.5,E,1,Rape & Mustard,9,1
-17.5,E,1,Ground Nut,10,1
-17.5,E,1,Soya Bean,4,1
-17.5,E,1,Coconut,7,1
-17.5,E,1,Sunflower,6,1
-17.5,E,1,Olive Oil,15,1
-17.5,E,1,Palm,5,1
+0,N/A,1,N/A,1,1
+17.5,E,2,Sesame,6,1
+17.5,E,2,Rape & Mustard,7,1
+17.5,E,2,Ground Nut,8,1
+17.5,E,2,Soya Bean,2,1
+17.5,E,2,Coconut,5,1
+17.5,E,2,Sunflower,4,1
+17.5,E,2,Olive Oil,13,1
+17.5,E,2,Palm,3,1

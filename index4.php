@@ -8,210 +8,218 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    body {
+        background-color: #f8f9fa;
+    }
 
-        .center-title {
-            text-align: center;
-            color: #000;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+    .center-title {
+        text-align: center;
+        color: #000;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
 
-        .current-time {
-            text-align: right;
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 1px;
-        }
+    .current-time {
+        text-align: right;
+        font-size: 0.9em;
+        color: #6c757d;
+        margin-top: 1px;
+    }
 
-        .card {
-            margin-top: 20px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #c8e5bf;
-            border-radius: 1px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
+    .card {
+        margin-top: 20px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #c8e5bf;
+        border-radius: 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
 
-        .table-selection {
-            margin-bottom: 20px;
-        }
+    .table-selection {
+        margin-bottom: 20px;
+    }
 
-        .card-title {
-            color: #17a2b8;
-            margin-bottom: 20px;
-        }
+    .card-title {
+        color: #17a2b8;
+        margin-bottom: 20px;
+    }
 
-        /* Table styling for borders */
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #d3a79e;
-            text-align: center;
-            /* Center-align all table content */
-            vertical-align: middle;
-            /* Vertically center-align all table content */
-        }
+    /* Table styling for borders */
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #d3a79e;
+        text-align: center;
+        /* Center-align all table content */
+        vertical-align: middle;
+        /* Vertically center-align all table content */
+    }
 
-        .vehicle-selection {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-left: 40px;
-        }
+    .vehicle-selection {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 40px;
+    }
 
-        .vehicle-selection-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+    .vehicle-selection-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        .vehicle-options {
-            display: flex;
-            gap: 10px;
-        }
+    .vehicle-options {
+        display: flex;
+        gap: 10px;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-        .form-group .btn {
-            margin-top: 20px;
-        }
+    .form-group .btn {
+        margin-top: 20px;
+    }
 
-        .table-responsive {
-            max-height: 500px;
-            overflow-y: auto;
-        }
+    .table-responsive {
+        max-height: 500px;
+        overflow-y: auto;
+    }
 
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background-color: #fff;
-            z-index: 1;
-        }
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 1;
+    }
 
-        .download-buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
+    .download-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('form').on('submit', function(event) {
-                event.preventDefault();
-                var tableName = $('select[name="tableName"]').val();
-                var countryName = $('select[name="countryName"]').val();
-                var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
-                    return this.value;
-                }).get();
-                var yearType = $('select[name="yearType"]').val();
-                if (tableName) {
-                    $.post('display_table2.php', {
+    $(document).ready(function() {
+        $('form').on('submit', function(event) {
+            event.preventDefault();
+            var tableName = $('select[name="tableName"]').val();
+            var countryName = $('select[name="countryName"]').val();
+            var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+            var yearType = $('select[name="yearType"]').val();
+            if (tableName) {
+                $.post('display_table2.php', {
+                    tableName: tableName,
+                    countryName: countryName,
+                    vehicleNames: vehicleNames,
+                    yearType: yearType
+                }, function(data) {
+                    $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
+                        tableName + '</h2>' + data);
+                    $('.download-buttons').show();
+                    $('#download-csv-btn').data('params', {
                         tableName: tableName,
                         countryName: countryName,
                         vehicleNames: vehicleNames,
                         yearType: yearType
-                    }, function(data) {
-                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
-                        $('.download-buttons').show();
-                        $('#download-csv-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames,
-                            yearType: yearType
-                        });
-                        $('#download-excel-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames,
-                            yearType: yearType
-                        });
                     });
-                } else {
-                    $('#table-view').html('');
-                    $('.download-buttons').hide();
-                }
-            });
-
-            $('input[name="vehicleName[]"], select[name="yearType"]').on('change', function() {
-                var tableName = $('select[name="tableName"]').val();
-                var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
-                    return this.value;
-                }).get();
-                var countryName = $('select[name="countryName"]').val();
-                var yearType = $('select[name="yearType"]').val();
-                if (tableName) {
-                    $.post('display_table2.php', {
+                    $('#download-excel-btn').data('params', {
                         tableName: tableName,
-                        vehicleNames: vehicleNames,
                         countryName: countryName,
+                        vehicleNames: vehicleNames,
                         yearType: yearType
-                    }, function(data) {
-                        $('#table-view').html('<h2 class="text-left card-title">Table Name: ' + tableName + '</h2>' + data);
-                        $('.download-buttons').show();
-                        $('#download-csv-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames,
-                            yearType: yearType
-                        });
-                        $('#download-excel-btn').data('params', {
-                            tableName: tableName,
-                            countryName: countryName,
-                            vehicleNames: vehicleNames,
-                            yearType: yearType
-                        });
                     });
-                }
-            });
-
-            $('#update-table-btn').on('click', function() {
-                window.location.href = 'input_table.php';
-            });
-
-            $('#download-csv-btn').on('click', function() {
-                var params = $(this).data('params');
-                if (params) {
-                    $('<form>', {
-                        "id": "downloadForm",
-                        "html": '<input type="hidden" name="format" value="csv">' +
-                                '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
-                                '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
-                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">' +
-                                '<input type="hidden" name="yearType" value="' + params.yearType + '">',
-                        "action": 'download.php',
-                        "method": 'post'
-                    }).appendTo(document.body).submit();
-                }
-            });
-
-            $('#download-excel-btn').on('click', function() {
-                var params = $(this).data('params');
-                if (params) {
-                    $('<form>', {
-                        "id": "downloadForm",
-                        "html": '<input type="hidden" name="format" value="excel">' +
-                                '<input type="hidden" name="tableName" value="' + params.tableName + '">' +
-                                '<input type="hidden" name="countryName" value="' + params.countryName + '">' +
-                                '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames.join(',') + '">' +
-                                '<input type="hidden" name="yearType" value="' + params.yearType + '">',
-                        "action": 'download.php',
-                        "method": 'post'
-                    }).appendTo(document.body).submit();
-                }
-            });
-
-            $('.download-buttons').hide();
+                });
+            } else {
+                $('#table-view').html('');
+                $('.download-buttons').hide();
+            }
         });
+
+        $('input[name="vehicleName[]"], select[name="yearType"]').on('change', function() {
+            var tableName = $('select[name="tableName"]').val();
+            var vehicleNames = $('input[name="vehicleName[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+            var countryName = $('select[name="countryName"]').val();
+            var yearType = $('select[name="yearType"]').val();
+            if (tableName) {
+                $.post('display_table2.php', {
+                    tableName: tableName,
+                    vehicleNames: vehicleNames,
+                    countryName: countryName,
+                    yearType: yearType
+                }, function(data) {
+                    $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
+                        tableName + '</h2>' + data);
+                    $('.download-buttons').show();
+                    $('#download-csv-btn').data('params', {
+                        tableName: tableName,
+                        countryName: countryName,
+                        vehicleNames: vehicleNames,
+                        yearType: yearType
+                    });
+                    $('#download-excel-btn').data('params', {
+                        tableName: tableName,
+                        countryName: countryName,
+                        vehicleNames: vehicleNames,
+                        yearType: yearType
+                    });
+                });
+            }
+        });
+
+        $('#update-table-btn').on('click', function() {
+            window.location.href = 'input_table.php';
+        });
+
+        $('#download-csv-btn').on('click', function() {
+            var params = $(this).data('params');
+            if (params) {
+                $('<form>', {
+                    "id": "downloadForm",
+                    "html": '<input type="hidden" name="format" value="csv">' +
+                        '<input type="hidden" name="tableName" value="' + params.tableName +
+                        '">' +
+                        '<input type="hidden" name="countryName" value="' + params.countryName +
+                        '">' +
+                        '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames
+                        .join(',') + '">' +
+                        '<input type="hidden" name="yearType" value="' + params.yearType + '">',
+                    "action": 'download.php',
+                    "method": 'post'
+                }).appendTo(document.body).submit();
+            }
+        });
+
+        $('#download-excel-btn').on('click', function() {
+            var params = $(this).data('params');
+            if (params) {
+                $('<form>', {
+                    "id": "downloadForm",
+                    "html": '<input type="hidden" name="format" value="excel">' +
+                        '<input type="hidden" name="tableName" value="' + params.tableName +
+                        '">' +
+                        '<input type="hidden" name="countryName" value="' + params.countryName +
+                        '">' +
+                        '<input type="hidden" name="vehicleNames" value="' + params.vehicleNames
+                        .join(',') + '">' +
+                        '<input type="hidden" name="yearType" value="' + params.yearType + '">',
+                    "action": 'download.php',
+                    "method": 'post'
+                }).appendTo(document.body).submit();
+            }
+        });
+
+        $('.download-buttons').hide();
+    });
     </script>
 </head>
 
@@ -251,8 +259,8 @@
                                 'distribution_channel',  // Added distribution_channel table
                                 'sub_distribution_channel',  // Added sub_distribution_channel table
                                 'year_type',  // Added year_type table
-                                'population'  // Added population table
-                                
+                                'population',  // Added population table
+                                'brand'  // Added brand table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
@@ -270,13 +278,15 @@
                         <div class="vehicle-selection-title"><strong>Vehicle Name</strong></div>
                         <div class="vehicle-options">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Edible Oil" id="vehicleEdibleOil">
+                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Edible Oil"
+                                    id="vehicleEdibleOil">
                                 <label class="form-check-label" for="vehicleEdibleOil">
                                     Edible Oil
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Wheat Flour" id="vehicleWheat">
+                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Wheat Flour"
+                                    id="vehicleWheat">
                                 <label class="form-check-label" for="vehicleWheat">
                                     Wheat
                                 </label>
@@ -325,21 +335,7 @@
         </div>
         <?php
         // Display requested table (using the same connection)
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
-            $tableName = $_POST['tableName'];
-            $vehicleNames = $_POST['vehicleName'] ?? [];
-            $countryName = $_POST['countryName'] ?? '';
-            $yearType = $_POST['yearType'] ?? '';
-            echo "<h2 class='text-left card-title'>Table Name: " . htmlspecialchars($tableName) . "</h2>";
-
-            echo '<div class="table-responsive" style="margin-top: 20px;">';
-            try {
-                include('display_table2.php');
-            } catch (Exception $e) {
-                echo "<div class='alert alert-danger'>Error displaying table: " . htmlspecialchars($e->getMessage()) . "</div>";
-            }
-            echo '</div>';
-        }
+        
 
         echo "<br><br><br>";
 

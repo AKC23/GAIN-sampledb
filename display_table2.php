@@ -374,11 +374,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     } elseif ($tableName == 'distribution') {
         // Fetch all records from distribution with joined names
         $sql = "
-            SELECT d.DistributionID, dc.DistributionChannelName, sdc.SubDistributionChannelName, fv.VehicleName, d.PeriodicalUnit, d.SourceVolumeUnit, d.Volume, yt.YearType, d.StartYear, d.EndYear, r.ReferenceNumber, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
+            SELECT d.DistributionID, dc.DistributionChannelName, sdc.SubDistributionChannelName, fv.VehicleName, mu1.SupplyVolumeUnit, mu1.PeriodicalUnit, d.volumeMT, yt.YearType, d.StartYear, d.EndYear, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
             FROM distribution d
             JOIN distribution_channel dc ON d.DistributionChannelID = dc.DistributionChannelID
             JOIN sub_distribution_channel sdc ON d.SubDistributionChannelID = sdc.SubDistributionChannelID
             JOIN FoodVehicle fv ON d.VehicleID = fv.VehicleID
+            JOIN measure_unit1 mu1 ON d.UCID = mu1.UCID
             JOIN year_type yt ON d.YearTypeID = yt.YearTypeID
             JOIN reference r ON d.ReferenceID = r.ReferenceID
         ";
@@ -401,20 +402,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>DistributionID</th><th>DistributionChannelName</th><th>SubDistributionChannelName</th><th>VehicleName</th><th>PeriodicalUnit</th><th>SourceVolumeUnit</th><th>Volume</th><th>YearType</th><th>StartYear</th><th>EndYear</th><th>ReferenceNumber</th><th>Source</th><th>Link</th><th>ProcessToObtainData</th><th>AccessDate</th></tr></thead><tbody>";
+            echo "<thead><tr><th>DistributionID</th><th>DistributionChannelName</th><th>SubDistributionChannelName</th><th>VehicleName</th><th>SupplyVolumeUnit</th><th>PeriodicalUnit</th><th>Volume</th><th>YearType</th><th>StartYear</th><th>EndYear</th><th>Source</th><th>Link</th><th>ProcessToObtainData</th><th>AccessDate</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['DistributionID']}</td>";
                 echo "<td>{$row['DistributionChannelName']}</td>";
                 echo "<td>{$row['SubDistributionChannelName']}</td>";
                 echo "<td>{$row['VehicleName']}</td>";
+                echo "<td>{$row['SupplyVolumeUnit']}</td>";
                 echo "<td>{$row['PeriodicalUnit']}</td>";
-                echo "<td>{$row['SourceVolumeUnit']}</td>";
-                echo "<td>{$row['Volume']}</td>";
+                echo "<td>{$row['volumeMT']}</td>";
                 echo "<td>{$row['YearType']}</td>";
                 echo "<td>{$row['StartYear']}</td>";
                 echo "<td>{$row['EndYear']}</td>";
-                echo "<td>{$row['ReferenceNumber']}</td>";
                 echo "<td>{$row['Source']}</td>";
                 echo "<td>{$row['Link']}</td>";
                 echo "<td>{$row['ProcessToObtainData']}</td>";
@@ -493,10 +493,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     } elseif ($tableName == 'producer_sku') {
         // Fetch all records from producer_sku with joined names
         $sql = "
-            SELECT ps.BrandID, ps.BrandName, c.CompanyGroup, ps.SKU, ps.Unit, pt.Packaging_Type, ps.Price, mc.CurrencySelection, r.ReferenceNumber, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
+            SELECT ps.SKU_ID, b.Brand_Name, c.CompanyGroup, ps.SKU, ps.Unit, pt.Packaging_Type, ps.Price, mc.CurrencySelection, r.ReferenceNumber, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
             FROM producer_sku ps
+            JOIN brand b ON ps.BrandID = b.BrandID
             JOIN company c ON ps.CompanyID = c.CompanyID
-            JOIN packaging_type pt ON ps.Packaging_Type_ID = pt.Packaging_Type_ID
+            JOIN packaging_type pt ON ps.PackagingTypeID = pt.PackagingTypeID
             JOIN measure_currency mc ON ps.CurrencyID = mc.CurrencyID
             JOIN reference r ON ps.ReferenceID = r.ReferenceID
         ";
@@ -511,16 +512,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
         }
-        $sql .= " ORDER BY ps.BrandID";
+        $sql .= " ORDER BY ps.SKU_ID";
         $result = $conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>BrandID</th><th>BrandName</th><th>CompanyGroup</th><th>SKU</th><th>Unit</th><th>Packaging_Type</th><th>Price</th><th>CurrencySelection</th><th>ReferenceNumber</th><th>Source</th><th>Link</th><th>ProcessToObtainData</th><th>AccessDate</th></tr></thead><tbody>";
+            echo "<thead><tr><th>SKU_ID</th><th>Brand_Name</th><th>CompanyGroup</th><th>SKU</th><th>Unit</th><th>Packaging_Type</th><th>Price</th><th>CurrencySelection</th><th>ReferenceNumber</th><th>Source</th><th>Link</th><th>ProcessToObtainData</th><th>AccessDate</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>{$row['BrandID']}</td>";
-                echo "<td>{$row['BrandName']}</td>";
+                echo "<td>{$row['SKU_ID']}</td>";
+                echo "<td>{$row['Brand_Name']}</td>";
                 echo "<td>{$row['CompanyGroup']}</td>";
                 echo "<td>{$row['SKU']}</td>";
                 echo "<td>{$row['Unit']}</td>";
@@ -627,6 +628,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['UnitID']}</td>";
                 echo "<td>{$row['UnitSelection']}</td>";
                 echo "<td>{$row['UnitValue']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'brand') {
+        $sql = "
+            SELECT b.BrandID, b.Brand_Name, c.CompanyGroup, ft.FoodTypeName
+            FROM brand b
+            JOIN company c ON b.CompanyID = c.CompanyID
+            JOIN FoodType ft ON b.FoodTypeID = ft.FoodTypeID
+        ";
+        $conditions = [];
+        if (!empty($vehicleNames)) {
+            $vehicleNamesEscaped = array_map([$conn, 'real_escape_string'], $vehicleNames);
+            $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
+        }
+        if (!empty($countryName)) {
+            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+        $sql .= " ORDER BY b.BrandID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr>
+                    <th>BrandID</th>
+                    <th>Brand_Name</th>
+                    <th>CompanyGroup</th>
+                    <th>FoodTypeName</th>
+                 </tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['BrandID']}</td>";
+                echo "<td>{$row['Brand_Name']}</td>";
+                echo "<td>{$row['CompanyGroup']}</td>";
+                echo "<td>{$row['FoodTypeName']}</td>";
                 echo "</tr>";
             }
             echo "</tbody></table></div>";
