@@ -428,11 +428,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             echo "No data found";
         }
     } elseif ($tableName == 'population') {
-        // Fetch all records from population with joined names
+        // Fetch all records from population with joined names and year_type details
         $sql = "
-            SELECT p.PopulationID, fv.VehicleName, p.AdminLevel1, p.AdminLevel3, p.PopulationGroup, p.AgeGroup, p.Value, p.AME, p.Year, r.ReferenceNumber, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
+            SELECT p.PopulationID, fv.VehicleName, p.AdminLevel1, p.AdminLevel3, 
+                   p.PopulationGroup, p.AgeGroup, p.Value, p.AME, 
+                   yt.YearType, yt.StartMonth, yt.EndMonth, p.StartYear, p.EndYear,
+                   r.ReferenceNumber, r.Source, r.Link, r.ProcessToObtainData, r.AccessDate
             FROM population p
             JOIN FoodVehicle fv ON p.VehicleID = fv.VehicleID
+            JOIN year_type yt ON p.YearTypeID = yt.YearTypeID
             JOIN reference r ON p.ReferenceNo = r.ReferenceID
         ";
         $conditions = [];
@@ -441,17 +445,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($yearType)) {
-            $conditions[] = "p.Year = '" . $conn->real_escape_string($yearType) . "'";
+            $conditions[] = "yt.YearType = '" . $conn->real_escape_string($yearType) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
         }
         $sql .= " ORDER BY p.PopulationID";
         $result = $conn->query($sql);
-
+        
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>PopulationID</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel3</th><th>PopulationGroup</th><th>AgeGroup</th><th>Value</th><th>AME</th><th>Year</th><th>ReferenceNumber</th><th>Source</th><th>Link</th><th>ProcessToObtainData</th><th>AccessDate</th></tr></thead><tbody>";
+            echo "<thead><tr>
+                      <th>PopulationID</th>
+                      <th>VehicleName</th>
+                      <th>AdminLevel1</th>
+                      <th>AdminLevel3</th>
+                      <th>PopulationGroup</th>
+                      <th>AgeGroup</th>
+                      <th>Value</th>
+                      <th>AME</th>
+                      <th>YearType</th>
+                      <th>StartMonth</th>
+                      <th>EndMonth</th>
+                      <th>StartYear</th>
+                      <th>EndYear</th>
+                      <th>ReferenceNumber</th>
+                      <th>Source</th>
+                      <th>Link</th>
+                      <th>ProcessToObtainData</th>
+                      <th>AccessDate</th>
+                  </tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['PopulationID']}</td>";
@@ -462,7 +485,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['AgeGroup']}</td>";
                 echo "<td>{$row['Value']}</td>";
                 echo "<td>{$row['AME']}</td>";
-                echo "<td>{$row['Year']}</td>";
+                echo "<td>{$row['YearType']}</td>";
+                echo "<td>{$row['StartMonth']}</td>";
+                echo "<td>{$row['EndMonth']}</td>";
+                echo "<td>{$row['StartYear']}</td>";
+                echo "<td>{$row['EndYear']}</td>";
                 echo "<td>{$row['ReferenceNumber']}</td>";
                 echo "<td>{$row['Source']}</td>";
                 echo "<td>{$row['Link']}</td>";
@@ -776,7 +803,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             echo "No data found for supply table";
         }
     } elseif ($tableName == 'supply_in_chain_final') {
-        $sql = "SELECT * FROM supply_in_chain_final ORDER BY SupplyID";
+        // Apply filtering on SupplyYearType and DistributionYearType if a year type is selected
+        $conditions = [];
+        if (!empty($yearType)) {
+            $conditions[] = "SupplyYearType = '" . $conn->real_escape_string($yearType) . "'";
+            $conditions[] = "DistributionYearType = '" . $conn->real_escape_string($yearType) . "'";
+        }
+        $whereClause = !empty($conditions) ? " WHERE " . implode(" AND ", $conditions) : "";
+        $sql = "SELECT * FROM supply_in_chain_final" . $whereClause . " ORDER BY SupplyID";
         $result = $conn->query($sql);
         // ...existing code to display table headers...
         echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>

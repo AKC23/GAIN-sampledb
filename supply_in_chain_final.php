@@ -39,7 +39,13 @@ $sql = "
         r2.Source AS DistSource,
         r2.Link AS DistLink,
         r2.ProcessToObtainData AS DistProcessToObtainData,
-        r2.AccessDate AS DistAccessDate
+        r2.AccessDate,
+        -- Population table columns
+        p.PopulationID,
+        p.PopulationGroup,
+        p.AgeGroup,
+        p.Value,
+        p.AME
     FROM supply s
     JOIN FoodVehicle fv ON s.VehicleID = fv.VehicleID
     JOIN country co ON s.CountryID = co.Country_ID
@@ -50,16 +56,19 @@ $sql = "
     JOIN measure_unit1 mu1 ON s.UC_ID = mu1.UCID
     JOIN year_type syt ON s.YearTypeID = syt.YearTypeID
     JOIN reference r ON s.ReferenceID = r.ReferenceID
-    JOIN distribution d ON 1=1
+    JOIN distribution d 
+         ON s.YearTypeID = d.YearTypeID
+         AND s.StartYear = d.StartYear
+         AND s.EndYear = d.EndYear
     JOIN year_type dyt ON d.YearTypeID = dyt.YearTypeID
     JOIN distribution_channel dc ON d.DistributionChannelID = dc.DistributionChannelID
     JOIN sub_distribution_channel sdc ON d.SubDistributionChannelID = sdc.SubDistributionChannelID
     JOIN FoodVehicle fv2 ON d.VehicleID = fv2.VehicleID
     JOIN measure_unit1 mu12 ON d.UCID = mu12.UCID
     JOIN reference r2 ON d.ReferenceID = r2.ReferenceID
-    WHERE syt.YearType = dyt.YearType 
-      AND s.StartYear = d.StartYear 
-      AND s.EndYear = d.EndYear
+    JOIN population p ON d.YearTypeID = p.YearTypeID 
+                     AND d.StartYear = p.StartYear 
+                     AND d.EndYear = p.EndYear
     ORDER BY s.SupplyID
 ";
 
@@ -102,6 +111,11 @@ echo "<thead><tr>
         <th>DistLink</th>
         <th>DistProcessToObtainData</th>
         <th>DistAccessDate</th>
+        <th>PopulationID</th>
+        <th>PopulationGroup</th>
+        <th>AgeGroup</th>
+        <th>Value</th>
+        <th>AME</th>
     </tr></thead><tbody>";
 
 if ($result && $result->num_rows > 0) {
@@ -142,10 +156,15 @@ if ($result && $result->num_rows > 0) {
                 <td>{$row['DistLink']}</td>
                 <td>{$row['DistProcessToObtainData']}</td>
                 <td>{$row['DistAccessDate']}</td>
+                <td>{$row['PopulationID']}</td>
+                <td>{$row['PopulationGroup']}</td>
+                <td>{$row['AgeGroup']}</td>
+                <td>{$row['Value']}</td>
+                <td>{$row['AME']}</td>
             </tr>";
     }
 } else {
-    echo "<tr><td colspan='33'>No data found</td></tr>";
+    echo "<tr><td colspan='38'>No data found</td></tr>";
 }
 
 echo "</tbody></table></div>";

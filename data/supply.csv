@@ -19,24 +19,27 @@ E,2,Bangladesh,2,Sunflower,4,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Ye
 E,2,Bangladesh,2,Sunflower,4,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,362211,1,2022,2023,66
 E,2,Bangladesh,2,Soya Bean,2,Crude Oil,6,Import,1,N/A,0,0,1,N/A,1,1,Metric Ton,Month,1400,1,,,1
 E,2,Bangladesh,2,Soya Bean,2,Crude Oil,6,Import,1,N/A,0,0,1,N/A,1,1,Metric Ton,Month,33300,1,,,1
-E,2,Bangladesh,2,Sesame,6,Crude Oil,6,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,67
-E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,68
-E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,69
-E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,70
-E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,71
-E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,72
-E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,73
-E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,74
-E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,75
-E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,76
-E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,77
-E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,78
-E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,79
-E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,80
-E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,81
-E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,82
-E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,83
-E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,84
-E,2,Bangladesh,2,Whole Wheat,16,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,85
-E,2,Bangladesh,2,Atta,17,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,86
-E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,87
+E,2,Bangladesh,2,Sesame,6,Crude Oil,6,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2020,2021,67
+E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,68
+E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,69
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2020,2021,70
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,71
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,72
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2020,2021,73
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,74
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,75
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2020,2021,76
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,77
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,78
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,79
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,80
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,81
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2021,2022,82
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,83
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,84
+E,2,Bangladesh,2,Whole Wheat,16,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,85
+E,2,Bangladesh,2,Atta,17,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,86
+E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,1,2022,2023,87
+E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,2,2022,2022,1
+E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,2,2020,2020,1
+E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,0,2,2022,2022,1

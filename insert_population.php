@@ -23,10 +23,13 @@ $createTableSQL = "
         AgeGroup VARCHAR(255),
         Value INT(11),
         AME FLOAT,
-        Year VARCHAR(50),
+        YearTypeID INT NOT NULL,
+        StartYear INT NOT NULL,
+        EndYear INT NOT NULL,
         ReferenceNo INT(11),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (ReferenceNo) REFERENCES reference(ReferenceID)
+        FOREIGN KEY (ReferenceNo) REFERENCES reference(ReferenceID),
+        FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -60,12 +63,15 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $ageGroup = mysqli_real_escape_string($conn, trim($data[5]));
         $value = (int)trim($data[6]);
         $ame = (float)trim($data[7]);
-        $year = mysqli_real_escape_string($conn, trim($data[8]));
-        $referenceNo = (int)trim($data[9]);
+        $yearTypeID = (int)trim($data[8]);
+        $startYear = (int)trim($data[9]);
+        $endYear = (int)trim($data[10]);
+        $referenceNo = (int)trim($data[11]);
 
         // Check if referenced values exist
         $checkVehicle = $conn->query("SELECT 1 FROM FoodVehicle WHERE VehicleID = $vehicleID");
         $checkReference = $conn->query("SELECT 1 FROM reference WHERE ReferenceID = $referenceNo");
+        $checkYearType = $conn->query("SELECT 1 FROM year_type WHERE YearTypeID = $yearTypeID");
 
         if ($checkVehicle->num_rows == 0) {
             echo "Error: VehicleID $vehicleID does not exist. Skipping row $rowNumber.<br>";
@@ -74,6 +80,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         if ($checkReference->num_rows == 0) {
             echo "Error: ReferenceNo $referenceNo does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if ($checkYearType->num_rows == 0) {
+            echo "Error: YearTypeID $yearTypeID does not exist. Skipping row $rowNumber.<br>";
             $rowNumber++;
             continue;
         }
@@ -86,13 +97,15 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                     AgeGroup,
                     Value,
                     AME,
-                    Year,
+                    YearTypeID,
+                    StartYear,
+                    EndYear,
                     ReferenceNo
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "issssidis",
+            "issssidiisi",
             $vehicleID,
             $adminLevel1,
             $adminLevel3,
@@ -100,7 +113,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $ageGroup,
             $value,
             $ame,
-            $year,
+            $yearTypeID,
+            $startYear,
+            $endYear,
             $referenceNo
         );
 

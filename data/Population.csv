@@ -1,82 +1,82 @@
-Food Vehicle,VehicleID,Admin Level 1,Admin Level 3,Population Group,Age Group,Value (Number of people),AME,Year,Reference No.
-E,2,Dhaka,Dhaka North,M,0-14,2100000,0.78,2022,1
-E,2,Dhaka,Dhaka North,F,0-14,2050000,0.68,2022,1
-E,2,Dhaka,Dhaka North,Other,0-14,0,0,2022,1
-E,2,Dhaka,Dhaka South,M,0-14,2000000,0.78,2022,1
-E,2,Dhaka,Dhaka South,F,0-14,1980000,0.68,2022,1
-E,2,Dhaka,Dhaka South,Other,0-14,0,0,2022,1
-E,2,Chattogram,Chattogram,M,0-14,1000000,0.78,2022,1
-E,2,Chattogram,Chattogram,F,0-14,1020000,0.68,2022,1
-E,2,Chattogram,Chattogram,Other,0-14,0,0,2022,1
-E,2,Khulna,Khulna,M,0-14,500000,0.78,2022,1
-E,2,Khulna,Khulna,F,0-14,520000,0.68,2022,1
-E,2,Khulna,Khulna,Other,0-14,0,,2022,1
-E,2,Rajshahi,Rajshahi,M,0-14,450000,0.78,2022,1
-E,2,Rajshahi,Rajshahi,F,0-14,460000,0.68,2022,1
-E,2,Rajshahi,Rajshahi,Other,0-14,0,0,2022,1
-E,2,Sylhet,Sylhet,M,0-14,600000,0.78,2022,1
-E,2,Sylhet,Sylhet,F,0-14,620000,0.68,2022,1
-E,2,Sylhet,Sylhet,Other,0-14,0,0,2022,1
-E,2,Barishal,Barishal,M,0-14,250000,0.78,2022,1
-E,2,Barishal,Barishal,F,0-14,255000,0.68,2022,1
-E,2,Barishal,Barishal,Other,0-14,0,0,2022,1
-E,2,Rangpur,Rangpur,M,0-14,300000,0.78,2022,1
-E,2,Rangpur,Rangpur,F,0-14,310000,0.68,2022,1
-E,2,Rangpur,Rangpur,Other,0-14,0,0,2022,1
-E,2,Mymensingh,N/A,M,0-14,1450000,0.78,2022,1
-E,2,Mymensingh,N/A,F,0-14,1500000,0.68,2022,1
-E,2,Mymensingh,N/A,Other,0-14,0,0,2022,1
-E,2,Dhaka,Dhaka North,M,15-64,6000000,0.97,2022,1
-E,2,Dhaka,Dhaka North,F,15-64,5900000,0.82,2022,1
-E,2,Dhaka,Dhaka North,Other,15-64,0,0,2022,1
-E,2,Dhaka,Dhaka South,M,15-64,5800000,0.97,2022,1
-E,2,Dhaka,Dhaka South,F,15-64,5700000,0.82,2022,1
-E,2,Dhaka,Dhaka South,Other,15-64,0,0,2022,1
-E,2,Chattogram,Chattogram,M,15-64,3100000,0.97,2022,1
-E,2,Chattogram,Chattogram,F,15-64,3200000,0.82,2022,1
-E,2,Chattogram,Chattogram,Other,15-64,0,0,2022,1
-E,2,Khulna,Khulna,M,15-64,1500000,0.97,2022,1
-E,2,Khulna,Khulna,F,15-64,1520000,0.82,2022,1
-E,2,Khulna,Khulna,Other,15-64,0,0,2022,1
-E,2,Rajshahi,Rajshahi,M,15-64,1300000,0.97,2022,1
-E,2,Rajshahi,Rajshahi,F,15-64,1350000,0.82,2022,1
-E,2,Rajshahi,Rajshahi,Other,15-64,0,0,2022,1
-E,2,Sylhet,Sylhet,M,15-64,1700000,0.97,2022,1
-E,2,Sylhet,Sylhet,F,15-64,1750000,0.82,2022,1
-E,2,Sylhet,Sylhet,Other,15-64,0,0,2022,1
-E,2,Barishal,Barishal,M,15-64,750000,0.97,2022,1
-E,2,Barishal,Barishal,F,15-64,760000,0.82,2022,1
-E,2,Barishal,Barishal,Other,15-64,0,0,2022,1
-E,2,Rangpur,Rangpur,M,15-64,900000,0.97,2022,1
-E,2,Rangpur,Rangpur,F,15-64,920000,0.82,2022,1
-E,2,Rangpur,Rangpur,Other,15-64,0,,2022,1
-E,2,Mymensingh,N/A,M,15-64,4000000,0.97,2022,1
-E,2,Mymensingh,N/A,F,15-64,4100000,0.82,2022,1
-E,2,Mymensingh,N/A,Other,15-64,0,0,2022,1
-E,2,Dhaka,Dhaka North,M,65 Plus,400000,0.8,2022,1
-E,2,Dhaka,Dhaka North,F,65 Plus,420000,0.69,2022,1
-E,2,Dhaka,Dhaka North,Other,65 Plus,0,0,2022,1
-E,2,Dhaka,Dhaka South,M,65 Plus,390000,0.8,2022,1
-E,2,Dhaka,Dhaka South,F,65 Plus,400000,0.69,2022,1
-E,2,Dhaka,Dhaka South,Other,65 Plus,0,,2022,1
-E,2,Chattogram,Chattogram,M,65 Plus,200000,0.8,2022,1
-E,2,Chattogram,Chattogram,F,65 Plus,210000,0.69,2022,1
-E,2,Chattogram,Chattogram,Other,65 Plus,0,0,2022,1
-E,2,Khulna,Khulna,M,65 Plus,100000,0.8,2022,1
-E,2,Khulna,Khulna,F,65 Plus,110000,0.69,2022,1
-E,2,Khulna,Khulna,Other,65 Plus,0,0,2022,1
-E,2,Rajshahi,Rajshahi,M,65 Plus,90000,0.8,2022,1
-E,2,Rajshahi,Rajshahi,F,65 Plus,95000,0.69,2022,1
-E,2,Rajshahi,Rajshahi,Other,65 Plus,0,0,2022,1
-E,2,Sylhet,Sylhet,M,65 Plus,120000,0.8,2022,1
-E,2,Sylhet,Sylhet,F,65 Plus,125000,0.69,2022,1
-E,2,Sylhet,Sylhet,Other,65 Plus,0,0,2022,1
-E,2,Barishal,Barishal,M,65 Plus,50000,0.8,2022,1
-E,2,Barishal,Barishal,F,65 Plus,52000,0.69,2022,1
-E,2,Barishal,Barishal,Other,65 Plus,0,0,2022,1
-E,2,Rangpur,Rangpur,M,65 Plus,60000,0.8,2022,1
-E,2,Rangpur,Rangpur,F,65 Plus,62000,0.69,2022,1
-E,2,Rangpur,Rangpur,Other,65 Plus,0,0,2022,1
-E,2,Mymensingh,N/A,M,65 Plus,180000,0.8,2022,1
-E,2,Mymensingh,N/A,F,66 Plus,190000,0.69,2022,1
-E,2,Mymensingh,N/A,Other,67 Plus,0,0,2022,1
+Food Vehicle,VehicleID,Admin Level 1,Admin Level 3,Population Group,Age Group,Value (Number of people),AME,Year Type ID,Start Year,End Year,ReferenceID
+E,2,Dhaka,Dhaka North,M,0-14,2100000,0.78,2,2022,2022,1
+E,2,Dhaka,Dhaka North,F,0-14,2050000,0.68,2,2022,2022,1
+E,2,Dhaka,Dhaka North,Other,0-14,0,0,2,2022,2022,1
+E,2,Dhaka,Dhaka South,M,0-14,2000000,0.78,2,2022,2022,1
+E,2,Dhaka,Dhaka South,F,0-14,1980000,0.68,2,2022,2022,1
+E,2,Dhaka,Dhaka South,Other,0-14,0,0,2,2022,2022,1
+E,2,Chattogram,Chattogram,M,0-14,1000000,0.78,2,2022,2022,1
+E,2,Chattogram,Chattogram,F,0-14,1020000,0.68,2,2022,2022,1
+E,2,Chattogram,Chattogram,Other,0-14,0,0,2,2022,2022,1
+E,2,Khulna,Khulna,M,0-14,500000,0.78,2,2022,2022,1
+E,2,Khulna,Khulna,F,0-14,520000,0.68,2,2022,2022,1
+E,2,Khulna,Khulna,Other,0-14,0,,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,M,0-14,450000,0.78,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,F,0-14,460000,0.68,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,Other,0-14,0,0,2,2022,2022,1
+E,2,Sylhet,Sylhet,M,0-14,600000,0.78,2,2022,2022,1
+E,2,Sylhet,Sylhet,F,0-14,620000,0.68,2,2022,2022,1
+E,2,Sylhet,Sylhet,Other,0-14,0,0,2,2022,2022,1
+E,2,Barishal,Barishal,M,0-14,250000,0.78,2,2022,2022,1
+E,2,Barishal,Barishal,F,0-14,255000,0.68,2,2022,2022,1
+E,2,Barishal,Barishal,Other,0-14,0,0,2,2022,2022,1
+E,2,Rangpur,Rangpur,M,0-14,300000,0.78,2,2022,2022,1
+E,2,Rangpur,Rangpur,F,0-14,310000,0.68,2,2022,2022,1
+E,2,Rangpur,Rangpur,Other,0-14,0,0,2,2022,2022,1
+E,2,Mymensingh,N/A,M,0-14,1450000,0.78,2,2022,2022,1
+E,2,Mymensingh,N/A,F,0-14,1500000,0.68,2,2022,2022,1
+E,2,Mymensingh,N/A,Other,0-14,0,0,2,2022,2022,1
+E,2,Dhaka,Dhaka North,M,15-64,6000000,0.97,2,2022,2022,1
+E,2,Dhaka,Dhaka North,F,15-64,5900000,0.82,2,2022,2022,1
+E,2,Dhaka,Dhaka North,Other,15-64,0,0,2,2022,2022,1
+E,2,Dhaka,Dhaka South,M,15-64,5800000,0.97,2,2022,2022,1
+E,2,Dhaka,Dhaka South,F,15-64,5700000,0.82,2,2022,2022,1
+E,2,Dhaka,Dhaka South,Other,15-64,0,0,2,2022,2022,1
+E,2,Chattogram,Chattogram,M,15-64,3100000,0.97,2,2022,2022,1
+E,2,Chattogram,Chattogram,F,15-64,3200000,0.82,2,2022,2022,1
+E,2,Chattogram,Chattogram,Other,15-64,0,0,2,2022,2022,1
+E,2,Khulna,Khulna,M,15-64,1500000,0.97,2,2022,2022,1
+E,2,Khulna,Khulna,F,15-64,1520000,0.82,2,2022,2022,1
+E,2,Khulna,Khulna,Other,15-64,0,0,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,M,15-64,1300000,0.97,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,F,15-64,1350000,0.82,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,Other,15-64,0,0,2,2022,2022,1
+E,2,Sylhet,Sylhet,M,15-64,1700000,0.97,2,2022,2022,1
+E,2,Sylhet,Sylhet,F,15-64,1750000,0.82,2,2022,2022,1
+E,2,Sylhet,Sylhet,Other,15-64,0,0,2,2022,2022,1
+E,2,Barishal,Barishal,M,15-64,750000,0.97,2,2022,2022,1
+E,2,Barishal,Barishal,F,15-64,760000,0.82,2,2022,2022,1
+E,2,Barishal,Barishal,Other,15-64,0,0,2,2022,2022,1
+E,2,Rangpur,Rangpur,M,15-64,900000,0.97,2,2022,2022,1
+E,2,Rangpur,Rangpur,F,15-64,920000,0.82,2,2022,2022,1
+E,2,Rangpur,Rangpur,Other,15-64,0,,2,2022,2022,1
+E,2,Mymensingh,N/A,M,15-64,4000000,0.97,2,2022,2022,1
+E,2,Mymensingh,N/A,F,15-64,4100000,0.82,2,2022,2022,1
+E,2,Mymensingh,N/A,Other,15-64,0,0,2,2022,2022,1
+E,2,Dhaka,Dhaka North,M,65 Plus,400000,0.8,2,2022,2022,1
+E,2,Dhaka,Dhaka North,F,65 Plus,420000,0.69,2,2022,2022,1
+E,2,Dhaka,Dhaka North,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Dhaka,Dhaka South,M,65 Plus,390000,0.8,2,2022,2022,1
+E,2,Dhaka,Dhaka South,F,65 Plus,400000,0.69,2,2022,2022,1
+E,2,Dhaka,Dhaka South,Other,65 Plus,0,,2,2022,2022,1
+E,2,Chattogram,Chattogram,M,65 Plus,200000,0.8,2,2022,2022,1
+E,2,Chattogram,Chattogram,F,65 Plus,210000,0.69,2,2022,2022,1
+E,2,Chattogram,Chattogram,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Khulna,Khulna,M,65 Plus,100000,0.8,2,2022,2022,1
+E,2,Khulna,Khulna,F,65 Plus,110000,0.69,2,2022,2022,1
+E,2,Khulna,Khulna,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,M,65 Plus,90000,0.8,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,F,65 Plus,95000,0.69,2,2022,2022,1
+E,2,Rajshahi,Rajshahi,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Sylhet,Sylhet,M,65 Plus,120000,0.8,2,2022,2022,1
+E,2,Sylhet,Sylhet,F,65 Plus,125000,0.69,2,2022,2022,1
+E,2,Sylhet,Sylhet,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Barishal,Barishal,M,65 Plus,50000,0.8,2,2022,2022,1
+E,2,Barishal,Barishal,F,65 Plus,52000,0.69,2,2022,2022,1
+E,2,Barishal,Barishal,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Rangpur,Rangpur,M,65 Plus,60000,0.8,2,2022,2022,1
+E,2,Rangpur,Rangpur,F,65 Plus,62000,0.69,2,2022,2022,1
+E,2,Rangpur,Rangpur,Other,65 Plus,0,0,2,2022,2022,1
+E,2,Mymensingh,N/A,M,65 Plus,180000,0.8,2,2022,2022,1
+E,2,Mymensingh,N/A,F,66 Plus,190000,0.69,2,2022,2022,1
+E,2,Mymensingh,N/A,Other,67 Plus,0,0,2,2022,2022,1
