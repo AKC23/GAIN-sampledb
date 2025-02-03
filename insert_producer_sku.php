@@ -23,12 +23,10 @@ $createTableSQL = "
         PackagingTypeID INT,
         Price DECIMAL(10,2),
         CurrencyID INT,
-        ReferenceID INT,
         FOREIGN KEY (BrandID) REFERENCES brand(BrandID),
         FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
-        FOREIGN KEY (PackagingTypeID) REFERENCES packaging_type(PackagingTypeID),
-        FOREIGN KEY (CurrencyID) REFERENCES measure_currency(CurrencyID),
-        FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
+        FOREIGN KEY (PackagingTypeID) REFERENCES packaging_type(Packaging_Type_ID),
+        FOREIGN KEY (CurrencyID) REFERENCES measure_currency(CurrencyID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -53,13 +51,13 @@ if ($result) {
     echo "Error getting valid CompanyIDs: " . $conn->error . "<br>";
 }
 
-$result = $conn->query("SELECT PackagingTypeID FROM packaging_type");
+$result = $conn->query("SELECT Packaging_Type_ID FROM packaging_type");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $validPackagingTypeIDs[] = $row['PackagingTypeID'];
+        $validPackagingTypeIDs[] = $row['Packaging_Type_ID'];
     }
 } else {
-    echo "Error getting valid PackagingTypeIDs: " . $conn->error . "<br>";
+    echo "Error getting valid Packaging_Type_IDs: " . $conn->error . "<br>";
 }
 
 $result = $conn->query("SELECT CurrencyID FROM measure_currency");
@@ -97,14 +95,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $brandID = (int)trim($data[0]);
+        $brandName = mysqli_real_escape_string($conn, trim($data[0]));
         $companyID = (int)trim($data[2]);
         $sku = (int)trim($data[4]);
         $unit = mysqli_real_escape_string($conn, trim($data[5]));
         $packagingTypeID = (int)trim($data[6]);
         $price = (float)trim($data[7]);
-        $currencyID = (int)trim($data[9]);
-        $referenceID = (int)trim($data[11]);
+        $currencyID = (int)trim($data[8]);
+        $referenceID = (int)trim($data[10]);
 
         // Validate IDs
         if (!in_array($companyID, $validCompanyIDs)) {
@@ -128,9 +126,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO producer_sku (BrandID, CompanyID, SKU, Unit, PackagingTypeID, Price, CurrencyID, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producer_sku (BrandName, CompanyID, SKU, Unit, Packaging_Type_ID, Price, CurrencyID, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiissdii", $brandID, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID, $referenceID);
+        $stmt->bind_param("siissdii", $brandName, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID, $referenceID);
 
         if ($stmt->execute()) {
             echo "✓ Inserted producer_sku record ID: " . $conn->insert_id . "<br>";
@@ -151,7 +149,7 @@ echo "<br>Final 'producer_sku' table contents:<br>";
 $result = $conn->query("SELECT * FROM producer_sku ORDER BY BrandID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['SKU_ID']}, BrandID: {$row['BrandID']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, PackagingTypeID: {$row['PackagingTypeID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}, ReferenceID: {$row['ReferenceID']}<br>";
+        echo "ID: {$row['BrandID']}, BrandName: {$row['BrandName']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, Packaging_Type_ID: {$row['Packaging_Type_ID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}, ReferenceID: {$row['ReferenceID']}<br>";
     }
 }
 

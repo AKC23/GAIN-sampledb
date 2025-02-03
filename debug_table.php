@@ -35,7 +35,9 @@ try {
             'year_type',  // Added year_type table
             'population',  // Added population table
             'table1', // Temporary tables
-            'table2' // Temporary tables
+            'table2', // Temporary tables
+            'supply',  // Added supply table
+            'supply_in_chain_final'  // <-- new addition
         ];
 
         foreach ($dropTables as $table) {
@@ -92,7 +94,8 @@ try {
         include('insert_distribution.php');  // Added distribution table
         include('insert_population.php');  // Added population table
         include('insert_producer_sku.php');  // Added producer_sku table
-
+        include('insert_supply.php');
+        include('insert_supply_in_chain_final.php');
         // Move total_local_crop_production to the very end
         // after all its dependencies are created
         echo "<h3>Creating Final Level tables...</h3>";

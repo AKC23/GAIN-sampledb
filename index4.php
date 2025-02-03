@@ -260,7 +260,9 @@
                                 'sub_distribution_channel',  // Added sub_distribution_channel table
                                 'year_type',  // Added year_type table
                                 'population',  // Added population table
-                                'brand'  // Added brand table
+                                'brand',  // Added brand table
+                                'supply',  // Added supply table
+                                'supply_in_chain_final'  // Added supply_in_chain_final table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {

@@ -1,14 +1,13 @@
-Processing Stage,VehicleID,
-N/A,1,
-Oil Seeds & Oleaginous Fruits,2,
-Oil Seeds,2,
-Flours & Meals of Oil Seeds (Not Mustard),2,
-Oil Seeds & Other Oily Fruit,2,
-Crude Oil,2,
-Oil without fortification,2,
-Refined Oil,2,
-Wheat Flour,3,
-,,
+Processing Stage,VehicleID,Extraction Rate
+N/A,1,0
+Oil Seeds & Oleaginous Fruits,2,100
+Oil Seeds,2,100
+Flours & Meals of Oil Seeds (Not Mustard),2,100
+Oil Seeds & Other Oily Fruit,2,100
+Crude Oil,2,15
+Oil without fortification,2,100
+Refined Oil,2,100
+Wheat Flour,3,100
 ,,
 ,,
 ,,

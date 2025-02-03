@@ -25,6 +25,7 @@ $createTableSQL = "
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
         Processing_Stage VARCHAR(255) NOT NULL,
         VehicleID INT(11) NOT NULL,
+        ExtractionRate DECIMAL(10, 2) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -96,7 +97,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 2) {
+        if (count($data) < 3) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -105,14 +106,16 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Clean the data more thoroughly
         $processingStage = trim($data[0]);
         $vehicleID = trim($data[1]);
+        $extractionRate = trim($data[2]);
         
         // Remove any extra spaces between the name and comma
         $processingStage = preg_replace('/\s+,/', ',', $processingStage);
         
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
-        if ($vehicleID === false || $vehicleID === null) {
-            echo "Error: Invalid VehicleID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
+        $extractionRate = filter_var($extractionRate, FILTER_VALIDATE_FLOAT);
+        if ($vehicleID === false || $vehicleID === null || $extractionRate === false || $extractionRate === null) {
+            echo "Error: Invalid VehicleID or ExtractionRate format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
@@ -120,7 +123,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $processingStage = mysqli_real_escape_string($conn, $processingStage);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, Processing_Stage: '$processingStage'<br>";
+        echo "VehicleID: $vehicleID, Processing_Stage: '$processingStage', ExtractionRate: $extractionRate<br>";
 
         if (empty($processingStage)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
@@ -128,9 +131,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO processing_stage (Processing_Stage, VehicleID) VALUES (?, ?)";
+        $sql = "INSERT INTO processing_stage (Processing_Stage, VehicleID, ExtractionRate) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $processingStage, $vehicleID);
+        $stmt->bind_param("sid", $processingStage, $vehicleID, $extractionRate);
 
         if ($stmt->execute()) {
             $psid = $conn->insert_id;
@@ -152,7 +155,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             echo "ID: {$row['PSID']}, VehicleID: {$row['VehicleID']}, " .
-                 "Vehicle: {$row['VehicleName']}, Stage: {$row['Processing_Stage']}<br>";
+                 "Vehicle: {$row['VehicleName']}, Stage: {$row['Processing_Stage']}, ExtractionRate: {$row['ExtractionRate']}<br>";
         }
     }
 

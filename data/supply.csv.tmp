@@ -1,86 +1,42 @@
-Food Vehicle,Country supplied,Food Type,Processing Stage,Origin,Producer/ processor name,Producer/ processor address,Country of producer/ processor,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume,Brand name,Product reference, Supply Volume Unit,"Periodical Unit Year/Month, Day)",Source Volume,Value  in Metric Ton/ Year,Crop to 1st  Processed Food stage Converted Value,Start Year,End Year,Accessed Date,Source,Link,Process to Obtain Data
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-15,Dec-15,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-16,Dec-16,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-17,Dec-17,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-18,Dec-18,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-19,Dec-19,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-20,Dec-20,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-21,Dec-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-22,Dec-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-15,Dec-15,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-16,Dec-16,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-17,Dec-17,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-18,Dec-18,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-19,Dec-19,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-20,Dec-20,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-21,Dec-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-22,Dec-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,#N/A,Jan-22,Dec-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-15,Dec-15,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-16,Dec-16,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-17,Dec-17,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-18,Dec-18,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-19,Dec-19,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-20,Dec-20,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-21,Dec-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jul-23,Jun-24,N/A,N/A,N/A,N/A
-E,Bangladesh,Palm kernel,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,#N/A,Jul-23,Jun-24,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-15,Dec-15,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-16,Dec-16,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-17,Dec-17,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-18,Dec-18,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-19,Dec-19,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-20,Dec-20,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-21,Dec-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-22,Dec-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-15,Dec-15,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-16,Dec-16,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-17,Dec-17,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-18,Dec-18,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-19,Dec-19,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-20,Dec-20,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-21,Dec-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Olive Oil,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,0,0,0,Jan-22,Dec-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"32,434.08","32,434.08",5675.964,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"31,060.23","31,060.23",5435.54025,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"30,714.68","30,714.68",5375.069,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"396,594.28","396,594.28",69403.999,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"409,659.06","409,659.06",71690.3355,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"547,425.32","547,425.32",95799.431,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"66,745.41","66,745.41",11680.44675,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"74,748.67","74,748.67",13081.01725,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"75,030.85","75,030.85",13130.39875,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"91,176.59","91,176.59",15955.90325,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"98,646.06","98,646.06",17263.0605,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"107,307.59","107,307.59",18778.82825,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"402,852.00","402,852.00",70499.1,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"411,969.56","411,969.56",72094.673,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"403,657.65","403,657.65",70640.08875,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"2,006.20","2,006.20",351.085,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"2,728.99","2,728.99",477.57325,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Oil Seeds,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,"3,622.11","3,622.11",633.86925,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Soybean,Crude Oil,Import,N/A,N/A,Malaysia,0,0,0,N/A,N/A,Metric Ton,Month,14,14,#N/A,,,N/A,N/A,N/A,N/A
-E,Bangladesh,Soybean,Crude Oil,Import,N/A,N/A,Malaysia,0,0,0,N/A,N/A,Metric Ton,Month,333,333,#N/A,,,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Crude Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,0,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sesame,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Rape & Mustard,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Ground Nut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-20,Jun-21,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Soya Bean,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Coconut,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-21,Jun-22,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Year,,0,0,Jul-22,Jun-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Sunflower,Refined Oil,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,0,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Whole Wheat ,Wheat flour,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,#N/A,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Atta,Wheat flour,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,#N/A,Jul-22,Jul-23,N/A,N/A,N/A,N/A
-E,Bangladesh,Maida,Wheat flour,Local,N/A,N/A,Bangladesh,0,0,0,N/A,N/A,Metric Ton,Annual,,0,#N/A,Jul-22,Jul-23,N/A,N/A,N/A,N/A
+Food Vehicle,VehicleID,Country supplied,CountryID,Food Type,FoodTypeID,Processing Stage,PS_ID,Origin,PSPRID,Producer/ processor name,Production capacity volume (MT/Y),% of capacity used,BrandID,Brand name,Product reference No.,UC_ID, Supply Volume Unit,"Periodical Unit Year/Month, Day)",Source Volume,Year Type ID,Start Year,End Year,ReferenceID
+E,2,Bangladesh,2,Sesame,6,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,3243408,1,2020,2021,49
+E,2,Bangladesh,2,Sesame,6,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,3106023,1,2021,2022,50
+E,2,Bangladesh,2,Sesame,6,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,3071468,1,2022,2023,51
+E,2,Bangladesh,2,Rape & Mustard,7,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,39659428,1,2020,2021,52
+E,2,Bangladesh,2,Rape & Mustard,7,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,40965906,1,2021,2022,53
+E,2,Bangladesh,2,Rape & Mustard,7,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,54742532,1,2022,2023,54
+E,2,Bangladesh,2,Ground Nut,8,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,6674541,1,2020,2021,55
+E,2,Bangladesh,2,Ground Nut,8,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,7474867,1,2021,2022,56
+E,2,Bangladesh,2,Ground Nut,8,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,7503085,1,2022,2023,57
+E,2,Bangladesh,2,Soya Bean,2,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,9117659,1,2020,2021,58
+E,2,Bangladesh,2,Soya Bean,2,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,9864606,1,2021,2022,59
+E,2,Bangladesh,2,Soya Bean,2,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,10730759,1,2022,2023,60
+E,2,Bangladesh,2,Coconut,5,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,40285200,1,2021,2022,61
+E,2,Bangladesh,2,Coconut,5,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,41196956,1,2022,2023,62
+E,2,Bangladesh,2,Coconut,5,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,40365765,1,2022,2023,63
+E,2,Bangladesh,2,Sunflower,4,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,200620,1,2021,2022,64
+E,2,Bangladesh,2,Sunflower,4,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,272899,1,2022,2023,65
+E,2,Bangladesh,2,Sunflower,4,Oil Seeds,3,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,362211,1,2022,2023,66
+E,2,Bangladesh,2,Soya Bean,2,Crude Oil,6,Import,1,N/A,0,0,1,N/A,1,1,Metric Ton,Month,1400,1,,,1
+E,2,Bangladesh,2,Soya Bean,2,Crude Oil,6,Import,1,N/A,0,0,1,N/A,1,1,Metric Ton,Month,33300,1,,,1
+E,2,Bangladesh,2,Sesame,6,Crude Oil,6,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,67
+E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,68
+E,2,Bangladesh,2,Sesame,6,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,69
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,70
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,71
+E,2,Bangladesh,2,Rape & Mustard,7,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,72
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,73
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,74
+E,2,Bangladesh,2,Ground Nut,8,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,75
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2020,2021,76
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,77
+E,2,Bangladesh,2,Soya Bean,2,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,78
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,79
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,80
+E,2,Bangladesh,2,Coconut,5,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,81
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2021,2022,82
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,83
+E,2,Bangladesh,2,Sunflower,4,Refined Oil,8,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,84
+E,2,Bangladesh,2,Whole Wheat,16,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,85
+E,2,Bangladesh,2,Atta,17,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,86
+E,2,Bangladesh,2,Maida,18,Wheat flour,9,Local,1,N/A,0,0,1,N/A,1,1,Metric Ton,Year,,1,2022,2023,87
