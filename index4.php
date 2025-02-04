@@ -342,7 +342,7 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-        include('debug_table.php');
+        //include('debug_table.php');
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {
