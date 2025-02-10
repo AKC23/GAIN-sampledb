@@ -16,6 +16,9 @@ try {
             'extraction_conversion', 
             'entities',
             'geography',
+            'geography_level1',
+            'geography_level2',
+            'geography_level3',
             'producer_processor',
             'measure_unit2',
             'measure_unit1',
@@ -28,11 +31,12 @@ try {
             'foodvehicle',
             'foodtype',
             'country',
-            'distribution',  // Added distribution table
+            'year_type',  
+            'distribution',  
             'company',
             'distribution_channel',  // Added distribution_channel table
             'sub_distribution_channel',  // Added sub_distribution_channel table
-            'year_type',  // Added year_type table
+            
             'population',  // Added population table
             'table1', // Temporary tables
             'table2', // Temporary tables
@@ -62,22 +66,24 @@ try {
         include('insert_reference.php');  
         include('insert_gender.php'); 
         include('insert_age.php'); 
-        include('insert_year_type.php');  // Added year_type table
+        include('insert_year_type.php');
 
         // Level 1: Tables that depend on base tables
         echo "<h3>Creating Level 1 tables...</h3>";
         include('insert_foodtype.php');      // Depends on: FoodVehicle
-        include('insert_processing_stage.php');     // Depends on: FoodVehicle
-        include('insert_geography.php');     // Depends on: country
-        include('insert_entities.php');   
+        
         include('insert_brand.php'); // <-- Moved here, after insert_company
         include('insert_Geography_Level1.php');
         include('insert_Geography_Level2.php');
         include('insert_Geography_Level3.php');
+          
+
 
         // Level 2: Tables depending on Level 1
         echo "<h3>Creating Level 2 tables...</h3>";
-        
+        include('insert_processing_stage.php');     // Depends on: FoodVehicle
+        include('insert_geography.php');     // Depends on: country
+        include('insert_entities.php'); 
                       
         include('insert_producer_processor.php'); // Depends on: Country, FoodVehicle
         include('insert_extraction_conversion.php'); // Depends on: FoodVehicle, FoodType
@@ -89,7 +95,9 @@ try {
         
 
         // Level 4: Tables depending on Level 3 or complex dependencies
-        
+        include('insert_consumption.php');
+
+
         // Level 5: Tables depending on Level 4 or complex dependencies
         echo "<h3>Creating Level 5 tables...</h3>";
         include('insert_distribution_channel.php');  // Added distribution_channel table
@@ -98,6 +106,7 @@ try {
         include('insert_distribution.php');  // Added distribution table
         include('insert_population.php');  // Added population table
         include('insert_producer_sku.php');  // Added producer_sku table
+        
         include('insert_supply.php');
         include('insert_supply_in_chain_final.php');
         // Move total_local_crop_production to the very end

@@ -4,6 +4,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
 // SQL query to drop the 'age' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS age";
 
@@ -13,6 +16,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 } else {
     echo "Error dropping table 'age': " . $conn->error . "<br>";
 }
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // SQL query to create the 'age' table
 $createTableSQL = "

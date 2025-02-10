@@ -4,6 +4,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
 // SQL query to drop the 'measure_unit1' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS measure_unit1";
 
@@ -13,6 +16,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 } else {
     echo "Error dropping table 'measure_unit1': " . $conn->error . "<br>";
 }
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // SQL query to create the 'measure_unit1' table
 $createTableSQL = "

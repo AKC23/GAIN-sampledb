@@ -2,6 +2,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
 // SQL query to drop the 'producer_sku' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS producer_sku";
 
@@ -12,17 +15,20 @@ if ($conn->query($dropTableSQL) === TRUE) {
     echo "Error dropping table 'producer_sku': " . $conn->error . "<br>";
 }
 
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
 // SQL query to create the 'producer_sku' table with foreign keys
 $createTableSQL = "
     CREATE TABLE producer_sku (
         SKU_ID INT AUTO_INCREMENT PRIMARY KEY,
-        BrandID INT,
-        CompanyID INT,
+        BrandID INT(11),
+        CompanyID INT(11),
         SKU VARCHAR(100),
         Unit VARCHAR(50),
-        PackagingTypeID INT,
+        PackagingTypeID INT(11),
         Price DECIMAL(10,2),
-        CurrencyID INT,
+        CurrencyID INT(11),
         FOREIGN KEY (BrandID) REFERENCES brand(BrandID),
         FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
         FOREIGN KEY (PackagingTypeID) REFERENCES packaging_type(Packaging_Type_ID),
@@ -36,11 +42,20 @@ if ($conn->query($createTableSQL) === TRUE) {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid CompanyIDs, Packaging_Type_IDs, CurrencyIDs, and ReferenceIDs
+// Get valid BrandIDs, CompanyIDs, Packaging_Type_IDs, and CurrencyIDs
+$validBrandIDs = array();
 $validCompanyIDs = array();
 $validPackagingTypeIDs = array();
 $validCurrencyIDs = array();
-$validReferenceIDs = array();
+
+$result = $conn->query("SELECT BrandID FROM brand");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validBrandIDs[] = $row['BrandID'];
+    }
+} else {
+    echo "Error getting valid BrandIDs: " . $conn->error . "<br>";
+}
 
 $result = $conn->query("SELECT CompanyID FROM company");
 if ($result) {
@@ -69,15 +84,6 @@ if ($result) {
     echo "Error getting valid CurrencyIDs: " . $conn->error . "<br>";
 }
 
-$result = $conn->query("SELECT ReferenceID FROM reference");
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $validReferenceIDs[] = $row['ReferenceID'];
-    }
-} else {
-    echo "Error getting valid ReferenceIDs: " . $conn->error . "<br>";
-}
-
 // Path to your CSV file
 $csvFile = 'data/producer_sku.csv';  // Update with the exact path of your CSV file
 
@@ -95,16 +101,20 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $brandName = mysqli_real_escape_string($conn, trim($data[0]));
+        $brandID = (int)trim($data[0]);
         $companyID = (int)trim($data[2]);
-        $sku = (int)trim($data[4]);
+        $sku = mysqli_real_escape_string($conn, trim($data[4]));
         $unit = mysqli_real_escape_string($conn, trim($data[5]));
         $packagingTypeID = (int)trim($data[6]);
         $price = (float)trim($data[7]);
         $currencyID = (int)trim($data[8]);
-        $referenceID = (int)trim($data[10]);
 
         // Validate IDs
+        if (!in_array($brandID, $validBrandIDs)) {
+            echo "Error: BrandID $brandID does not exist in brand table. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
         if (!in_array($companyID, $validCompanyIDs)) {
             echo "Error: CompanyID $companyID does not exist in company table. Skipping row $rowNumber.<br>";
             $rowNumber++;
@@ -120,15 +130,10 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $rowNumber++;
             continue;
         }
-        if (!in_array($referenceID, $validReferenceIDs)) {
-            echo "Error: ReferenceID $referenceID does not exist in reference table. Skipping row $rowNumber.<br>";
-            $rowNumber++;
-            continue;
-        }
 
-        $sql = "INSERT INTO producer_sku (BrandName, CompanyID, SKU, Unit, Packaging_Type_ID, Price, CurrencyID, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producer_sku (BrandID, CompanyID, SKU, Unit, Packaging_Type_ID, Price, CurrencyID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("siissdii", $brandName, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID, $referenceID);
+        $stmt->bind_param("iiissdi", $brandID, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID);
 
         if ($stmt->execute()) {
             echo "✓ Inserted producer_sku record ID: " . $conn->insert_id . "<br>";
@@ -149,7 +154,7 @@ echo "<br>Final 'producer_sku' table contents:<br>";
 $result = $conn->query("SELECT * FROM producer_sku ORDER BY BrandID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['BrandID']}, BrandName: {$row['BrandName']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, Packaging_Type_ID: {$row['Packaging_Type_ID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}, ReferenceID: {$row['ReferenceID']}<br>";
+        echo "ID: {$row['SKU_ID']}, BrandID: {$row['BrandID']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, Packaging_Type_ID: {$row['Packaging_Type_ID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}<br>";
     }
 }
 

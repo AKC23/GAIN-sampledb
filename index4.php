@@ -241,13 +241,15 @@
                             $validTables = [
                                 'foodvehicle',
                                 'foodtype',
+                                'processing_stage',
                                 'country',
+                                'gender',
+                                'age',
+                                'year_type',  // Added year_type table
                                 'Geography_Level1',
                                 'Geography_Level2',
                                 'Geography_Level3',
-                                'gender',
-                                'age',
-                                'processing_stage',
+                                
                                 'reference',  // Added reference table
                                 'measure_unit1',
                                 'measure_unit2',
@@ -256,6 +258,7 @@
                                 'geography',
                                 'entities',
                                 'producer_sku',  // Added producer_sku table
+                                'consumption', 
                                 'extraction_conversion',
                                 'producer_processor',
                                 'packaging_type',
@@ -263,10 +266,11 @@
                                 'company',  // Added company table
                                 'distribution_channel',  // Added distribution_channel table
                                 'sub_distribution_channel',  // Added sub_distribution_channel table
-                                'year_type',  // Added year_type table
+                                
                                 'population',  // Added population table
                                 'brand',  // Added brand table
                                 'supply',  // Added supply table
+                                
                                 'supply_in_chain_final'  // Added supply_in_chain_final table
                             ];
                             $selectedTable = $_POST['tableName'] ?? '';
@@ -347,7 +351,7 @@
         echo "<br><br><br>";
 
         // Include debug_table.php for debugging information
-        include('debug_table.php');
+        // include('debug_table.php');
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {

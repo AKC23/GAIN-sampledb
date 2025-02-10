@@ -3,6 +3,15 @@
 // Include the database connection
 include('db_connect.php');
 
+// Ensure referenced tables exist
+$requiredTables = ['company', 'FoodType'];
+foreach ($requiredTables as $table) {
+    $result = $conn->query("SHOW TABLES LIKE '$table'");
+    if ($result->num_rows == 0) {
+        die("Error: Referenced table '$table' does not exist.<br>");
+    }
+}
+
 // Drop table if exists
 $dropTableSQL = "DROP TABLE IF EXISTS brand";
 if ($conn->query($dropTableSQL) === TRUE) {

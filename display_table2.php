@@ -897,6 +897,117 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             echo "<tr><td colspan='33'>No data found</td></tr>";
         }
         echo "</tbody></table></div>";
+    } elseif ($tableName == 'consumption') {
+        // Fetch all records from consumption table
+        $sql = "SELECT * FROM consumption ORDER BY ConsumptionID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr>
+                    <th>ConsumptionID</th>
+                    <th>VehicleID</th>
+                    <th>GL1ID</th>
+                    <th>GL2ID</th>
+                    <th>GL3ID</th>
+                    <th>GenderID</th>
+                    <th>AgeID</th>
+                    <th>NumberOfPeople</th>
+                    <th>SourceVolume</th>
+                    <th>UCID</th>
+                    <th>YearTypeID</th>
+                    <th>StartYear</th>
+                    <th>EndYear</th>
+                    <th>ReferenceID</th>
+                  </tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['ConsumptionID']}</td>";
+                echo "<td>{$row['VehicleID']}</td>";
+                echo "<td>{$row['GL1ID']}</td>";
+                echo "<td>{$row['GL2ID']}</td>";
+                echo "<td>{$row['GL3ID']}</td>";
+                echo "<td>{$row['GenderID']}</td>";
+                echo "<td>{$row['AgeID']}</td>";
+                echo "<td>{$row['NumberOfPeople']}</td>";
+                echo "<td>{$row['SourceVolume']}</td>";
+                echo "<td>{$row['UCID']}</td>";
+                echo "<td>{$row['YearTypeID']}</td>";
+                echo "<td>{$row['StartYear']}</td>";
+                echo "<td>{$row['EndYear']}</td>";
+                echo "<td>{$row['ReferenceID']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found for consumption table";
+        }
+    } elseif ($tableName == 'Geography_Level1') {
+        // Fetch all records from Geography_Level1
+        $sql = "SELECT gl1.GL1ID, gl1.AdminLevel1, c.Country_Name
+                FROM Geography_Level1 gl1
+                JOIN country c ON gl1.CountryID = c.Country_ID
+                ORDER BY gl1.GL1ID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>GL1ID</th><th>AdminLevel1</th><th>Country_Name</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['GL1ID']}</td>";
+                echo "<td>{$row['AdminLevel1']}</td>";
+                echo "<td>{$row['Country_Name']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'Geography_Level2') {
+        // Fetch all records from Geography_Level2
+        $sql = "SELECT gl2.GL2ID, gl2.AdminLevel2, gl1.AdminLevel1
+                FROM Geography_Level2 gl2
+                JOIN Geography_Level1 gl1 ON gl2.GL1ID = gl1.GL1ID
+                ORDER BY gl2.GL2ID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>GL2ID</th><th>AdminLevel2</th><th>AdminLevel1</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['GL2ID']}</td>";
+                echo "<td>{$row['AdminLevel2']}</td>";
+                echo "<td>{$row['AdminLevel1']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
+    } elseif ($tableName == 'Geography_Level3') {
+        // Fetch all records from Geography_Level3
+        $sql = "SELECT gl3.GL3ID, gl3.AdminLevel3, gl1.AdminLevel1
+                FROM Geography_Level3 gl3
+                JOIN Geography_Level1 gl1 ON gl3.GL1ID = gl1.GL1ID
+                ORDER BY gl3.GL3ID";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            echo "<div class='table-responsive'><table class='table table-bordered'>";
+            echo "<thead><tr><th>GL3ID</th><th>AdminLevel3</th><th>AdminLevel1</th></tr></thead><tbody>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>{$row['GL3ID']}</td>";
+                echo "<td>{$row['AdminLevel3']}</td>";
+                echo "<td>{$row['AdminLevel1']}</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table></div>";
+        } else {
+            echo "No data found";
+        }
     } else {
         // Handle other tables
         if (!empty($tableName)) {
@@ -976,4 +1087,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
+?>
 
