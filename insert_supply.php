@@ -32,7 +32,7 @@ $createTableSQL = "
         BrandID INT(11),
         ProductReferenceNo INT(11),
         UC_ID INT(11),
-        SourceVolume FLOAT,
+        SourceVolume DECIMAL(10, 2),
         YearTypeID INT(11),
         StartYear INT(11),
         EndYear INT(11),

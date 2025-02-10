@@ -711,12 +711,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 s.SupplyID, 
                 fv.VehicleName, 
                 co.Country_Name, 
-                ft.FoodTypeName,                 /* replaced FoodTypeID */
+                ft.FoodTypeName, 
                 ps.Processing_Stage, 
                 s.Origin, 
                 pp.Productioncapacityvolume, 
                 pp.PercentageOfCapacityUsed, 
-                b.Brand_Name,                    /* replaced BrandID */
+                b.Brand_Name, 
                 s.ProductReferenceNo, 
                 mu1.SupplyVolumeUnit, 
                 mu1.PeriodicalUnit, 
@@ -730,7 +730,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 r.Source, 
                 r.Link, 
                 r.ProcessToObtainData, 
-                r.AccessDate
+                r.AccessDate,
+                s.SourceVolume * mu1.UnitValue AS Volume_MetricTon_Year
             FROM supply s
             JOIN FoodVehicle fv ON s.VehicleID = fv.VehicleID
             JOIN country co ON s.CountryID = co.Country_ID
@@ -760,6 +761,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     <th>SupplyVolumeUnit</th>
                     <th>PeriodicalUnit</th>
                     <th>SourceVolume</th>
+                    <th>Volume_MetricTon_Year</th>
                     <th>YearType</th>
                     <th>StartMonth</th>
                     <th>EndMonth</th>
@@ -786,6 +788,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                         <td>{$row['SupplyVolumeUnit']}</td>
                         <td>{$row['PeriodicalUnit']}</td>
                         <td>{$row['SourceVolume']}</td>
+                        <td>{$row['Volume_MetricTon_Year']}</td>
                         <td>{$row['YearType']}</td>
                         <td>{$row['StartMonth']}</td>
                         <td>{$row['EndMonth']}</td>

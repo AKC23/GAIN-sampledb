@@ -20,7 +20,7 @@ $createTableSQL = "
         UCID INT(11) AUTO_INCREMENT PRIMARY KEY,
         SupplyVolumeUnit VARCHAR(50) NOT NULL,
         PeriodicalUnit VARCHAR(50) NOT NULL,
-        UnitValue FLOAT NOT NULL
+        UnitValue DECIMAL(10, 2) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
