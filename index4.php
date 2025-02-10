@@ -242,6 +242,11 @@
                                 'foodvehicle',
                                 'foodtype',
                                 'country',
+                                'Geography_Level1',
+                                'Geography_Level2',
+                                'Geography_Level3',
+                                'gender',
+                                'age',
                                 'processing_stage',
                                 'reference',  // Added reference table
                                 'measure_unit1',

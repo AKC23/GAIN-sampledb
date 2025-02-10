@@ -1,37 +1,35 @@
 <?php
-// insert_measure_unit1.php
+// insert_age.php
 
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'measure_unit1' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS measure_unit1";
+// SQL query to drop the 'age' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS age";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' dropped successfully.<br>";
+    echo "Table 'age' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'measure_unit1': " . $conn->error . "<br>";
+    echo "Error dropping table 'age': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'measure_unit1' table
+// SQL query to create the 'age' table
 $createTableSQL = "
-    CREATE TABLE measure_unit1 (
-        UCID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        SupplyVolumeUnit VARCHAR(50) NOT NULL,
-        PeriodicalUnit VARCHAR(50) NOT NULL,
-        UnitValue DECIMAL(20, 12) NOT NULL
+    CREATE TABLE age (
+        AgeID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        AgeRange VARCHAR(50) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' created successfully.<br>";
+    echo "Table 'age' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
-$csvFile = 'data/measure_unit1.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/age.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -91,52 +89,38 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 3) {
+        if (count($data) < 1) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $supplyVolumeUnit = trim($data[0]);
-        $periodicalUnit = trim($data[1]);
-        $unitValue = trim($data[2]);
+        $ageRange = trim($data[0]);
         
         // Remove any extra spaces between the name and comma
-        $supplyVolumeUnit = preg_replace('/\s+,/', ',', $supplyVolumeUnit);
-        $periodicalUnit = preg_replace('/\s+,/', ',', $periodicalUnit);
+        $ageRange = preg_replace('/\s+,/', ',', $ageRange);
         
-        // Convert to proper types
-        $unitValue = filter_var($unitValue, FILTER_VALIDATE_FLOAT);
-        if ($unitValue === false || $unitValue === null) {
-            echo "Error: Invalid UnitValue format in row $rowNumber: '{$data[2]}'. Skipping.<br>";
-            $rowNumber++;
-            continue;
-        }
-
-        $supplyVolumeUnit = mysqli_real_escape_string($conn, $supplyVolumeUnit);
-        $periodicalUnit = mysqli_real_escape_string($conn, $periodicalUnit);
+        $ageRange = mysqli_real_escape_string($conn, $ageRange);
 
         // Debugging: Show extracted values
-        echo "SupplyVolumeUnit: '$supplyVolumeUnit'<br>";
-        echo "PeriodicalUnit: '$periodicalUnit'<br>";
-        echo "UnitValue: $unitValue<br>";
+        echo "AgeRange: '$ageRange'<br>";
 
-        if (empty($supplyVolumeUnit) || empty($periodicalUnit)) {
-            echo "Warning: Empty unit selection in row $rowNumber. Skipping.<br>";
+        if (empty($ageRange)) {
+            echo "Warning: Empty age range in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO measure_unit1 (SupplyVolumeUnit, PeriodicalUnit, UnitValue) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO age (AgeRange) VALUES (?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssd", $supplyVolumeUnit, $periodicalUnit, $unitValue);
+        $stmt->bind_param("s", $ageRange);
 
         if ($stmt->execute()) {
-            $ucid = $conn->insert_id;
-            echo "✓ Inserted measure unit with ID: $ucid<br>";
+            $ageID = $conn->insert_id;
+            echo "✓ Inserted age with ID: $ageID<br>";
         } else {
-            echo "Error inserting measure unit: " . $stmt->error . "<br>";
+            echo "Error inserting age: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -144,11 +128,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final measure_unit1 table contents:<br>";
-    $result = $conn->query("SELECT * FROM measure_unit1 ORDER BY UCID");
+    echo "<br>Final age table contents:<br>";
+    $result = $conn->query("SELECT * FROM age ORDER BY AgeID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['UCID']}, SupplyVolumeUnit: {$row['SupplyVolumeUnit']}, PeriodicalUnit: {$row['PeriodicalUnit']}, UnitValue: {$row['UnitValue']}<br>";
+            echo "ID: {$row['AgeID']}, AgeRange: {$row['AgeRange']}<br>";
         }
     }
 

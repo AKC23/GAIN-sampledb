@@ -1,37 +1,50 @@
 <?php
-// insert_measure_unit1.php
+// insert_geography_level1.php
 
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'measure_unit1' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS measure_unit1";
+// SQL query to drop the 'Geography_Level1' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS Geography_Level1";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' dropped successfully.<br>";
+    echo "Table 'Geography_Level1' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'measure_unit1': " . $conn->error . "<br>";
+    echo "Error dropping table 'Geography_Level1': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'measure_unit1' table
+// SQL query to create the 'Geography_Level1' table with a foreign key to 'country'
 $createTableSQL = "
-    CREATE TABLE measure_unit1 (
-        UCID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        SupplyVolumeUnit VARCHAR(50) NOT NULL,
-        PeriodicalUnit VARCHAR(50) NOT NULL,
-        UnitValue DECIMAL(20, 12) NOT NULL
+    CREATE TABLE Geography_Level1 (
+        GL1ID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        AdminLevel1 VARCHAR(50) NOT NULL,
+        CountryID INT(11) NOT NULL,
+        FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' created successfully.<br>";
+    echo "Table 'Geography_Level1' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
+// Get valid Country_IDs
+$validCountryIDs = array();
+$result = $conn->query("SELECT * FROM country");
+if ($result) {
+    echo "<br>Valid Country_IDs in database:<br>";
+    while ($row = $result->fetch_assoc()) {
+        $validCountryIDs[] = $row['Country_ID'];
+        echo "Country_ID: {$row['Country_ID']}, Name: {$row['Country_Name']}<br>";
+    }
+} else {
+    echo "Error getting valid Country_IDs: " . $conn->error . "<br>";
+}
+
 // Path to your CSV file
-$csvFile = 'data/measure_unit1.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/geography_level1.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -91,52 +104,55 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 3) {
+        if (count($data) < 2) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $supplyVolumeUnit = trim($data[0]);
-        $periodicalUnit = trim($data[1]);
-        $unitValue = trim($data[2]);
+        $adminLevel1 = trim($data[0]);
+        $countryID = trim($data[1]);
         
         // Remove any extra spaces between the name and comma
-        $supplyVolumeUnit = preg_replace('/\s+,/', ',', $supplyVolumeUnit);
-        $periodicalUnit = preg_replace('/\s+,/', ',', $periodicalUnit);
+        $adminLevel1 = preg_replace('/\s+,/', ',', $adminLevel1);
         
         // Convert to proper types
-        $unitValue = filter_var($unitValue, FILTER_VALIDATE_FLOAT);
-        if ($unitValue === false || $unitValue === null) {
-            echo "Error: Invalid UnitValue format in row $rowNumber: '{$data[2]}'. Skipping.<br>";
+        $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
+        if ($countryID === false || $countryID === null) {
+            echo "Error: Invalid Country_ID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $supplyVolumeUnit = mysqli_real_escape_string($conn, $supplyVolumeUnit);
-        $periodicalUnit = mysqli_real_escape_string($conn, $periodicalUnit);
+        $adminLevel1 = mysqli_real_escape_string($conn, $adminLevel1);
 
         // Debugging: Show extracted values
-        echo "SupplyVolumeUnit: '$supplyVolumeUnit'<br>";
-        echo "PeriodicalUnit: '$periodicalUnit'<br>";
-        echo "UnitValue: $unitValue<br>";
+        echo "Country_ID from CSV: $countryID (Valid IDs: " . implode(", ", $validCountryIDs) . ")<br>";
+        echo "AdminLevel1: '$adminLevel1'<br>";
 
-        if (empty($supplyVolumeUnit) || empty($periodicalUnit)) {
-            echo "Warning: Empty unit selection in row $rowNumber. Skipping.<br>";
+        // Validate Country_ID
+        if (!in_array($countryID, $validCountryIDs)) {
+            echo "Error: Country_ID $countryID does not exist in country table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO measure_unit1 (SupplyVolumeUnit, PeriodicalUnit, UnitValue) VALUES (?, ?, ?)";
+        if (empty($adminLevel1)) {
+            echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        $sql = "INSERT INTO Geography_Level1 (AdminLevel1, CountryID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssd", $supplyVolumeUnit, $periodicalUnit, $unitValue);
+        $stmt->bind_param("si", $adminLevel1, $countryID);
 
         if ($stmt->execute()) {
-            $ucid = $conn->insert_id;
-            echo "✓ Inserted measure unit with ID: $ucid<br>";
+            $gl1id = $conn->insert_id;
+            echo "✓ Inserted geography level 1 '$adminLevel1' with ID: $gl1id<br>";
         } else {
-            echo "Error inserting measure unit: " . $stmt->error . "<br>";
+            echo "Error inserting geography level 1: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -144,11 +160,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final measure_unit1 table contents:<br>";
-    $result = $conn->query("SELECT * FROM measure_unit1 ORDER BY UCID");
+    echo "<br>Final Geography_Level1 table contents:<br>";
+    $result = $conn->query("SELECT gl1.*, c.Country_Name 
+                           FROM Geography_Level1 gl1 
+                           JOIN country c ON gl1.CountryID = c.Country_ID 
+                           ORDER BY gl1.GL1ID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['UCID']}, SupplyVolumeUnit: {$row['SupplyVolumeUnit']}, PeriodicalUnit: {$row['PeriodicalUnit']}, UnitValue: {$row['UnitValue']}<br>";
+            echo "ID: {$row['GL1ID']}, AdminLevel1: {$row['AdminLevel1']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
         }
     }
 
