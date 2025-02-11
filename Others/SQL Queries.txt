@@ -1,0 +1,340 @@
+CREATE TABLE FoodVehicle (
+    VehicleID INT PRIMARY KEY,
+    VehicleName VARCHAR(50) NULL
+);
+
+CREATE TABLE FoodType (
+    FoodTypeID INT PRIMARY KEY,
+    FoodTypeName VARCHAR(50) NULL,
+    VehicleID INT,
+    CONSTRAINT fkFoodTypeVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+);
+
+CREATE TABLE ProcessingStage (
+    PSID INT PRIMARY KEY,
+    ProcessingStage VARCHAR(255) NULL,
+    VehicleID INT,
+    ExtractionRate DECIMAL(10,2) NULL,
+    CONSTRAINT fkProcessingStageVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+);
+
+CREATE TABLE Country (
+    CountryID INT PRIMARY KEY,
+    CountryName VARCHAR(100) NULL
+);
+
+CREATE TABLE Age (
+    AgeID INT PRIMARY KEY,
+    AgeRange VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Gender (
+    GenderID INT PRIMARY KEY,
+    GenderName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE AME (
+    AMEID INT PRIMARY KEY,
+    AME INT NOT NULL,
+    GenderID INT,
+    AgeID INT,
+    CONSTRAINT fk_AME_Gender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
+    CONSTRAINT fk_AME_Age FOREIGN KEY (AgeID) REFERENCES Age(AgeID)
+);
+
+
+CREATE TABLE MeasureUnit1 (
+    UCID INT PRIMARY KEY,
+    SupplyVolumeUnit VARCHAR(50) NULL,
+    PeriodicalUnit VARCHAR(50) NULL,
+    UnitValue DECIMAL(10,2) NULL
+);
+
+CREATE TABLE MeasureCurrency (
+    CurrencyID INT PRIMARY KEY,
+    CurrencySelection VARCHAR(50) NULL,
+    CurrencyValue DECIMAL(10,2) NULL
+);
+
+CREATE TABLE MeasurePeriod (
+    PeriodID INT PRIMARY KEY,
+    PeriodSelection VARCHAR(50) NULL,
+    PeriodValue DECIMAL(10,2) NULL
+);
+
+
+CREATE TABLE YearType (
+    YearTypeID INT PRIMARY KEY,
+    YearType VARCHAR(255) NULL,
+    StartMonth VARCHAR(50) NULL,
+    EndMonth VARCHAR(50) NULL
+);
+
+CREATE TABLE PackagingType (
+    PackagingTypeID INT PRIMARY KEY,
+    PackagingType VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Reference (
+    ReferenceID INT PRIMARY KEY,
+    ReferenceNumber INT,
+    Source VARCHAR(255),
+    Link VARCHAR(255),
+    ProcessToObtainData VARCHAR(255),
+    AccessDate DATE
+);
+
+CREATE TABLE Geography1 (
+    GL1ID INT PRIMARY KEY,
+    AdminLevel1 VARCHAR(255),
+    CountryID INT,
+    CONSTRAINT fkGeo1Country FOREIGN KEY (CountryID) REFERENCES Country(CountryID)
+);
+
+CREATE TABLE Geography2 (
+    GL2ID INT PRIMARY KEY,
+    AdminLevel2 VARCHAR(255),
+    GL1ID INT,
+    CONSTRAINT fkGeo2Geo1 FOREIGN KEY (GL1ID) REFERENCES Geography1(GL1ID)
+);
+
+CREATE TABLE Geography3 (
+    GL3ID INT PRIMARY KEY,
+    AdminLevel3 VARCHAR(255),
+    GL2ID INT,
+    CONSTRAINT fkGeo3Geo2 FOREIGN KEY (GL2ID) REFERENCES Geography2(GL2ID)
+);
+
+
+CREATE TABLE Company (
+    CompanyID INT PRIMARY KEY,
+    CompanyName VARCHAR(255) NULL
+);
+
+
+CREATE TABLE Brand (
+    BrandID INT PRIMARY KEY,
+    BrandName VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE DistributionChannel (
+    DistributionChannelID INT PRIMARY KEY,
+    DistributionChannel VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE SubDistributionChannel (
+    SubDistributionChannelID INT PRIMARY KEY,
+    SubDistributionChannel VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE ProducerReference (
+    ProducerReferenceID INT PRIMARY KEY,
+    CompanyID INT,
+    IdentifierNumber VARCHAR(100) NOT NULL,
+    IdentifierReferenceSystem VARCHAR(255) NOT NULL,
+    CountryID INT,
+    CONSTRAINT fkProducerCompany FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
+    CONSTRAINT fkProducerCountry FOREIGN KEY (CountryID) REFERENCES Country(CountryID)
+);
+
+
+CREATE TABLE Extraction_Conversion (
+    ExtractionID INT PRIMARY KEY,
+    ExtractionRate DECIMAL(10,2),
+    FoodTypeID INT,
+  	VehicleID INT,
+    ReferenceID INT,
+    CONSTRAINT fk_Extraction_Vehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fk_Extraction_FoodType FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+    CONSTRAINT fk_Extraction_Reference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+
+CREATE TABLE AME (
+    AMEID INT PRIMARY KEY,
+    AME INT NOT NULL,
+    GenderID INT,
+    AgeID INT,
+    CONSTRAINT fk_AME_Gender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
+    CONSTRAINT fk_AME_Age FOREIGN KEY (AgeID) REFERENCES Age(AgeID)
+);
+
+
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY,
+    BrandID INT,
+    CompanyID INT,
+    FoodTypeID INT,
+    CONSTRAINT fk_Product_Brand FOREIGN KEY (BrandID) REFERENCES Brand(BrandID),
+    CONSTRAINT fk_Product_Company FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
+    CONSTRAINT fk_Product_FoodType FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID)
+);
+
+CREATE TABLE ProducerProcessor (
+    PSPRID INT PRIMARY KEY,
+    ProducerProcessorName VARCHAR(255) NOT NULL,
+    TaskDoneByEntity VARCHAR(255) NOT NULL,
+    CountryID INT,
+    VehicleID INT,
+    ProductionCapacityVolumeMTY DECIMAL(10,2),
+    CapacityUsedPercentage DECIMAL(5,2),
+    AnnualProductionSupplyVolumeMTY DECIMAL(10,2),
+    ProducerReferenceID INT,
+    CONSTRAINT fkProducerProcessorCountry FOREIGN KEY (CountryID) REFERENCES Country(CountryID),
+    CONSTRAINT fkProducerProcessorVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkProducerProcessorReference FOREIGN KEY (ProducerReferenceID) REFERENCES ProducerReference(ProducerReferenceID)
+);
+
+CREATE TABLE ProducerSKU (
+    SKU_ID INT PRIMARY KEY,
+    ProductID INT,
+    SKU VARCHAR(255) NOT NULL,
+    Unit VARCHAR(50),
+    PackagingTypeID INT,
+    Price DECIMAL(10,2),
+    CurrencyID INT,
+    ReferenceID INT,
+    CONSTRAINT fkProducerSKUProduct FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    CONSTRAINT fkProducerSKUPackagingType FOREIGN KEY (PackagingTypeID) REFERENCES PackagingType(PackagingTypeID),
+    CONSTRAINT fkProducerSKUCurrency FOREIGN KEY (CurrencyID) REFERENCES MeasureCurrency(CurrencyID),
+    CONSTRAINT fkProducerSKUReference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+
+
+CREATE TABLE Entities (
+    EntityID INT PRIMARY KEY,
+    PSPRID INT,
+    CompanyID INT,
+    VehicleID INT,
+    GL1ID INT,
+    GL2ID INT,
+    GL3ID INT,
+    CountryID INT,
+    CONSTRAINT fkEntitiesPSP FOREIGN KEY (PSPRID) REFERENCES ProducerProcessor(PSPRID),
+    CONSTRAINT fkEntitiesCompany FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
+    CONSTRAINT fkEntitiesVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkEntitiesGL1 FOREIGN KEY (GL1ID) REFERENCES Geography1(GL1ID),
+    CONSTRAINT fkEntitiesGL2 FOREIGN KEY (GL2ID) REFERENCES Geography2(GL2ID),
+    CONSTRAINT fkEntitiesGL3 FOREIGN KEY (GL3ID) REFERENCES Geography3(GL3ID),
+    CONSTRAINT fkEntitiesCountry FOREIGN KEY (CountryID) REFERENCES Country(CountryID)
+);
+
+
+CREATE TABLE Distribution (
+    DistributionID INT PRIMARY KEY,
+    DistributionChannelID INT,
+    SubDistributionChannelID INT,
+    VehicleID INT,
+    UCID INT,
+    SourceVolume DECIMAL(10,2),
+    VolumeMetricTonYear DECIMAL(10,2),
+    CountryID INT,
+    YearTypeID INT,
+    StartYear INT,
+    EndYear INT,
+    ReferenceID INT,
+    CONSTRAINT fkDistributionChannel FOREIGN KEY (DistributionChannelID) REFERENCES DistributionChannel(DistributionChannelID),
+    CONSTRAINT fkSubDistributionChannel FOREIGN KEY (SubDistributionChannelID) REFERENCES SubDistributionChannel(SubDistributionChannelID),
+    CONSTRAINT fkVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkUCID FOREIGN KEY (UCID) REFERENCES MeasureUnit1(UCID),
+    CONSTRAINT fkCountry FOREIGN KEY (CountryID) REFERENCES Country(CountryID),
+    CONSTRAINT fkYearType FOREIGN KEY (YearTypeID) REFERENCES YearType(YearTypeID),
+    CONSTRAINT fkReference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+CREATE TABLE Supply (
+    SupplyID INT PRIMARY KEY,
+    VehicleID INT,
+    CountryID INT,
+    FoodTypeID INT,
+    PSID INT,
+    Origin VARCHAR(255),
+    PSPRID INT,
+    ProductionCapacityVolumeMTY DECIMAL(10,2),
+    CapacityUsedPercentage DECIMAL(5,2),
+    ProductID INT,
+    ProducerReferenceID INT,
+    UCID INT,
+    SourceVolume DECIMAL(10,2),
+    ValueInMetricTonYear DECIMAL(10,2),
+    CropToProcessedFoodStageConvertedValue DECIMAL(10,2),
+    YearTypeID INT,
+    StartYear INT,
+    EndYear INT,
+    ReferenceID INT,
+    CONSTRAINT fkFoodVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkCountry FOREIGN KEY (CountryID) REFERENCES Country(CountryID),
+    CONSTRAINT fkFoodType FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
+    CONSTRAINT fkProcessingStage FOREIGN KEY (PSID) REFERENCES ProcessingStage(PSID),
+    CONSTRAINT fkProducerProcessor FOREIGN KEY (PSPRID) REFERENCES ProducerProcessor(PSPRID),
+    CONSTRAINT fkProduct FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    CONSTRAINT fkProducerReference FOREIGN KEY (ProducerReferenceID) REFERENCES ProducerReference(ProducerReferenceID),
+    CONSTRAINT fkUCID FOREIGN KEY (UCID) REFERENCES MeasureUnit1(UCID),
+    CONSTRAINT fkYearType FOREIGN KEY (YearTypeID) REFERENCES YearType(YearTypeID),
+    CONSTRAINT fkReference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+
+CREATE TABLE Consumption (
+    ConsumptionID INT PRIMARY KEY,
+    VehicleID INT,
+    GL1ID INT,
+    GL2ID INT,
+    GL3ID INT,
+    GenderID INT,
+    AgeID INT,
+    NumberOfPeople INT,
+    UCID INT,
+    SourceVolume DECIMAL(10,2),
+    Volume_MetricTon_Year DECIMAL(10,2),
+    YearTypeID INT,
+    StartYear INT,
+    EndYear INT,
+    ReferenceID INT,
+    CONSTRAINT fkConsumptionVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkConsumptionGL1 FOREIGN KEY (GL1ID) REFERENCES Geography1(GL1ID),
+    CONSTRAINT fkConsumptionGL2 FOREIGN KEY (GL2ID) REFERENCES Geography2(GL2ID),
+    CONSTRAINT fkConsumptionGL3 FOREIGN KEY (GL3ID) REFERENCES Geography3(GL3ID),
+    CONSTRAINT fkConsumptionGender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
+    CONSTRAINT fkConsumptionAge FOREIGN KEY (AgeID) REFERENCES Age(AgeID),
+    CONSTRAINT fkConsumptionUCID FOREIGN KEY (UCID) REFERENCES MeasureUnit1(UCID),
+    CONSTRAINT fkConsumptionYearType FOREIGN KEY (YearTypeID) REFERENCES YearType(YearTypeID),
+    CONSTRAINT fkConsumptionReference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+CREATE TABLE ConsumptionIndividual (
+  	VehicleID INT,
+    GenderID INT,
+    AgeID INT,
+    NumberOfPeople INT,
+    UCID INT,
+    SourceVolume DECIMAL(10,2),
+    Volume_MetricTon_Year DECIMAL(10,2),
+    YearTypeID INT,
+    StartYear INT,
+    EndYear INT,
+    ReferenceID INT,
+  	CONSTRAINT fkConsumptionVehicle FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
+    CONSTRAINT fkConsumptionIndividualGender FOREIGN KEY (GenderID) REFERENCES Gender(GenderID),
+    CONSTRAINT fkConsumptionIndividualAge FOREIGN KEY (AgeID) REFERENCES Age(AgeID),
+    CONSTRAINT fkConsumptionIndividualUCID FOREIGN KEY (UCID) REFERENCES MeasureUnit1(UCID),
+    CONSTRAINT fkConsumptionIndividualYearType FOREIGN KEY (YearTypeID) REFERENCES YearType(YearTypeID),
+    CONSTRAINT fkConsumptionIndividualReference FOREIGN KEY (ReferenceID) REFERENCES Reference(ReferenceID)
+);
+
+CREATE TABLE Supply_In_Final (
+    SupplyInFinalID INT PRIMARY KEY,
+    SupplyID INT,
+    DistributionID INT,
+    ConsumptionID INT,
+    CONSTRAINT fk_Supply FOREIGN KEY (SupplyID) REFERENCES Supply(SupplyID),
+    CONSTRAINT fk_Distribution FOREIGN KEY (DistributionID) REFERENCES Distribution(DistributionID),
+    CONSTRAINT fk_Consumption FOREIGN KEY (ConsumptionID) REFERENCES Consumption(ConsumptionID)
+);
+
+
+
+
+
