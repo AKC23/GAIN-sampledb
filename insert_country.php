@@ -19,8 +19,8 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 // SQL query to create the 'country' table
 $createTableSQL = "
     CREATE TABLE country (
-        Country_ID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        Country_Name VARCHAR(100) NOT NULL
+        CountryID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        CountryName VARCHAR(100) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -42,14 +42,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     // Read through each line of the CSV file
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
-        // CSV data: country_ID is in the first column (index 0), and country_Name is in the second column (index 1)
+        // CSV data: countryID is in the first column (index 0), and countryName is in the second column (index 1)
         $countryID = mysqli_real_escape_string($conn, trim($data[0]));
         $countryName = mysqli_real_escape_string($conn, trim($data[1]));
 
-        // Ensure the country_Name is not empty
+        // Ensure the countryName is not empty
         if (!empty($countryName)) {
             // Prepare SQL query to insert the data into the 'country' table
-            $sql = "INSERT INTO country (Country_ID, Country_Name) VALUES ('$countryID', '$countryName')";
+            $sql = "INSERT INTO country (CountryID, CountryName) VALUES ('$countryID', '$countryName')";
 
             // Execute the query
             if ($conn->query($sql) === TRUE) {

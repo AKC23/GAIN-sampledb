@@ -236,8 +236,7 @@
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            require_once('db_connect.php');  // Changed to require_once
-                            $result = $conn->query("SHOW TABLES");
+                            require_once('db_connect.php');
                             $validTables = [
                                 'foodvehicle',
                                 'foodtype',
@@ -245,34 +244,32 @@
                                 'country',
                                 'gender',
                                 'age',
-                                'year_type',  // Added year_type table
+                                'year_type',
                                 'Geography_Level1',
                                 'Geography_Level2',
                                 'Geography_Level3',
-                                
-                                'reference',  // Added reference table
+                                'reference',
                                 'measure_unit1',
                                 'measure_unit2',
                                 'measure_period',
                                 'measure_currency',
                                 'geography',
                                 'entities',
-                                'producer_sku',  // Added producer_sku table
-                                'consumption', 
+                                'producer_sku',
+                                'consumption',
                                 'extraction_conversion',
                                 'producer_processor',
                                 'packaging_type',
-                                'distribution',  // Added distribution table
-                                'company',  // Added company table
-                                'distribution_channel',  // Added distribution_channel table
-                                'sub_distribution_channel',  // Added sub_distribution_channel table
-                                
-                                'population',  // Added population table
-                                'brand',  // Added brand table
-                                'supply',  // Added supply table
-                                
-                                'supply_in_chain_final'  // Added supply_in_chain_final table
+                                'distribution',
+                                'company',
+                                'distribution_channel',
+                                'sub_distribution_channel',
+                                'population',
+                                'brand',
+                                'supply',
+                                'supply_in_chain_final'
                             ];
+                            $result = $conn->query("SHOW TABLES");
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
                                 $table = $row[0];
@@ -345,20 +342,13 @@
             <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
         </div>
         <?php
-        // Display requested table (using the same connection)
-        
-
-        echo "<br><br><br>";
-
-        // Include debug_table.php for debugging information
-        // include('debug_table.php');
+        include('db_connect.php');
+        include('debug_table.php');
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {
-            //$conn->close();
-            //echo "<br>Database connection closed successfully.<br>";
+            echo "<br>Database connection closed successfully.<br>";
         }
-
         ?>
     </div>
 

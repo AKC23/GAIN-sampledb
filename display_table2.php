@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     if ($tableName == 'producer_processor') {
         // Fetch all records from producer_processor with joined names
         $sql = "
-            SELECT pp.ProcessorID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
+            SELECT pp.ProcessorID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.CountryName, pp.TaskDoneByEntity, pp.Productioncapacityvolume, pp.PercentageOfCapacityUsed, pp.AnnualProductionSupplyVolume, pp.BSTIReferenceNo
             FROM producer_processor pp
             JOIN entities e ON pp.EntityID = e.EntityID
             JOIN company c ON e.CompanyID = c.CompanyID
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
-            JOIN country co ON e.CountryID = co.Country_ID
+            JOIN country co ON e.CountryID = co.CountryID
         ";
         $conditions = [];
         if (!empty($vehicleNames)) {
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>ProcessorID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th><th>TaskDoneByEntity</th><th>Productioncapacityvolume</th><th>PercentageOfCapacityUsed</th><th>AnnualProductionSupplyVolume</th><th>BSTIReferenceNo</th></tr></thead><tbody>";
+            echo "<thead><tr><th>ProcessorID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>CountryName</th><th>TaskDoneByEntity</th><th>Productioncapacityvolume</th><th>PercentageOfCapacityUsed</th><th>AnnualProductionSupplyVolume</th><th>BSTIReferenceNo</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['ProcessorID']}</td>";
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['AdminLevel1']}</td>";
                 echo "<td>{$row['AdminLevel2']}</td>";
                 echo "<td>{$row['AdminLevel3']}</td>";
-                echo "<td>{$row['Country_Name']}</td>";
+                echo "<td>{$row['CountryName']}</td>";
                 echo "<td>{$row['TaskDoneByEntity']}</td>";
                 echo "<td>{$row['Productioncapacityvolume']}</td>";
                 echo "<td>{$row['PercentageOfCapacityUsed']}</td>";
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "c.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "c.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -172,11 +172,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
         }
     } elseif ($tableName == 'geography') {
-        // Fetch all records from Geography with joined Country_Name
+        // Fetch all records from Geography with joined CountryName
         $sql = "
-            SELECT g.GeographyID, g.AdminLevel1, g.AdminLevel2, g.AdminLevel3, c.Country_Name
+            SELECT g.GeographyID, g.AdminLevel1, g.AdminLevel2, g.AdminLevel3, c.CountryName
             FROM geography g
-            JOIN country c ON g.CountryID = c.Country_ID
+            JOIN country c ON g.CountryID = c.CountryID
         ";
         $conditions = [];
         if (!empty($vehicleNames)) {
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "g.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "c.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -194,36 +194,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
+            echo "<thead><tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>CountryName</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['GeographyID']}</td>";
                 echo "<td>{$row['AdminLevel1']}</td>";
                 echo "<td>{$row['AdminLevel2']}</td>";
                 echo "<td>{$row['AdminLevel3']}</td>";
-                echo "<td>{$row['Country_Name']}</td>";
+                echo "<td>{$row['CountryName']}</td>";
                 echo "</tr>";
             }
             echo "</tbody></table></div>";
         } else {
             // Show default data if no results found
             $sql = "
-                SELECT g.GeographyID, g.AdminLevel1, g.AdminLevel2, g.AdminLevel3, c.Country_Name
+                SELECT g.GeographyID, g.AdminLevel1, g.AdminLevel2, g.AdminLevel3, c.CountryName
                 FROM geography g
-                JOIN country c ON g.CountryID = c.Country_ID
+                JOIN country c ON g.CountryID = c.CountryID
                 ORDER BY g.GeographyID
             ";
             $result = $conn->query($sql);
             if ($result) {
                 echo "<div class='table-responsive'><table class='table table-bordered'>";
-                echo "<thead><tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
+                echo "<thead><tr><th>GeographyID</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>CountryName</th></tr></thead><tbody>";
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$row['GeographyID']}</td>";
                     echo "<td>{$row['AdminLevel1']}</td>";
                     echo "<td>{$row['AdminLevel2']}</td>";
                     echo "<td>{$row['AdminLevel3']}</td>";
-                    echo "<td>{$row['Country_Name']}</td>";
+                    echo "<td>{$row['CountryName']}</td>";
                     echo "</tr>";
                 }
                 echo "</tbody></table></div>";
@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "c.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -304,13 +304,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
         }
     } elseif ($tableName == 'entities') {
-        // Fetch all records from entities with joined VehicleName and Country_Name
+        // Fetch all records from entities with joined VehicleName and CountryName
         $sql = "
-            SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name
+            SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.CountryName
             FROM entities e
             JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
             JOIN company c ON e.CompanyID = c.CompanyID
-            JOIN country co ON e.CountryID = co.Country_ID
+            JOIN country co ON e.CountryID = co.CountryID
         ";
         $conditions = [];
         if (!empty($vehicleNames)) {
@@ -318,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -328,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
+            echo "<thead><tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>CountryName</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['EntityID']}</td>";
@@ -338,24 +338,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<td>{$row['AdminLevel1']}</td>";
                 echo "<td>{$row['AdminLevel2']}</td>";
                 echo "<td>{$row['AdminLevel3']}</td>";
-                echo "<td>{$row['Country_Name']}</td>";
+                echo "<td>{$row['CountryName']}</td>";
                 echo "</tr>";
             }
             echo "</tbody></table></div>";
         } else {
             // Show default data if no results found
             $sql = "
-                SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.Country_Name
+                SELECT e.EntityID, e.ProducerProcessorName, c.CompanyGroup, fv.VehicleName, e.AdminLevel1, e.AdminLevel2, e.AdminLevel3, co.CountryName
                 FROM entities e
                 JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID
                 JOIN company c ON e.CompanyID = c.CompanyID
-                JOIN country co ON e.CountryID = co.Country_ID
+                JOIN country co ON e.CountryID = co.CountryID
                 ORDER BY e.EntityID
             ";
             $result = $conn->query($sql);
             if ($result) {
                 echo "<div class='table-responsive'><table class='table table-bordered'>";
-                echo "<thead><tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>Country_Name</th></tr></thead><tbody>";
+                echo "<thead><tr><th>EntityID</th><th>ProducerProcessorName</th><th>CompanyGroup</th><th>VehicleName</th><th>AdminLevel1</th><th>AdminLevel2</th><th>AdminLevel3</th><th>CountryName</th></tr></thead><tbody>";
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$row['EntityID']}</td>";
@@ -365,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     echo "<td>{$row['AdminLevel1']}</td>";
                     echo "<td>{$row['AdminLevel2']}</td>";
                     echo "<td>{$row['AdminLevel3']}</td>";
-                    echo "<td>{$row['Country_Name']}</td>";
+                    echo "<td>{$row['CountryName']}</td>";
                     echo "</tr>";
                 }
                 echo "</tbody></table></div>";
@@ -391,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "c.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "c.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($yearType)) {
             $conditions[] = "yt.YearType = '" . $conn->real_escape_string($yearType) . "'";
@@ -536,7 +536,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -676,7 +676,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $conditions[] = "fv.VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
         }
         if (!empty($countryName)) {
-            $conditions[] = "co.Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+            $conditions[] = "co.CountryName = '" . $conn->real_escape_string($countryName) . "'";
         }
         if (!empty($conditions)) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -710,7 +710,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             SELECT 
                 s.SupplyID, 
                 fv.VehicleName, 
-                co.Country_Name, 
+                co.CountryName, 
                 ft.FoodTypeName, 
                 ps.Processing_Stage, 
                 s.Origin, 
@@ -734,7 +734,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 s.SourceVolume * mu1.UnitValue AS Volume_MetricTon_Year
             FROM supply s
             JOIN FoodVehicle fv ON s.VehicleID = fv.VehicleID
-            JOIN country co ON s.CountryID = co.Country_ID
+            JOIN country co ON s.CountryID = co.CountryID
             JOIN processing_stage ps ON s.PS_ID = ps.PSID
             JOIN producer_processor pp ON s.PSPRID = pp.ProcessorID
             JOIN FoodType ft ON s.FoodTypeID = ft.FoodTypeID
@@ -750,7 +750,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             echo "<thead><tr>
                     <th>SupplyID</th>
                     <th>VehicleName</th>
-                    <th>Country_Name</th>
+                    <th>CountryName</th>
                     <th>FoodTypeName</th>
                     <th>Processing_Stage</th>
                     <th>Origin</th>
@@ -777,7 +777,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<tr>
                         <td>{$row['SupplyID']}</td>
                         <td>{$row['VehicleName']}</td>
-                        <td>{$row['Country_Name']}</td>
+                        <td>{$row['CountryName']}</td>
                         <td>{$row['FoodTypeName']}</td>
                         <td>{$row['Processing_Stage']}</td>
                         <td>{$row['Origin']}</td>
@@ -819,7 +819,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>
                 <th>SupplyID</th>
                 <th>SupplyVehicle</th>
-                <th>Country_Name</th>
+                <th>CountryName</th>
                 <th>FoodTypeName</th>
                 <th>Processing_Stage</th>
                 <th>Origin</th>
@@ -858,7 +858,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 echo "<tr>
                         <td>{$row['SupplyID']}</td>
                         <td>{$row['SupplyVehicle']}</td>
-                        <td>{$row['Country_Name']}</td>
+                        <td>{$row['CountryName']}</td>
                         <td>{$row['FoodTypeName']}</td>
                         <td>{$row['Processing_Stage']}</td>
                         <td>{$row['Origin']}</td>
@@ -944,20 +944,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         }
     } elseif ($tableName == 'Geography_Level1') {
         // Fetch all records from Geography_Level1
-        $sql = "SELECT gl1.GL1ID, gl1.AdminLevel1, c.Country_Name
+        $sql = "SELECT gl1.GL1ID, gl1.AdminLevel1, c.CountryName
                 FROM Geography_Level1 gl1
-                JOIN country c ON gl1.CountryID = c.Country_ID
+                JOIN country c ON gl1.CountryID = c.CountryID
                 ORDER BY gl1.GL1ID";
         $result = $conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
             echo "<div class='table-responsive'><table class='table table-bordered'>";
-            echo "<thead><tr><th>GL1ID</th><th>AdminLevel1</th><th>Country_Name</th></tr></thead><tbody>";
+            echo "<thead><tr><th>GL1ID</th><th>AdminLevel1</th><th>CountryName</th></tr></thead><tbody>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$row['GL1ID']}</td>";
                 echo "<td>{$row['AdminLevel1']}</td>";
-                echo "<td>{$row['Country_Name']}</td>";
+                echo "<td>{$row['CountryName']}</td>";
                 echo "</tr>";
             }
             echo "</tbody></table></div>";
@@ -1026,7 +1026,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 $conditions[] = "VehicleName IN ('" . implode("', '", $vehicleNamesEscaped) . "')";
             }
             if (!empty($countryName)) {
-                $conditions[] = "Country_Name = '" . $conn->real_escape_string($countryName) . "'";
+                $conditions[] = "CountryName = '" . $conn->real_escape_string($countryName) . "'";
             }
             if (!empty($yearType)) {
                 $conditions[] = "YearType = '" . $conn->real_escape_string($yearType) . "'";
