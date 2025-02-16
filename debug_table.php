@@ -16,7 +16,8 @@ try {
         $dropTables = [
             'country',
             'foodvehicle',
-            'foodtype'
+            'foodtype',
+            'company'
         ];
 
         foreach ($dropTables as $table) {
@@ -38,6 +39,7 @@ try {
 
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
+        include('insert_company.php'); // Ensure company is created after foodtype
 
     } else {
         throw new Exception("Database connection is closed.");

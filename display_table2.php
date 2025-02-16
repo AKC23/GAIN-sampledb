@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_foodvehicle.php');
                 } elseif ($tableName == 'foodtype') {
                     include('display_tables/display_foodtype.php');
+                } elseif ($tableName == 'company') {
+                    include('display_tables/display_company.php');
                 }
             } else {
                 echo "No records found.";
@@ -54,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_foodvehicle.php');
                 } elseif ($tableName == 'foodtype') {
                     include('display_tables/display_foodtype.php');
+                } elseif ($tableName == 'company') {
+                    include('display_tables/display_company.php');
                 }
             } else {
                 echo "No records found.";
