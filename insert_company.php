@@ -21,7 +21,7 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE company (
         CompanyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        CompanyGroup VARCHAR(255) NOT NULL
+        CompanyName VARCHAR(255) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createTableSQL) === TRUE) {
@@ -47,12 +47,12 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $companyGroup = mysqli_real_escape_string($conn, trim($data[0]));
+        $companyName = mysqli_real_escape_string($conn, trim($data[0]));
 
-        $sql = "INSERT INTO company (CompanyGroup) VALUES (?)";
+        $sql = "INSERT INTO company (CompanyName) VALUES (?)";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $companyGroup);
+        $stmt->bind_param("s", $companyName);
 
         if ($stmt->execute()) {
             echo "✓ Inserted company record ID: " . $conn->insert_id . "<br>";
@@ -73,7 +73,7 @@ echo "<br>Final 'company' table contents:<br>";
 $result = $conn->query("SELECT * FROM company ORDER BY CompanyID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['CompanyID']}, CompanyGroup: {$row['CompanyGroup']}<br>";
+        echo "ID: {$row['CompanyID']}, CompanyName: {$row['CompanyName']}<br>";
     }
 }
 

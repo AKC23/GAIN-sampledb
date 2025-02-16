@@ -236,40 +236,12 @@
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            require_once('db_connect.php');
+                            require_once('db_connect.php');  // Changed to require_once
+                            $result = $conn->query("SHOW TABLES");
                             $validTables = [
                                 'foodvehicle',
-                                'foodtype',
-                                'processing_stage',
-                                'country',
-                                'gender',
-                                'age',
-                                'year_type',
-                                'Geography_Level1',
-                                'Geography_Level2',
-                                'Geography_Level3',
-                                'reference',
-                                'measure_unit1',
-                                'measure_unit2',
-                                'measure_period',
-                                'measure_currency',
-                                'geography',
-                                'entities',
-                                'producer_sku',
-                                'consumption',
-                                'extraction_conversion',
-                                'producer_processor',
-                                'packaging_type',
-                                'distribution',
-                                'company',
-                                'distribution_channel',
-                                'sub_distribution_channel',
-                                'population',
-                                'brand',
-                                'supply',
-                                'supply_in_chain_final'
+                                
                             ];
-                            $result = $conn->query("SHOW TABLES");
                             $selectedTable = $_POST['tableName'] ?? '';
                             while ($row = $result->fetch_array()) {
                                 $table = $row[0];
@@ -280,41 +252,20 @@
                             }
                             ?>
                         </select>
-                        <button type="submit" class="btn btn-primary mt-2">Show Table</button>
-                    </div>
-                    <div class="vehicle-selection" style="flex: 1;">
-                        <div class="vehicle-selection-title"><strong>Vehicle Name</strong></div>
-                        <div class="vehicle-options">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Edible Oil"
-                                    id="vehicleEdibleOil">
-                                <label class="form-check-label" for="vehicleEdibleOil">
-                                    Edible Oil
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="vehicleName[]" value="Wheat Flour"
-                                    id="vehicleWheat">
-                                <label class="form-check-label" for="vehicleWheat">
-                                    Wheat
-                                </label>
-                            </div>
-                        </div>
                     </div>
                     <div class="form-group" style="flex: 1;">
-                        <label for="yearType"><strong>Year Type</strong></label>
-                        <select name="yearType" id="yearType" class="form-control">
-                            <option value="">Select Year Type</option>
-                            <option value="Fiscal">Fiscal</option>
-                            <option value="Calendar">Calendar</option>
+                        <label for="vehicleType"><strong>Vehicle Type</strong></label>
+                        <select name="vehicleType" class="form-control">
+                            <option value="">Select Vehicle Type</option>
+                            <option value="Edible Oil">Edible Oil</option>
+                            <option value="Wheat Flour">Wheat Flour</option>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <label for="countryName"><strong>Choose Country</strong></label>
-                        <select name="countryName" id="countryName" class="form-control">
+                        <select name="countryName" class="form-control">
                             <option value="">Select Country</option>
                             <?php
-                            include('db_connect.php');
                             $countryQuery = "SELECT DISTINCT Country_Name FROM country ORDER BY Country_Name";
                             $countryResult = $conn->query($countryQuery);
                             if ($countryResult->num_rows > 0) {
@@ -325,13 +276,16 @@
                             ?>
                         </select>
                     </div>
+                    <div class="form-group" style="flex: 1;">
+                        <button type="submit" class="btn btn-primary mt-2">Show Table</button>
+                    </div>
                 </form>
             </div>
 
             <!-- Last Updated Date and Time on the right side of the card -->
             <div class="current-time">
                 <?php
-                echo "Last Updated: January 30, 2025, 12:50 pm";
+                echo "Last Updated: February 16, 2025, 1:55 pm";
                 ?>
             </div>
         </div>
@@ -341,14 +295,31 @@
             <button id="download-csv-btn" class="btn btn-success">Download CSV</button>
             <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
         </div>
+        <div id="debug-output">
+            <?php
+            // Include debug_table.php for debugging information
+            include('debug_table.php');
+            ?>
+        </div>
         <?php
-        include('db_connect.php');
-        include('debug_table.php');
+        // Display requested table (using the same connection)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['tableName'])) {
+            $tableName = $_POST['tableName'];
+            $countryName = $_POST['countryName'] ?? '';
+            $vehicleType = $_POST['vehicleType'] ?? '';
+
+            echo "<h2 class='text-left card-title'>Table Name: " . htmlspecialchars($tableName) . "</h2>";
+            include('display_table2.php');
+        }
+
+        echo "<br><br><br>";
 
         // Ensure the connection is not closed before all operations are completed
         if (isset($conn) && $conn instanceof mysqli) {
-            echo "<br>Database connection closed successfully.<br>";
+            //$conn->close();
+            //echo "<br>Database connection closed successfully.<br>";
         }
+
         ?>
     </div>
 

@@ -1,68 +1,92 @@
 <?php
+// insert_country.php
+
 // Include the database connection
 include('db_connect.php');
 
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// Drop table if exists
+// SQL query to drop the 'country' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS country";
+
+// Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
     echo "Table 'country' dropped successfully.<br>";
 } else {
-    echo "Error dropping table: " . $conn->error . "<br>";
+    echo "Error dropping table 'country': " . $conn->error . "<br>";
 }
 
-// Enable foreign key checks
+// Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // SQL query to create the 'country' table
 $createTableSQL = "
     CREATE TABLE country (
         CountryID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        CountryName VARCHAR(100) NOT NULL
+        CountryName VARCHAR(50) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'country' created successfully.<br>";
 } else {
-    echo "Error creating table 'country': " . $conn->error . "<br>";
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Path to your uploaded CSV file for country data
-$csvFile = 'data/country.csv';  // Update with the correct path of your CSV file
+// Path to your CSV file
+$csvFile = 'data/country.csv';
 
-// Open the CSV file for reading
+if (!file_exists($csvFile)) {
+    die("Error: CSV file '$csvFile' not found.<br>");
+}
+
+echo "<br>Opening CSV file: $csvFile<br>";
+
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
+    // Skip header row
+    $header = fgetcsv($handle);
+    echo "Header row: " . implode(", ", $header) . "<br>";
 
-    // Skip the header row
-    fgetcsv($handle);
-
-    // Read through each line of the CSV file
+    echo "<br>CSV Contents:<br>";
+    echo "Row 1 (Header): " . implode(", ", $header) . "<br>";
+    
+    $rowNumber = 2;
+    rewind($handle);
+    fgetcsv($handle); // Skip header again
+    
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-
-        // CSV data: countryID is in the first column (index 0), and countryName is in the second column (index 1)
-        $countryID = mysqli_real_escape_string($conn, trim($data[0]));
-        $countryName = mysqli_real_escape_string($conn, trim($data[1]));
-
-        // Ensure the countryName is not empty
+        echo "Row $rowNumber: " . implode(", ", $data) . "<br>";
+        
+        $countryName = mysqli_real_escape_string($conn, trim($data[0]));
+        
         if (!empty($countryName)) {
-            // Prepare SQL query to insert the data into the 'country' table
-            $sql = "INSERT INTO country (CountryID, CountryName) VALUES ('$countryID', '$countryName')";
-
-            // Execute the query
-            if ($conn->query($sql) === TRUE) {
-                echo "country '$countryName' with ID '$countryID' inserted successfully.<br>";
+            $sql = "INSERT INTO country (CountryName) VALUES (?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $countryName);
+            
+            if ($stmt->execute()) {
+                $lastId = $conn->insert_id;
+                echo "✓ Inserted '$countryName' with ID: $lastId<br>";
             } else {
-                echo "Error inserting '$countryName': " . $conn->error . "<br>";
+                echo "Error inserting '$countryName': " . $stmt->error . "<br>";
             }
+            $stmt->close();
         } else {
-            echo "Skipping empty row or missing data.<br>";
+            echo "Warning: Empty country name in row $rowNumber<br>";
+        }
+        $rowNumber++;
+    }
+
+    // After inserting, show what's in the table
+    echo "<br>Final country table contents:<br>";
+    $result = $conn->query("SELECT * FROM country ORDER BY CountryID");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            echo "ID: {$row['CountryID']}, Name: {$row['CountryName']}<br>";
         }
     }
 
-    // Close the file after reading
     fclose($handle);
 } else {
     echo "Error: Could not open CSV file.<br>";
@@ -70,4 +94,5 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
+
 ?>

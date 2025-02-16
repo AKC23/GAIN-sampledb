@@ -7,38 +7,36 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'FoodType' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS FoodType";
-
-// Execute the query to drop the table
+// Drop table if exists
+$dropTableSQL = "DROP TABLE IF EXISTS foodtype";
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'FoodType' dropped successfully.<br>";
+    echo "Table 'foodtype' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'FoodType': " . $conn->error . "<br>";
+    echo "Error dropping table: " . $conn->error . "<br>";
 }
 
-// Re-enable foreign key checks
+// Enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'FoodType' table with a foreign key to 'FoodVehicle'
+// SQL query to create the 'foodtype' table
 $createTableSQL = "
-    CREATE TABLE FoodType (
+    CREATE TABLE foodtype (
         FoodTypeID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        FoodTypeName VARCHAR(50) NOT NULL,
+        FoodTypeName VARCHAR(100) NOT NULL,
         VehicleID INT(11),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'FoodType' created successfully.<br>";
+    echo "Table 'foodtype' created successfully.<br>";
 } else {
-    echo "Error creating table: " . $conn->error . "<br>";
+    echo "Error creating table 'foodtype': " . $conn->error . "<br>";
 }
 
 // Get valid VehicleIDs
 $validVehicleIDs = array();
-$result = $conn->query("SELECT * FROM FoodVehicle");
+$result = $conn->query("SELECT * FROM foodvehicle");
 if ($result) {
     echo "<br>Valid VehicleIDs in database:<br>";
     while ($row = $result->fetch_assoc()) {
@@ -139,7 +137,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Validate VehicleID
         if (!in_array($vehicleID, $validVehicleIDs)) {
-            echo "Error: VehicleID $vehicleID does not exist in FoodVehicle table. Skipping row.<br>";
+            echo "Error: VehicleID $vehicleID does not exist in foodvehicle table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
@@ -150,7 +148,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO FoodType (FoodTypeName, VehicleID) VALUES (?, ?)";
+        $sql = "INSERT INTO foodtype (FoodTypeName, VehicleID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $foodTypeName, $vehicleID);
 
@@ -166,10 +164,10 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final FoodType table contents:<br>";
+    echo "<br>Final foodtype table contents:<br>";
     $result = $conn->query("SELECT ft.*, fv.VehicleName 
-                           FROM FoodType ft 
-                           JOIN FoodVehicle fv ON ft.VehicleID = fv.VehicleID 
+                           FROM foodtype ft 
+                           JOIN foodvehicle fv ON ft.VehicleID = fv.VehicleID 
                            ORDER BY ft.FoodTypeID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {

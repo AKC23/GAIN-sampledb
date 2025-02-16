@@ -4,24 +4,34 @@
 // Include the database connection
 include('db_connect.php');
 
-// Check if the table already exists
-$tableExists = $conn->query("SHOW TABLES LIKE 'FoodVehicle'");
-if ($tableExists && $tableExists->num_rows > 0) {
-    echo "Table 'FoodVehicle' already exists. Skipping creation.<br>";
-} else {
-    // SQL query to create the 'FoodVehicle' table
-    $createTableSQL = "
-        CREATE TABLE FoodVehicle (
-            VehicleID INT(11) AUTO_INCREMENT PRIMARY KEY,
-            VehicleName VARCHAR(50) NOT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-    // Execute the query to create the table
-    if ($conn->query($createTableSQL) === TRUE) {
-        echo "Table 'FoodVehicle' created successfully.<br>";
-    } else {
-        echo "Error creating table: " . $conn->error . "<br>";
-    }
+// SQL query to drop the 'foodvehicle' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS foodvehicle";
+
+// Execute the query to drop the table
+if ($conn->query($dropTableSQL) === TRUE) {
+    echo "Table 'foodvehicle' dropped successfully.<br>";
+} else {
+    echo "Error dropping table 'foodvehicle': " . $conn->error . "<br>";
+}
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// SQL query to create the 'foodvehicle' table
+$createTableSQL = "
+    CREATE TABLE foodvehicle (
+        VehicleID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        VehicleName VARCHAR(50) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+// Execute the query to create the table
+if ($conn->query($createTableSQL) === TRUE) {
+    echo "Table 'foodvehicle' created successfully.<br>";
+} else {
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -51,7 +61,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $vehicleName = mysqli_real_escape_string($conn, trim($data[0]));
         
         if (!empty($vehicleName)) {
-            $sql = "INSERT INTO FoodVehicle (VehicleName) VALUES (?)";
+            $sql = "INSERT INTO foodvehicle (VehicleName) VALUES (?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $vehicleName);
             
@@ -69,8 +79,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final FoodVehicle table contents:<br>";
-    $result = $conn->query("SELECT * FROM FoodVehicle ORDER BY VehicleID");
+    echo "<br>Final foodvehicle table contents:<br>";
+    $result = $conn->query("SELECT * FROM foodvehicle ORDER BY VehicleID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             echo "ID: {$row['VehicleID']}, Name: {$row['VehicleName']}<br>";

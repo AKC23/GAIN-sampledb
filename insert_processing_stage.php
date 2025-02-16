@@ -24,16 +24,16 @@ $createTableSQL = "
     CREATE TABLE processing_stage (
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
         Processing_Stage VARCHAR(255) NOT NULL,
-        VehicleID INT(11) NOT NULL,
-        ExtractionRate DECIMAL(10, 2) NOT NULL,
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID)
+        ExtractionRate DECIMAL(10, 2),
+        VehicleID INT(11),
+        FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
     echo "Table 'processing_stage' created successfully.<br>";
 } else {
-    echo "Error creating table: " . $conn->error . "<br>";
+    echo "Error creating table 'processing_stage': " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
