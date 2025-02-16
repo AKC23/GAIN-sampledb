@@ -3,6 +3,9 @@
 // Include the database connection
 include('db_connect.php');
 
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
 // Drop table if exists
 $dropTableSQL = "DROP TABLE IF EXISTS brand";
 if ($conn->query($dropTableSQL) === TRUE) {
@@ -10,6 +13,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
 } else {
     echo "Error dropping table: " . $conn->error . "<br>";
 }
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // Create brand table
 $createTableSQL = "

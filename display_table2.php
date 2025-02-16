@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $query = "SELECT * FROM $tableName";
         $conditions = [];
         if (!empty($vehicleName)) {
-            if ($tableName == 'foodtype') {
+            if ($tableName == 'foodtype' || $tableName == 'processing_stage') {
                 // Get VehicleID based on VehicleName
                 $vehicleResult = $conn->query("SELECT VehicleID FROM foodvehicle WHERE VehicleName = '$vehicleName'");
                 if ($vehicleRow = $vehicleResult->fetch_assoc()) {
@@ -42,6 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_foodtype.php');
                 } elseif ($tableName == 'company') {
                     include('display_tables/display_company.php');
+                } elseif ($tableName == 'brand') {
+                    include('display_tables/display_brand.php');
+                } elseif ($tableName == 'processing_stage') {
+                    include('display_tables/display_processing_stage.php');
+                } elseif ($tableName == 'geographylevel1') {
+                    include('display_tables/display_geography_level1.php');
                 }
             } else {
                 echo "No records found.";
@@ -58,6 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_foodtype.php');
                 } elseif ($tableName == 'company') {
                     include('display_tables/display_company.php');
+                } elseif ($tableName == 'brand') {
+                    include('display_tables/display_brand.php');
+                } elseif ($tableName == 'processing_stage') {
+                    include('display_tables/display_processing_stage.php');
+                } elseif ($tableName == 'geographylevel1') {
+                    include('display_tables/display_geography_level1.php');
                 }
             } else {
                 echo "No records found.";

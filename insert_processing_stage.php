@@ -23,7 +23,7 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE processing_stage (
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        Processing_Stage VARCHAR(255) NOT NULL,
+        ProcessingStageName VARCHAR(255) NOT NULL,
         ExtractionRate DECIMAL(10, 2),
         VehicleID INT(11),
         FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID)
@@ -104,12 +104,12 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         // Clean the data more thoroughly
-        $processingStage = trim($data[0]);
+        $processingStageName = trim($data[0]);
         $vehicleID = trim($data[1]);
         $extractionRate = trim($data[2]);
         
         // Remove any extra spaces between the name and comma
-        $processingStage = preg_replace('/\s+,/', ',', $processingStage);
+        $processingStageName = preg_replace('/\s+,/', ',', $processingStageName);
         
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
@@ -120,24 +120,24 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $processingStage = mysqli_real_escape_string($conn, $processingStage);
+        $processingStageName = mysqli_real_escape_string($conn, $processingStageName);
 
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, Processing_Stage: '$processingStage', ExtractionRate: $extractionRate<br>";
+        echo "VehicleID: $vehicleID, ProcessingStageName: '$processingStageName', ExtractionRate: $extractionRate<br>";
 
-        if (empty($processingStage)) {
+        if (empty($processingStageName)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO processing_stage (Processing_Stage, VehicleID, ExtractionRate) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO processing_stage (ProcessingStageName, VehicleID, ExtractionRate) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sid", $processingStage, $vehicleID, $extractionRate);
+        $stmt->bind_param("sid", $processingStageName, $vehicleID, $extractionRate);
 
         if ($stmt->execute()) {
             $psid = $conn->insert_id;
-            echo "✓ Inserted processing stage '$processingStage' with ID: $psid<br>";
+            echo "✓ Inserted processing stage '$processingStageName' with ID: $psid<br>";
         } else {
             echo "Error inserting processing stage: " . $stmt->error . "<br>";
         }
@@ -155,7 +155,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             echo "ID: {$row['PSID']}, VehicleID: {$row['VehicleID']}, " .
-                 "Vehicle: {$row['VehicleName']}, Stage: {$row['Processing_Stage']}, ExtractionRate: {$row['ExtractionRate']}<br>";
+                 "Vehicle: {$row['VehicleName']}, Stage: {$row['ProcessingStageName']}, ExtractionRate: {$row['ExtractionRate']}<br>";
         }
     }
 

@@ -1,10 +1,10 @@
-Division Name,CountryID
-N/A,1
-Dhaka,2
-Chattogram,2
-Rajshahi,2
-Khulna,2
-Barishal,2
-Sylhet,2
-Rangpur,2
-Mymensingh,2
+AdminLevel1,CountryID,Country
+N/A,1,N/A
+Dhaka,2,Bangladesh
+Barishal,2,Bangladesh
+Chattogram,2,Bangladesh
+Khulna,2,Bangladesh
+Mymensingh,2,Bangladesh
+Rajshahi,2,Bangladesh
+Rangpur,2,Bangladesh
+Sylhet,2,Bangladesh

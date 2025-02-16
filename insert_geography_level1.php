@@ -7,46 +7,46 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'Geography_Level1' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS Geography_Level1";
+// SQL query to drop the 'geographylevel1' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS geographylevel1";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'Geography_Level1' dropped successfully.<br>";
+    echo "Table 'geographylevel1' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'Geography_Level1': " . $conn->error . "<br>";
+    echo "Error dropping table 'geographylevel1': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'Geography_Level1' table with a foreign key to 'country'
+// SQL query to create the 'geographylevel1' table with a foreign key to 'country'
 $createTableSQL = "
-    CREATE TABLE Geography_Level1 (
+    CREATE TABLE geographylevel1 (
         GL1ID INT(11) AUTO_INCREMENT PRIMARY KEY,
         AdminLevel1 VARCHAR(50) NOT NULL,
         CountryID INT(11) NOT NULL,
-        FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
+        FOREIGN KEY (CountryID) REFERENCES country(CountryID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'Geography_Level1' created successfully.<br>";
+    echo "Table 'geographylevel1' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid Country_IDs
+// Get valid CountryIDs
 $validCountryIDs = array();
 $result = $conn->query("SELECT * FROM country");
 if ($result) {
-    echo "<br>Valid Country_IDs in database:<br>";
+    echo "<br>Valid CountryIDs in database:<br>";
     while ($row = $result->fetch_assoc()) {
-        $validCountryIDs[] = $row['Country_ID'];
-        echo "Country_ID: {$row['Country_ID']}, Name: {$row['Country_Name']}<br>";
+        $validCountryIDs[] = $row['CountryID'];
+        echo "CountryID: {$row['CountryID']}, Name: {$row['CountryName']}<br>";
     }
 } else {
-    echo "Error getting valid Country_IDs: " . $conn->error . "<br>";
+    echo "Error getting valid CountryIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -126,7 +126,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Convert to proper types
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
         if ($countryID === false || $countryID === null) {
-            echo "Error: Invalid Country_ID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
+            echo "Error: Invalid CountryID format in row $rowNumber: '{$data[1]}'. Skipping.<br>";
             $rowNumber++;
             continue;
         }
@@ -134,12 +134,12 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $adminLevel1 = mysqli_real_escape_string($conn, $adminLevel1);
 
         // Debugging: Show extracted values
-        echo "Country_ID from CSV: $countryID (Valid IDs: " . implode(", ", $validCountryIDs) . ")<br>";
+        echo "CountryID from CSV: $countryID (Valid IDs: " . implode(", ", $validCountryIDs) . ")<br>";
         echo "AdminLevel1: '$adminLevel1'<br>";
 
-        // Validate Country_ID
+        // Validate CountryID
         if (!in_array($countryID, $validCountryIDs)) {
-            echo "Error: Country_ID $countryID does not exist in country table. Skipping row.<br>";
+            echo "Error: CountryID $countryID does not exist in country table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
@@ -150,7 +150,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO Geography_Level1 (AdminLevel1, CountryID) VALUES (?, ?)";
+        $sql = "INSERT INTO geographylevel1 (AdminLevel1, CountryID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $adminLevel1, $countryID);
 
@@ -166,14 +166,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final Geography_Level1 table contents:<br>";
-    $result = $conn->query("SELECT gl1.*, c.Country_Name 
-                           FROM Geography_Level1 gl1 
-                           JOIN country c ON gl1.CountryID = c.Country_ID 
+    echo "<br>Final geographylevel1 table contents:<br>";
+    $result = $conn->query("SELECT gl1.*, c.CountryName 
+                           FROM geographylevel1 gl1 
+                           JOIN country c ON gl1.CountryID = c.CountryID 
                            ORDER BY gl1.GL1ID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['GL1ID']}, AdminLevel1: {$row['AdminLevel1']}, CountryID: {$row['CountryID']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['GL1ID']}, AdminLevel1: {$row['AdminLevel1']}, CountryID: {$row['CountryID']}, Country: {$row['CountryName']}<br>";
         }
     }
 

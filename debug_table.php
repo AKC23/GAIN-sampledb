@@ -17,7 +17,10 @@ try {
             'country',
             'foodvehicle',
             'foodtype',
-            'company'
+            'company',
+            'brand',
+            'processing_stage',
+            'geographylevel1'
         ];
 
         foreach ($dropTables as $table) {
@@ -36,10 +39,13 @@ try {
         echo "<h3>Creating base tables (Level 0)...</h3>";
         include('insert_country.php'); // Ensure country is created first
         include('insert_foodvehicle.php'); // Ensure foodvehicle is created first
+        include('insert_company.php'); // Ensure company is created first
+        include('insert_brand.php'); // Ensure brand is created first
 
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
-        include('insert_company.php'); // Ensure company is created after foodtype
+        include('insert_processing_stage.php'); // Ensure processing_stage is created after brand
+        include('insert_geography_level1.php'); // Ensure geographylevel1 is created after processing_stage
 
     } else {
         throw new Exception("Database connection is closed.");
