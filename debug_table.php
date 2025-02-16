@@ -20,7 +20,8 @@ try {
             'company',
             'brand',
             'processing_stage',
-            'geographylevel1'
+            'geographylevel1',
+            'producer_reference'
         ];
 
         foreach ($dropTables as $table) {
@@ -46,6 +47,7 @@ try {
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
         include('insert_processing_stage.php'); // Ensure processing_stage is created after brand
         include('insert_geography_level1.php'); // Ensure geographylevel1 is created after processing_stage
+        include('insert_producer_reference.php'); // Ensure producer_reference is created after geographylevel1
 
     } else {
         throw new Exception("Database connection is closed.");

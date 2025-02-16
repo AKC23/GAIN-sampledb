@@ -25,7 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             }
         }
         if (!empty($countryName)) {
-            $conditions[] = "CountryName = '$countryName'";
+            if ($tableName == 'geographylevel1' || $tableName == 'producer_reference') {
+                // Get CountryID based on CountryName
+                $countryResult = $conn->query("SELECT CountryID FROM country WHERE CountryName = '$countryName'");
+                if ($countryRow = $countryResult->fetch_assoc()) {
+                    $countryID = $countryRow['CountryID'];
+                    $conditions[] = "CountryID = '$countryID'";
+                }
+            } else {
+                $conditions[] = "CountryName = '$countryName'";
+            }
         }
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(' AND ', $conditions);
@@ -48,6 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
+                } elseif ($tableName == 'producer_reference') {
+                    include('display_tables/display_producer_reference.php');
                 }
             } else {
                 echo "No records found.";
@@ -70,6 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
+                } elseif ($tableName == 'producer_reference') {
+                    include('display_tables/display_producer_reference.php');
                 }
             } else {
                 echo "No records found.";
