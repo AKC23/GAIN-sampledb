@@ -36,6 +36,8 @@ try {
         include('insert_age.php'); 
         include('insert_year_type.php');
 
+
+        
         // Level 1: Tables that depend on base tables
         echo "<h3>Creating Level 1 tables...</h3>";
         include('insert_foodtype.php');      // Depends on: FoodVehicle
