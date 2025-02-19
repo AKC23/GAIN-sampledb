@@ -3,26 +3,32 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'packaging_type' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS packaging_type";
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+// SQL query to drop the 'packagingtype' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS packagingtype";
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'packaging_type' dropped successfully.<br>";
+    echo "Table 'packagingtype' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'packaging_type': " . $conn->error . "<br>";
+    echo "Error dropping table 'packagingtype': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'packaging_type' table
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// SQL query to create the 'packagingtype' table
 $createTableSQL = "
-    CREATE TABLE packaging_type (
-        Packaging_Type_ID INT AUTO_INCREMENT PRIMARY KEY,
-        Packaging_Type VARCHAR(50)
+    CREATE TABLE packagingtype (
+        PackagingTypeID INT AUTO_INCREMENT PRIMARY KEY,
+        PackagingTypeName VARCHAR(50)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'packaging_type' created successfully.<br>";
+    echo "Table 'packagingtype' created successfully.<br>";
 } else {
-    echo "Error creating table 'packaging_type': " . $conn->error . "<br>";
+    echo "Error creating table 'packagingtype': " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -35,8 +41,8 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
 
     // Prepare the SQL statement with placeholders
     $stmt = $conn->prepare("
-        INSERT INTO packaging_type (
-            Packaging_Type
+        INSERT INTO packagingtype (
+            PackagingTypeName
         ) VALUES (?)
     ");
 
@@ -49,14 +55,14 @@ if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
             // Bind parameters with each column of the CSV data
             $stmt->bind_param(
                 "s",
-                $row[0]  // Packaging_Type
+                $row[0]  // PackagingTypeName
             );
 
             // Execute the query and check for errors
             if ($stmt->execute() === TRUE) {
-                echo "Data inserted successfully for Packaging_Type: " . $row[0] . "<br>";
+                echo "Data inserted successfully for PackagingTypeName: " . $row[0] . "<br>";
             } else {
-                echo "Error inserting data for Packaging_Type: " . $row[0] . " - " . $stmt->error . "<br>";
+                echo "Error inserting data for PackagingTypeName: " . $row[0] . " - " . $stmt->error . "<br>";
             }
         }
 

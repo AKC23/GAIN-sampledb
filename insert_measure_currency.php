@@ -4,27 +4,33 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'measure_currency' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS measure_currency";
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+// SQL query to drop the 'measurecurrency' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS measurecurrency";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'measure_currency' dropped successfully.<br>";
+    echo "Table 'measurecurrency' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'measure_currency': " . $conn->error . "<br>";
+    echo "Error dropping table 'measurecurrency': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'measure_currency' table
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// SQL query to create the 'measurecurrency' table
 $createTableSQL = "
-    CREATE TABLE measure_currency (
-        CurrencyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        CurrencySelection VARCHAR(50) NOT NULL,
-        CurrencyValue FLOAT NOT NULL
+    CREATE TABLE measurecurrency (
+        MCID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        CurrencyName VARCHAR(50) NOT NULL,
+        CurrencyValue DECIMAL(20, 12) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'measure_currency' created successfully.<br>";
+    echo "Table 'measurecurrency' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -97,11 +103,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         // Clean the data more thoroughly
-        $currencySelection = trim($data[0]);
+        $currencyName = trim($data[0]);
         $currencyValue = trim($data[1]);
         
         // Remove any extra spaces between the name and comma
-        $currencySelection = preg_replace('/\s+,/', ',', $currencySelection);
+        $currencyName = preg_replace('/\s+,/', ',', $currencyName);
         
         // Convert to proper types
         $currencyValue = filter_var($currencyValue, FILTER_VALIDATE_FLOAT);
@@ -111,25 +117,25 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $currencySelection = mysqli_real_escape_string($conn, $currencySelection);
+        $currencyName = mysqli_real_escape_string($conn, $currencyName);
 
         // Debugging: Show extracted values
-        echo "CurrencySelection: '$currencySelection'<br>";
+        echo "CurrencyName: '$currencyName'<br>";
         echo "CurrencyValue: $currencyValue<br>";
 
-        if (empty($currencySelection)) {
-            echo "Warning: Empty currency selection in row $rowNumber. Skipping.<br>";
+        if (empty($currencyName)) {
+            echo "Warning: Empty currency name in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO measure_currency (CurrencySelection, CurrencyValue) VALUES (?, ?)";
+        $sql = "INSERT INTO measurecurrency (CurrencyName, CurrencyValue) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sd", $currencySelection, $currencyValue);
+        $stmt->bind_param("sd", $currencyName, $currencyValue);
 
         if ($stmt->execute()) {
-            $currencyID = $conn->insert_id;
-            echo "✓ Inserted measure currency '$currencySelection' with ID: $currencyID<br>";
+            $mcid = $conn->insert_id;
+            echo "✓ Inserted measure currency with ID: $mcid<br>";
         } else {
             echo "Error inserting measure currency: " . $stmt->error . "<br>";
         }
@@ -139,11 +145,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final measure_currency table contents:<br>";
-    $result = $conn->query("SELECT * FROM measure_currency ORDER BY CurrencyID");
+    echo "<br>Final measurecurrency table contents:<br>";
+    $result = $conn->query("SELECT * FROM measurecurrency ORDER BY MCID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['CurrencyID']}, CurrencySelection: {$row['CurrencySelection']}, CurrencyValue: {$row['CurrencyValue']}<br>";
+            echo "ID: {$row['MCID']}, CurrencyName: {$row['CurrencyName']}, CurrencyValue: {$row['CurrencyValue']}<br>";
         }
     }
 

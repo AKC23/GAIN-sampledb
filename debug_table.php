@@ -1,4 +1,7 @@
 <?php
+// debug_table.php
+// Include the database connection
+
 include('db_connect.php');
 
 echo "<br>";
@@ -21,7 +24,12 @@ try {
             'brand',
             'processing_stage',
             'geographylevel1',
-            'producer_reference'
+            'geographylevel2',
+            'geographylevel3',
+            'producer_reference',
+            'measureunit1',
+            'measurecurrency',
+            'packagingtype'
         ];
 
         foreach ($dropTables as $table) {
@@ -42,12 +50,18 @@ try {
         include('insert_foodvehicle.php'); // Ensure foodvehicle is created first
         include('insert_company.php'); // Ensure company is created first
         include('insert_brand.php'); // Ensure brand is created first
+        include('insert_measure_unit1.php'); // Ensure measureunit1 is created
+        include('insert_measure_currency.php'); // Ensure measurecurrency is created
+        include('insert_packaging_type.php'); // Ensure packagingtype is created
 
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
-        include('insert_processing_stage.php'); // Ensure processing_stage is created after brand
-        include('insert_geography_level1.php'); // Ensure geographylevel1 is created after processing_stage
-        include('insert_producer_reference.php'); // Ensure producer_reference is created after geographylevel1
+        include('insert_processing_stage.php'); // Ensure processing_stage is created after foodvehicle
+        include('insert_geography_level1.php'); // Ensure geographylevel1 is created after country
+        include('insert_geography_level2.php'); // Ensure geographylevel2 is created after geographylevel1
+        include('insert_geography_level3.php'); // Ensure geographylevel3 is created after geographylevel2
+        include('insert_producer_reference.php'); // Ensure producer_reference is created after company & country
+        
 
     } else {
         throw new Exception("Database connection is closed.");

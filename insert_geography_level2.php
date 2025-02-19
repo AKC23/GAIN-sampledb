@@ -7,38 +7,38 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'Geography_Level2' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS Geography_Level2";
+// SQL query to drop the 'geographylevel2' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS geographylevel2";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'Geography_Level2' dropped successfully.<br>";
+    echo "Table 'geographylevel2' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'Geography_Level2': " . $conn->error . "<br>";
+    echo "Error dropping table 'geographylevel2': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'Geography_Level2' table with a foreign key to 'Geography_Level1'
+// SQL query to create the 'geographylevel2' table with a foreign key to 'geographylevel1'
 $createTableSQL = "
-    CREATE TABLE Geography_Level2 (
+    CREATE TABLE geographylevel2 (
         GL2ID INT(11) AUTO_INCREMENT PRIMARY KEY,
         AdminLevel2 VARCHAR(50) NOT NULL,
         GL1ID INT(11) NOT NULL,
-        FOREIGN KEY (GL1ID) REFERENCES Geography_Level1(GL1ID)
+        FOREIGN KEY (GL1ID) REFERENCES geographylevel1(GL1ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'Geography_Level2' created successfully.<br>";
+    echo "Table 'geographylevel2' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Get valid GL1IDs
 $validGL1IDs = array();
-$result = $conn->query("SELECT * FROM Geography_Level1");
+$result = $conn->query("SELECT * FROM geographylevel1");
 if ($result) {
     echo "<br>Valid GL1IDs in database:<br>";
     while ($row = $result->fetch_assoc()) {
@@ -139,7 +139,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Validate GL1ID
         if (!in_array($gl1id, $validGL1IDs)) {
-            echo "Error: GL1ID $gl1id does not exist in Geography_Level1 table. Skipping row.<br>";
+            echo "Error: GL1ID $gl1id does not exist in geographylevel1 table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
@@ -150,7 +150,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO Geography_Level2 (AdminLevel2, GL1ID) VALUES (?, ?)";
+        $sql = "INSERT INTO geographylevel2 (AdminLevel2, GL1ID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $adminLevel2, $gl1id);
 
@@ -166,10 +166,10 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final Geography_Level2 table contents:<br>";
+    echo "<br>Final geographylevel2 table contents:<br>";
     $result = $conn->query("SELECT gl2.*, gl1.AdminLevel1 
-                           FROM Geography_Level2 gl2 
-                           JOIN Geography_Level1 gl1 ON gl2.GL1ID = gl1.GL1ID 
+                           FROM geographylevel2 gl2 
+                           JOIN geographylevel1 gl1 ON gl2.GL1ID = gl1.GL1ID 
                            ORDER BY gl2.GL2ID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {

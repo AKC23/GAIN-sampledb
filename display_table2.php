@@ -1,4 +1,9 @@
 <?php
+
+// display_table2.php 
+// This script displays the contents of a table based on the user's input
+// It also filters the table based on the user's input for vehicleName and countryName
+
 // Include the database connection
 include('db_connect.php');
 
@@ -57,8 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
+                } elseif ($tableName == 'geographylevel2') {
+                    include('display_tables/display_geography_level2.php');
+                } elseif ($tableName == 'geographylevel3') {
+                    include('display_tables/display_geography_level3.php');
                 } elseif ($tableName == 'producer_reference') {
                     include('display_tables/display_producer_reference.php');
+                } elseif ($tableName == 'measureunit1') {
+                    include('display_tables/display_measure_unit1.php');
+                } elseif ($tableName == 'measurecurrency') {
+                    include('display_tables/display_measure_currency.php');
+                } elseif ($tableName == 'packagingtype') {
+                    include('display_tables/display_packaging_type.php');
                 }
             } else {
                 echo "No records found.";
@@ -81,8 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
+                } elseif ($tableName == 'geographylevel2') {
+                    include('display_tables/display_geography_level2.php');
+                } elseif ($tableName == 'geographylevel3') {
+                    include('display_tables/display_geography_level3.php');
                 } elseif ($tableName == 'producer_reference') {
                     include('display_tables/display_producer_reference.php');
+                } elseif ($tableName == 'measureunit1') {
+                    include('display_tables/display_measure_unit1.php');
+                } elseif ($tableName == 'measurecurrency') {
+                    include('display_tables/display_measure_currency.php');
+                } elseif ($tableName == 'packagingtype') {
+                    include('display_tables/display_packaging_type.php');
                 }
             } else {
                 echo "No records found.";

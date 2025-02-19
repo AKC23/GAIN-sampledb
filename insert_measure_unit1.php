@@ -7,22 +7,22 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'measure_unit1' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS measure_unit1";
+// SQL query to drop the 'measureunit1' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS measureunit1";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' dropped successfully.<br>";
+    echo "Table 'measureunit1' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'measure_unit1': " . $conn->error . "<br>";
+    echo "Error dropping table 'measureunit1': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'measure_unit1' table
+// SQL query to create the 'measureunit1' table
 $createTableSQL = "
-    CREATE TABLE measure_unit1 (
+    CREATE TABLE measureunit1 (
         UCID INT(11) AUTO_INCREMENT PRIMARY KEY,
         SupplyVolumeUnit VARCHAR(50) NOT NULL,
         PeriodicalUnit VARCHAR(50) NOT NULL,
@@ -31,7 +31,7 @@ $createTableSQL = "
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'measure_unit1' created successfully.<br>";
+    echo "Table 'measureunit1' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -134,7 +134,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO measure_unit1 (SupplyVolumeUnit, PeriodicalUnit, UnitValue) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO measureunit1 (SupplyVolumeUnit, PeriodicalUnit, UnitValue) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssd", $supplyVolumeUnit, $periodicalUnit, $unitValue);
 
@@ -150,8 +150,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final measure_unit1 table contents:<br>";
-    $result = $conn->query("SELECT * FROM measure_unit1 ORDER BY UCID");
+    echo "<br>Final measureunit1 table contents:<br>";
+    $result = $conn->query("SELECT * FROM measureunit1 ORDER BY UCID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             echo "ID: {$row['UCID']}, SupplyVolumeUnit: {$row['SupplyVolumeUnit']}, PeriodicalUnit: {$row['PeriodicalUnit']}, UnitValue: {$row['UnitValue']}<br>";
