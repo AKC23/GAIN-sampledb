@@ -1,30 +1,37 @@
 <?php
+// Path: insert_distribution_channel.php
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'distribution_channel' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS distribution_channel";
+// Disable foreign key checks
+$conn->query("SET foreign_key_checks = 0");
+
+// SQL query to drop the 'distributionchannel' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS distributionchannel";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'distribution_channel' dropped successfully.<br>";
+    echo "Table 'distributionchannel' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'distribution_channel': " . $conn->error . "<br>";
+    echo "Error dropping table 'distributionchannel': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'distribution_channel' table with an auto-increment primary key
+// SQL query to create the 'distributionchannel' table with an auto-increment primary key
 $createTableSQL = "
-    CREATE TABLE distribution_channel (
+    CREATE TABLE distributionchannel (
         DistributionChannelID INT(11) AUTO_INCREMENT PRIMARY KEY,
         DistributionChannelName VARCHAR(255) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'distribution_channel' created successfully.<br>";
+    echo "Table 'distributionchannel' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
+
+// Enable foreign key checks
+$conn->query("SET foreign_key_checks = 1");
 
 // Path to your CSV file
 $csvFile = 'data/distribution_channel.csv';  // Update with the exact path of your CSV file
@@ -45,7 +52,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Clean and validate data
         $distributionChannelName = mysqli_real_escape_string($conn, trim($data[0]));
 
-        $sql = "INSERT INTO distribution_channel (DistributionChannelName) VALUES (?)";
+        $sql = "INSERT INTO distributionchannel (DistributionChannelName) VALUES (?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $distributionChannelName);
 
@@ -64,8 +71,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 }
 
 // Show final contents
-echo "<br>Final 'distribution_channel' table contents:<br>";
-$result = $conn->query("SELECT * FROM distribution_channel ORDER BY DistributionChannelID");
+echo "<br>Final 'distributionchannel' table contents:<br>";
+$result = $conn->query("SELECT * FROM distributionchannel ORDER BY DistributionChannelID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         echo "ID: {$row['DistributionChannelID']}, DistributionChannelName: {$row['DistributionChannelName']}<br>";

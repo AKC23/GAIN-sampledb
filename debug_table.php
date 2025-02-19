@@ -53,6 +53,8 @@ try {
         include('insert_measure_unit1.php'); // Ensure measureunit1 is created
         include('insert_measure_currency.php'); // Ensure measurecurrency is created
         include('insert_packaging_type.php'); // Ensure packagingtype is created
+        include('insert_sub_distribution_channel.php'); // Ensure packagingtype is created
+        include('insert_distribution_channel.php'); // Ensure packagingtype is created
 
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
