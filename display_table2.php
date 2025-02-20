@@ -80,6 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_distribution_channel.php');
                 } elseif ($tableName == 'reference') {
                     include('display_tables/display_reference.php');
+                } elseif ($tableName == 'yeartype') {
+                    include('display_tables/display_year_type.php');
                 }
             } else {
                 echo "No records found.";
@@ -120,6 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_distribution_channel.php');
                 } elseif ($tableName == 'reference') {
                     include('display_tables/display_reference.php');
+                } elseif ($tableName == 'yeartype') {
+                    include('display_tables/display_year_type.php');
                 }
             } else {
                 echo "No records found.";

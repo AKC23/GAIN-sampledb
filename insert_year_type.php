@@ -1,26 +1,27 @@
 <?php
+// insert_year_type.php
 // Include the database connection
 include('db_connect.php');
 
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'year_type' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS year_type";
+// SQL query to drop the 'yeartype' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS yeartype";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'year_type' dropped successfully.<br>";
+    echo "Table 'yeartype' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'year_type': " . $conn->error . "<br>";
+    echo "Error dropping table 'yeartype': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'year_type' table with an auto-increment primary key
+// SQL query to create the 'yeartype' table with an auto-increment primary key
 $createTableSQL = "
-    CREATE TABLE year_type (
+    CREATE TABLE yeartype (
         YearTypeID INT(11) AUTO_INCREMENT PRIMARY KEY,
         YearType VARCHAR(255) NOT NULL,
         StartMonth VARCHAR(50) NOT NULL,
@@ -29,7 +30,7 @@ $createTableSQL = "
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'year_type' created successfully.<br>";
+    echo "Table 'yeartype' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -55,14 +56,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $startMonth = mysqli_real_escape_string($conn, trim($data[2]));
         $endMonth = mysqli_real_escape_string($conn, trim($data[3]));
 
-        $sql = "INSERT INTO year_type (YearType, StartMonth, EndMonth) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO yeartype (YearType, StartMonth, EndMonth) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $yearType, $startMonth, $endMonth);
 
         if ($stmt->execute()) {
-            echo "✓ Inserted year_type record ID: " . $conn->insert_id . "<br>";
+            echo "✓ Inserted yeartype record ID: " . $conn->insert_id . "<br>";
         } else {
-            echo "Error inserting year_type record: " . $stmt->error . "<br>";
+            echo "Error inserting yeartype record: " . $stmt->error . "<br>";
         }
         $stmt->close();
         $rowNumber++;
@@ -74,8 +75,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 }
 
 // Show final contents
-echo "<br>Final 'year_type' table contents:<br>";
-$result = $conn->query("SELECT * FROM year_type ORDER BY YearTypeID");
+echo "<br>Final 'yeartype' table contents:<br>";
+$result = $conn->query("SELECT * FROM yeartype ORDER BY YearTypeID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         echo "ID: {$row['YearTypeID']}, YearType: {$row['YearType']}, StartMonth: {$row['StartMonth']}, EndMonth: {$row['EndMonth']}<br>";
