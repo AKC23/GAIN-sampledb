@@ -78,7 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_sub_distribution_channel.php');
                 } elseif ($tableName == 'distributionchannel') {
                     include('display_tables/display_distribution_channel.php');
-                    
+                } elseif ($tableName == 'reference') {
+                    include('display_tables/display_reference.php');
                 }
             } else {
                 echo "No records found.";
@@ -117,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_sub_distribution_channel.php');
                 } elseif ($tableName == 'distributionchannel') {
                     include('display_tables/display_distribution_channel.php');
-
+                } elseif ($tableName == 'reference') {
+                    include('display_tables/display_reference.php');
                 }
             } else {
                 echo "No records found.";
