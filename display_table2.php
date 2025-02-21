@@ -86,6 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_age.php');
                 } elseif ($tableName == 'gender') {
                     include('display_tables/display_gender.php');
+                } elseif ($tableName == 'extractionconversion') {
+                    include('display_tables/display_extraction_conversion.php');
                 }
             } else {
                 echo "No records found.";
@@ -129,10 +131,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_reference.php');
                 } elseif ($tableName == 'yeartype') {
                     include('display_tables/display_year_type.php');
-                }elseif ($tableName == 'age') {
+                } elseif ($tableName == 'age') {
                     include('display_tables/display_age.php');
                 } elseif ($tableName == 'gender') {
                     include('display_tables/display_gender.php');
+                } elseif ($tableName == 'extractionconversion') {
+                    include('display_tables/display_extraction_conversion.php');
                 }
             } else {
                 echo "No records found.";
@@ -142,3 +146,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
+?>

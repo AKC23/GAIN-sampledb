@@ -58,7 +58,10 @@ try {
         include('insert_reference.php'); // Ensure reference is created first
         include('insert_age.php'); // Ensure age is created first
         include('insert_gender.php'); // Ensure year_type is created first
-
+        include('insert_year_type.php'); // Ensure year_type is created first
+        
+        
+        // Level 1: Tables that depend on base tables
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
         include('insert_processing_stage.php'); // Ensure processing_stage is created after foodvehicle
@@ -66,7 +69,7 @@ try {
         include('insert_geography_level2.php'); // Ensure geographylevel2 is created after geographylevel1
         include('insert_geography_level3.php'); // Ensure geographylevel3 is created after geographylevel2
         include('insert_producer_reference.php'); // Ensure producer_reference is created after company & country
-        
+        include('insert_extraction_conversion.php'); // Ensure year is created after foodvehicle, foodtype, reference
 
     } else {
         throw new Exception("Database connection is closed.");

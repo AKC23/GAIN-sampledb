@@ -1,27 +1,27 @@
 <?php
-
+// insert_extraction_conversion.php
 // Include the database connection
 include('db_connect.php');
 
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'extraction_conversion' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS extraction_conversion";
+// SQL query to drop the 'extractionconversion' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS extractionconversion";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'extraction_conversion' dropped successfully.<br>";
+    echo "Table 'extractionconversion' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'extraction_conversion': " . $conn->error . "<br>";
+    echo "Error dropping table 'extractionconversion': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'extraction_conversion' table
+// SQL query to create the 'extractionconversion' table
 $createTableSQL = "
-    CREATE TABLE extraction_conversion (
+    CREATE TABLE extractionconversion (
         ExtractionID INT(11) AUTO_INCREMENT PRIMARY KEY,
         ExtractionRate DECIMAL(10, 2) NOT NULL,
         VehicleID INT(11) NOT NULL,
@@ -34,7 +34,7 @@ $createTableSQL = "
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'extraction_conversion' created successfully.<br>";
+    echo "Table 'extractionconversion' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -130,7 +130,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Debugging: Show extracted values
         echo "ExtractionRate: $extractionRate, VehicleID: $vehicleID, FoodTypeID: $foodTypeID, ReferenceID: $referenceID<br>";
 
-        $sql = "INSERT INTO extraction_conversion (ExtractionRate, VehicleID, FoodTypeID, ReferenceID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO extractionconversion (ExtractionRate, VehicleID, FoodTypeID, ReferenceID) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("diii", $extractionRate, $vehicleID, $foodTypeID, $referenceID);
 
@@ -146,8 +146,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final extraction_conversion table contents:<br>";
-    $result = $conn->query("SELECT * FROM extraction_conversion ORDER BY ExtractionID");
+    echo "<br>Final extractionconversion table contents:<br>";
+    $result = $conn->query("SELECT * FROM extractionconversion ORDER BY ExtractionID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             echo "ID: {$row['ExtractionID']}, ExtractionRate: {$row['ExtractionRate']}, " .
