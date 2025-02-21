@@ -88,6 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_gender.php');
                 } elseif ($tableName == 'extractionconversion') {
                     include('display_tables/display_extraction_conversion.php');
+                } elseif ($tableName == 'adultmaleequivalent') {
+                    include('display_tables/display_adult_male_equivalent.php');
                 }
             } else {
                 echo "No records found.";
@@ -123,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_measure_currency.php');
                 } elseif ($tableName == 'packagingtype') {
                     include('display_tables/display_packaging_type.php');
-                } elseif ($tableName == 'subdistributionchannel') {
+                 } elseif ($tableName == 'subdistributionchannel') {
                     include('display_tables/display_sub_distribution_channel.php');
                 } elseif ($tableName == 'distributionchannel') {
                     include('display_tables/display_distribution_channel.php');
@@ -137,6 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_gender.php');
                 } elseif ($tableName == 'extractionconversion') {
                     include('display_tables/display_extraction_conversion.php');
+                } elseif ($tableName == 'adultmaleequivalent') {
+                    include('display_tables/display_adult_male_equivalent.php');
                 }
             } else {
                 echo "No records found.";
