@@ -56,6 +56,8 @@ try {
         include('insert_sub_distribution_channel.php'); // Ensure packagingtype is created first
         include('insert_distribution_channel.php'); // Ensure packagingtype is created first
         include('insert_reference.php'); // Ensure reference is created first
+        include('insert_age.php'); // Ensure age is created first
+        include('insert_gender.php'); // Ensure year_type is created first
 
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
