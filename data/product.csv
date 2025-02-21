@@ -1,0 +1,11 @@
+ProductID,Product Name,BrandID,BrandName,CompanyID,CompanyName,FoodTypeID,FoodTypeName
+1,N/A,1,N/A,1,N/A,1,N/A
+2,Rupchanda Soyabean Oil,2,Rupchanda,4,Bangladesh Edible Oil Limited,2,Soya Bean
+3,Fortune Fortified Rice Bran Oil,3,Fortune,4,Bangladesh Edible Oil Limited,11,Rice Bran
+4,Fortune Kachi Ghani Pure Mustard Oil,3,Fortune,4,Bangladesh Edible Oil Limited,7,Rape & Mustard
+5,Kings Sunflower Oil,4,Kings,4,Bangladesh Edible Oil Limited,4,Sunflower
+6,Veola Fortified Soyabean Oil,5,Veola,4,Bangladesh Edible Oil Limited,7,Soya Bean
+7,Meizan Super Palm Oilein,6,Meizan,4,Bangladesh Edible Oil Limited,3,Palm
+8,Fresh Fortified Soyabean Oil,7,Fresh,14,Meghna Group of Industries,2,Soya Bean
+9,Fresh Actifit Mustard Oil,58,Fresh Actifit,14,Meghna Group of Industries,7,Rape & Mustard
+10,Teer Fortified Soyabean Oil,8,Teer,7,City Group,2,Soya Bean

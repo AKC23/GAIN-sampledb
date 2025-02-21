@@ -9,7 +9,7 @@ Gopalganj,2,Dhaka
 Narayanganj,2,Dhaka
 Manikganj,2,Dhaka
 Faridpur,2,Dhaka
-Norsigdi,2,Dhaka
+Narsingdi,2,Dhaka
 Rajbari,2,Dhaka
 Tangail,2,Dhaka
 Madaripur,2,Dhaka
@@ -17,14 +17,14 @@ Mymensingh,6,Mymensingh
 Sherpur,6,Mymensingh
 Jamalpur,6,Mymensingh
 Netrokona,6,Mymensingh
-Chittagong,4,Chattogram
-Coxsbazar,4,Chattogram
+Chattogram,4,Chattogram
+Cox's Bazar,4,Chattogram
 Bandarban,4,Chattogram
 Comilla,4,Chattogram
 Bramanbaria,4,Chattogram
 Chandpur,4,Chattogram
 Feni,4,Chattogram
-Lakhimpur,4,Chattogram
+Lakshmipur,4,Chattogram
 Noakhali,4,Chattogram
 Rangamati,4,Chattogram
 Khagrachari,4,Chattogram
@@ -37,9 +37,9 @@ Bagerhat,5,Khulna
 Jhenaidah,5,Khulna
 Magura,5,Khulna
 Meherpur,5,Khulna
-Norail,5,Khulna
+Narail,5,Khulna
 Rajshahi,7,Rajshahi
-Nouga,7,Rajshahi
+Naogaon,7,Rajshahi
 Shirajganj,7,Rajshahi
 Joypurhat,7,Rajshahi
 Bogura,7,Rajshahi
@@ -55,12 +55,13 @@ Lalmonirhat,8,Rangpur
 Rangpur,8,Rangpur
 Thakurgaon,8,Rangpur
 Bhola,3,Barishal
-Barisal,3,Barishal
+Barishal,3,Barishal
 Pirojpur,3,Barishal
-Borguna,3,Barishal
+Barguna,3,Barishal
 Jhalokathi,3,Barishal
 Patuakhali,3,Barishal
 Moulvibazar,9,Sylhet
 Sylhet,9,Sylhet
 Habiganj,9,Sylhet
 Sunamganj,9,Sylhet
+,,
