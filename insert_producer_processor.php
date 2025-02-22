@@ -4,45 +4,63 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'producer_processor' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS producer_processor";
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+// SQL query to drop the 'producerprocessor' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS producerprocessor";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'producer_processor' dropped successfully.<br>";
+    echo "Table 'producerprocessor' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'producer_processor': " . $conn->error . "<br>";
+    echo "Error dropping table 'producerprocessor': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'producer_processor' table with foreign keys
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// SQL query to create the 'producerprocessor' table with foreign keys
 $createTableSQL = "
-    CREATE TABLE producer_processor (
-        ProcessorID INT(11) AUTO_INCREMENT PRIMARY KEY,
+    CREATE TABLE producerprocessor (
+        ProducerProcessorID INT(11) AUTO_INCREMENT PRIMARY KEY,
         EntityID INT(11) NOT NULL,
         TaskDoneByEntity VARCHAR(255),
-        Productioncapacityvolume DECIMAL(10, 2),
-        PercentageOfCapacityUsed DECIMAL(5, 2),
-        AnnualProductionSupplyVolume DECIMAL(10, 2),
-        BSTIReferenceNo VARCHAR(255),
-        FOREIGN KEY (EntityID) REFERENCES entities(EntityID)
+        ProductionCapacityVolume DECIMAL(20, 3),
+        PercentageOfCapacityUsed DECIMAL(10, 2),
+        AnnualProductionSupplyVolume DECIMAL(20, 3),
+        ProducerReferenceID INT(11),
+        FOREIGN KEY (EntityID) REFERENCES entity(EntityID),
+        FOREIGN KEY (ProducerReferenceID) REFERENCES producerreference(ProducerReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'producer_processor' created successfully.<br>";
+    echo "Table 'producerprocessor' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid EntityIDs
+// Get valid EntityIDs and ProducerReferenceIDs
 $validEntityIDs = array();
-$result = $conn->query("SELECT EntityID FROM entities");
+$validProducerReferenceIDs = array();
+
+$result = $conn->query("SELECT EntityID FROM entity");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         $validEntityIDs[] = $row['EntityID'];
     }
 } else {
     echo "Error getting valid EntityIDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT ProducerReferenceID FROM producerreference");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validProducerReferenceIDs[] = $row['ProducerReferenceID'];
+    }
+} else {
+    echo "Error getting valid ProducerReferenceIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -114,21 +132,20 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         // Clean the data more thoroughly
         $entityID = trim($data[0]);
-        $taskDoneByEntity = trim($data[1]);
-        $productionCapacityVolume = trim($data[2]);
-        $capacityUsed = trim($data[3]);
-        $annualProductionVolume = trim($data[4]);
-        $bstiReferenceNumber = trim($data[5]);
+        $taskDoneByEntity = trim($data[2]);
+        $productionCapacityVolume = trim($data[3]);
+        $percentageOfCapacityUsed = trim($data[4]);
+        $producerReferenceID = trim($data[6]);
         
         // Remove any extra spaces between the name and comma
         $taskDoneByEntity = preg_replace('/\s+,/', ',', $taskDoneByEntity);
-        $bstiReferenceNumber = preg_replace('/\s+,/', ',', $bstiReferenceNumber);
         
         // Convert to proper types
         $entityID = filter_var($entityID, FILTER_VALIDATE_INT);
         $productionCapacityVolume = filter_var($productionCapacityVolume, FILTER_VALIDATE_FLOAT);
-        $capacityUsed = filter_var($capacityUsed, FILTER_VALIDATE_FLOAT);
-        $annualProductionVolume = filter_var($annualProductionVolume, FILTER_VALIDATE_FLOAT);
+        $percentageOfCapacityUsed = filter_var($percentageOfCapacityUsed, FILTER_VALIDATE_FLOAT);
+        $producerReferenceID = filter_var($producerReferenceID, FILTER_VALIDATE_INT);
+
         if ($entityID === false || $entityID === null) {
             echo "Error: Invalid EntityID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
@@ -136,27 +153,34 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         $taskDoneByEntity = mysqli_real_escape_string($conn, $taskDoneByEntity);
-        $bstiReferenceNumber = mysqli_real_escape_string($conn, $bstiReferenceNumber);
+
+        // Calculate AnnualProductionSupplyVolume
+        $annualProductionSupplyVolume = ($productionCapacityVolume * $percentageOfCapacityUsed) / 100;
 
         // Debugging: Show extracted values
-        echo "EntityID: $entityID, Task Done By Entity: '$taskDoneByEntity', Production capacity volume (MT/Y): $productionCapacityVolume, % of capacity used: $capacityUsed, Annual production/ supply Volume (MT/Y): $annualProductionVolume, BSTI Reference Number: '$bstiReferenceNumber'<br>";
+        echo "EntityID: '$entityID', TaskDoneByEntity: '$taskDoneByEntity', ProductionCapacityVolume: $productionCapacityVolume, PercentageOfCapacityUsed: $percentageOfCapacityUsed, AnnualProductionSupplyVolume: $annualProductionSupplyVolume, ProducerReferenceID: $producerReferenceID<br>";
 
-        // Validate EntityID
+        // Validate foreign keys
         if (!in_array($entityID, $validEntityIDs)) {
-            echo "Error: EntityID $entityID does not exist in entities table. Skipping row.<br>";
+            echo "Error: EntityID $entityID does not exist in entity table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if (!empty($producerReferenceID) && !in_array($producerReferenceID, $validProducerReferenceIDs)) {
+            echo "Error: ProducerReferenceID $producerReferenceID does not exist in producerreference table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO producer_processor (EntityID, TaskDoneByEntity, Productioncapacityvolume, PercentageOfCapacityUsed, AnnualProductionSupplyVolume, BSTIReferenceNo) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producerprocessor (EntityID, TaskDoneByEntity, ProductionCapacityVolume, PercentageOfCapacityUsed, AnnualProductionSupplyVolume, ProducerReferenceID) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isddds", $entityID, $taskDoneByEntity, $productionCapacityVolume, $capacityUsed, $annualProductionVolume, $bstiReferenceNumber);
+        $stmt->bind_param("isdddi", $entityID, $taskDoneByEntity, $productionCapacityVolume, $percentageOfCapacityUsed, $annualProductionSupplyVolume, $producerReferenceID);
 
         if ($stmt->execute()) {
-            $processorID = $conn->insert_id;
-            echo "✓ Inserted producer/processor with ID: $processorID<br>";
+            $producerProcessorID = $conn->insert_id;
+            echo "✓ Inserted producerprocessor with ID: $producerProcessorID<br>";
         } else {
-            echo "Error inserting producer/processor: " . $stmt->error . "<br>";
+            echo "Error inserting producerprocessor: " . $stmt->error . "<br>";
         }
 
         $stmt->close();
@@ -164,14 +188,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final producer_processor table contents:<br>";
-    $result = $conn->query("SELECT pp.*, e.ProducerProcessorName 
-                           FROM producer_processor pp 
-                           JOIN entities e ON pp.EntityID = e.EntityID 
-                           ORDER BY pp.ProcessorID");
+    echo "<br>Final producerprocessor table contents:<br>";
+    $result = $conn->query("SELECT * FROM producerprocessor ORDER BY ProducerProcessorID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProcessorID']}, EntityID: {$row['EntityID']}, Task Done By Entity: {$row['TaskDoneByEntity']}, Production capacity volume (MT/Y): {$row['Productioncapacityvolume']}, % of capacity used: {$row['PercentageOfCapacityUsed']}, Annual production/ supply Volume (MT/Y): {$row['AnnualProductionSupplyVolume']}, BSTI Reference Number: {$row['BSTIReferenceNo']}, ProducerProcessorName: {$row['ProducerProcessorName']}<br>";
+            echo "ID: {$row['ProducerProcessorID']}, EntityID: {$row['EntityID']}, TaskDoneByEntity: {$row['TaskDoneByEntity']}, ProductionCapacityVolume: {$row['ProductionCapacityVolume']}, PercentageOfCapacityUsed: {$row['PercentageOfCapacityUsed']}, AnnualProductionSupplyVolume: {$row['AnnualProductionSupplyVolume']}, ProducerReferenceID: {$row['ProducerReferenceID']}<br>";
         }
     }
 

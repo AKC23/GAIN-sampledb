@@ -5,22 +5,22 @@ include('db_connect.php');
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'producer_reference' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS producer_reference";
+// SQL query to drop the 'producerreference' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS producerreference";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'producer_reference' dropped successfully.<br>";
+    echo "Table 'producerreference' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'producer_reference': " . $conn->error . "<br>";
+    echo "Error dropping table 'producerreference': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'producer_reference' table with foreign keys
+// SQL query to create the 'producerreference' table with foreign keys
 $createTableSQL = "
-    CREATE TABLE producer_reference (
+    CREATE TABLE producerreference (
         ProducerReferenceID INT(11) AUTO_INCREMENT PRIMARY KEY,
         CompanyID INT(11),
         IdentifierNumber VARCHAR(255),
@@ -32,7 +32,7 @@ $createTableSQL = "
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'producer_reference' created successfully.<br>";
+    echo "Table 'producerreference' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -93,14 +93,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO producer_reference (CompanyID, IdentifierNumber, IdentifierReferenceSystem, CountryID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO producerreference (CompanyID, IdentifierNumber, IdentifierReferenceSystem, CountryID) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("issi", $companyID, $identifierNumber, $identifierReferenceSystem, $countryID);
 
         if ($stmt->execute()) {
-            echo "✓ Inserted producer_reference record ID: " . $conn->insert_id . "<br>";
+            echo "✓ Inserted producerreference record ID: " . $conn->insert_id . "<br>";
         } else {
-            echo "Error inserting producer_reference record: " . $stmt->error . "<br>";
+            echo "Error inserting producerreference record: " . $stmt->error . "<br>";
         }
         $stmt->close();
         $rowNumber++;
@@ -112,8 +112,8 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 }
 
 // Show final contents
-echo "<br>Final 'producer_reference' table contents:<br>";
-$result = $conn->query("SELECT * FROM producer_reference ORDER BY ProducerReferenceID");
+echo "<br>Final 'producerreference' table contents:<br>";
+$result = $conn->query("SELECT * FROM producerreference ORDER BY ProducerReferenceID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         echo "ID: {$row['ProducerReferenceID']}, CompanyID: {$row['CompanyID']}, IdentifierNumber: {$row['IdentifierNumber']}, IdentifierReferenceSystem: {$row['IdentifierReferenceSystem']}, CountryID: {$row['CountryID']}<br>";

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_geography_level2.php');
                 } elseif ($tableName == 'geographylevel3') {
                     include('display_tables/display_geography_level3.php');
-                } elseif ($tableName == 'producer_reference') {
+                } elseif ($tableName == 'producerreference') {
                     include('display_tables/display_producer_reference.php');
                 } elseif ($tableName == 'measureunit1') {
                     include('display_tables/display_measure_unit1.php');
@@ -94,6 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_product.php');
                 } elseif ($tableName == 'entity') {
                     include('display_tables/display_entity.php');
+                } elseif ($tableName == 'producerprocessor') {
+                    include('display_tables/display_producer_processor.php');
                 }
             } else {
                 echo "No records found.";
@@ -121,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_geography_level2.php');
                 } elseif ($tableName == 'geographylevel3') {
                     include('display_tables/display_geography_level3.php');
-                } elseif ($tableName == 'producer_reference') {
+                } elseif ($tableName == 'producerreference') {
                     include('display_tables/display_producer_reference.php');
                 } elseif ($tableName == 'measureunit1') {
                     include('display_tables/display_measure_unit1.php');
@@ -149,6 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_product.php');
                 } elseif ($tableName == 'entity') {
                     include('display_tables/display_entity.php');
+                } elseif ($tableName == 'producerprocessor') {
+                    include('display_tables/display_producer_processor.php');
                 }
             } else {
                 echo "No records found.";

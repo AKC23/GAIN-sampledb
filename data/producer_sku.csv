@@ -1,4 +1,4 @@
-BrandID,Brand,CompanyID,Company group,SKU,Unit,Packaging Type ID,Packaging,Price,CurrencyID,Price Currency,ReferenceID 
+ProductID,Product Name,CompanyID,CompanyName,SKU,Unit,Packaging Type ID,Packaging,Price,CurrencyID,Price Currency,ReferenceID
 1,N/A,1,N/A,0,Litre,1,N/A,0,1,N/A,1
 2,Rupchanda Soyabean Oil,4,Bangladesh Edible Oil Limited,1,Litre,2,Poly,164,3,BDT,88
 2,Rupchanda Soyabean Oil,4,Bangladesh Edible Oil Limited,1,Litre,3,Pet Bottle,167,3,BDT,89
@@ -22,14 +22,5 @@ BrandID,Brand,CompanyID,Company group,SKU,Unit,Packaging Type ID,Packaging,Price
 10,Teer Fortified Soyabean Oil,7,City Group,2,Litre,3,Pet Bottle,334,3,BDT,1
 10,Teer Fortified Soyabean Oil,7,City Group,5,Litre,3,Pet Bottle,818,3,BDT,1
 10,Teer Fortified Soyabean Oil,7,City Group,8,Litre,3,Pet Bottle,1320,3,BDT,1
-11,ACI Pure Fortified Soyabean Oil,23,ACI,2,Litre,3,Pet Bottle,346,3,BDT,1
-11,ACI Pure Fortified Soyabean Oil,23,ACI,5,Litre,3,Pet Bottle,845,3,BDT,1
-12,ACI Nutrilife Rice Bran Oil,23,ACI,2,Litre,3,Pet Bottle,455,3,BDT,1
-12,ACI Nutrilife Rice Bran Oil,23,ACI,5,Litre,3,Pet Bottle,1080,3,BDT,1
-13,Pusti Fortified Soyabean Oil,20,TK Group,1,Litre,2,Poly,165,3,BDT,1
-13,Pusti Fortified Soyabean Oil,20,TK Group,1,Litre,3,Pet Bottle,167,3,BDT,1
-13,Pusti Fortified Soyabean Oil,20,TK Group,5,Litre,3,Pet Bottle,818,3,BDT,1
-13,Pusti Fortified Soyabean Oil,20,TK Group,8,Litre,3,Pet Bottle,1320,3,BDT,1
-14,Pusti Family Fortified Palm Olein Oil,20,TK Group,2,Litre,3,Pet Bottle,330,3,BDT,1
-15,Pran Mustard Oil,22,PRAN,500,Millilitre,3,Pet Bottle,180,3,BDT,1
-15,Pran Mustard Oil,22,PRAN,1,Litre,3,Pet Bottle,355,3,BDT,1
+11,Pran Mustard Oil,22,PRAN,500,Millilitre,3,Pet Bottle,180,3,BDT,1
+11,Pran Mustard Oil,22,PRAN,1,Litre,3,Pet Bottle,355,3,BDT,1

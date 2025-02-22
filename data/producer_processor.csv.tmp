@@ -1,81 +1,88 @@
-EntityID,Task Done By Entity,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),BSTI Reference Number/ID
-1,N/A,0,0,0,0
-2,Distributor,0,100,0,0
-3,Distributor,0,100,0,0
-4,Distributor,0,100,0,0
-5,Distributor,0,100,0,0
-6,Distributor,0,100,0,0
-7,Distributor,0,100,0,0
-8,Distributor,0,100,0,0
-9,Distributor,0,100,0,0
-10,Distributor,0,100,0,0
-11,Distributor,0,100,0,0
-12,Distributor,0,100,0,0
-13,Distributor,0,100,0,0
-14,Distributor,0,100,0,0
-15,Distributor,0,100,0,0
-16,Distributor,0,100,0,0
-17,Distributor,0,100,0,0
-18,Distributor,0,100,0,0
-19,Distributor,0,100,0,0
-20,Distributor,0,100,0,0
-21,Distributor,0,100,0,0
-22,Distributor,0,100,0,0
-23,Distributor,0,100,0,0
-24,Distributor,0,100,0,0
-25,Distributor,0,100,0,0
-26,Distributor,0,100,0,0
-27,Distributor,0,100,0,0
-28,Distributor,0,100,0,0
-29,Distributor,0,100,0,0
-30,Distributor,0,100,0,0
-31,Distributor,0,100,0,0
-32,Distributor,0,100,0,0
-33,Distributor,0,100,0,0
-34,Distributor,0,100,0,0
-35,Refinery,150000,100,0,0
-36,Refinery,150000,100,0,0
-37,Refinery,150000,100,0,0
-38,Refinery,200000,100,0,0
-39,Refinery,0,100,0,0
-40,Refinery,0,100,0,0
-41,Refinery,150000,100,0,0
-42,Refinery,0,100,0,0
-43,Refinery,0,100,0,0
-44,Refinery,0,100,0,0
-45,Refinery,150000,100,0,0
-46,Refinery,0,100,0,0
-47,Refinery,0,100,0,0
-48,Refinery,0,100,0,0
-49,Refinery,42000,100,0,0
-50,Refinery,42000,100,0,0
-51,Refinery,150000,100,0,0
-52,Refinery,150000,100,0,0
-53,Refinery,150000,100,0,0
-54,Refinery,150000,100,0,0
-55,Refinery,600000,100,0,0
-56,Refinery,150000,100,0,0
-57,Refinery,150000,100,0,0
-58,Refinery,600000,100,0,0
-59,Refinery,150000,100,0,0
-60,Refinery,300000,100,0,0
-62,Refinery,18000,100,0,0
-64,Refinery,48000,100,0,0
-65,Refinery,15000,100,0,0
-66,Refinery,18000,100,0,0
-67,Refinery,15000,100,0,0
-68,Refinery,15000,100,0,0
-69,Refinery,15000,100,0,0
-71,Refinery,15000,100,0,0
-72,Refinery,21000,100,0,0
-73,Refinery,945000,100,0,0
-74,Refinery,405000,100,0,0
-75,Refinery,360000,100,0,0
-76,Refinery,393000,100,0,0
-77,Refinery,270000,100,0,0
-78,Refinery,0,100,0,0
-79,Refinery,96000,100,0,0
-80,Refinery,60000,100,0,0
-81,Refinery,54000,100,0,0
-82,Refinery,66000,100,0,0
-83,Refinery,90000,100,0,0
+EntityID,Producer-Processor Name,Task Done By Entity,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),producer_reference_ID,Identifier Number
+1,N/A,N/A,0,0,0,1,N/A
+2,ACI Logistics Limited,Distributor,0,100,0,1,N/A
+3,Agrotech International Limited,Distributor,0,100,0,1,N/A
+4,Ali Natural Oil Mills & Agro Industries Limited,Distributor,0,100,0,1,N/A
+5,Bangladesh Edible Oil Limited,Distributor,0,100,0,1,N/A
+6,Bashundhara Multi Food Products Limited,Distributor,0,100,0,1,N/A
+7,Bay Fishing Corporation Limited,Distributor,0,100,0,1,N/A
+8,City Edible Oil Limited,Distributor,0,100,0,1,N/A
+9,Globe Edible Oil Limited,Distributor,0,100,0,1,N/A
+10,Green Oil Poultry & Feed Limited,Distributor,0,100,0,1,N/A
+11,IFAD Multi Products Limited,Distributor,0,100,0,1,N/A
+12,Jamuna Edible Oil Industries Limited,Distributor,0,100,0,1,N/A
+13,Jamuna Edible Oil Industries Limited (Unit-2),Distributor,0,100,0,1,N/A
+14,Jasmir Super Oil Limited,Distributor,0,100,0,1,N/A
+15,KBC Agro Products Private Limited,Distributor,0,100,0,1,N/A
+16,Marico Bangladesh Limited,Distributor,0,100,0,1,N/A
+17,Mazumdar Bran Oil Mills Limited,Distributor,0,100,0,1,N/A
+18,Meer Banaspati Products,Distributor,0,100,0,1,N/A
+19,Meghna Edible Oils Refinery Limited,Distributor,0,100,0,1,N/A
+20,MM Vegitable Oil Products Limited,Distributor,0,100,0,1,N/A
+21,MRT Agro Products BD Limited,Distributor,0,100,0,1,N/A
+22,Northern Consumer Products Limited,Distributor,0,100,0,1,N/A
+23,Rashid Oil Mills Limited,Distributor,0,100,0,1,N/A
+24,Rupsha Edible Oil Refinery Limited,Distributor,0,100,0,1,N/A
+25,S Alam Super Edible Oil Limited,Distributor,0,100,0,1,N/A
+26,Sena Edible Oil Industries,Distributor,0,100,0,1,N/A
+27,SG Oil Refineries Limited,Distributor,0,100,0,1,N/A
+28,Shabnam Vegetable Oil Industries Limited,Distributor,0,100,0,1,N/A
+29,Shakti Edible Products Limited,Distributor,0,100,0,1,N/A
+31,Smile Food Products,Distributor,0,100,0,1,N/A
+32,Super Oil Refinery Limited,Distributor,0,100,0,1,N/A
+33,Tamim Agro Industries Limited,Distributor,0,100,0,1,N/A
+34,VOTT Oil Refineries Limited,Distributor,0,100,0,1,N/A
+35,A Deshi Food Product Ltd,Refinery,150000,100,0,1,N/A
+36,AMB Nosia Ltd,Refinery,150000,100,0,1,N/A
+37,Ara Food & Beverage,Refinery,150000,100,0,1,N/A
+38,Areej Veg Oils,Refinery,200000,100,0,1,N/A
+39,Chamak Food Products,Refinery,0,100,0,1,N/A
+40,Confidence Edible Oil Ltd,Refinery,0,100,0,1,N/A
+41,Gazi NPKS,Refinery,150000,100,0,1,N/A
+42,JB Foods Service,Refinery,0,100,0,1,N/A
+43,Jibon Food Products,Refinery,0,100,0,1,N/A
+44,Kanon Enterprise,Refinery,0,100,0,1,N/A
+45,MH Edible Products Ltd,Refinery,150000,100,0,1,N/A
+46,Madina Oil Limited,Refinery,0,100,0,1,N/A
+47,Monjil Multi Food Product Ltd,Refinery,0,100,0,1,N/A
+48,MS Modina Oil Mills,Refinery,0,100,0,1,N/A
+49,Natore Agro Ltd,Refinery,42000,100,0,1,N/A
+50,NM Food Product,Refinery,42000,100,0,1,N/A
+51,Olitalia,Refinery,150000,100,0,1,N/A
+52,Omi Food Product,Refinery,150000,100,0,1,N/A
+53,Pran Agro Ltd,Refinery,150000,100,0,1,N/A
+54,President Food Products,Refinery,150000,100,0,1,N/A
+55,RB Edible Food Product,Refinery,600000,100,0,1,N/A
+56,Rony Edible Oil & Food products Ltd,Refinery,150000,100,0,1,N/A
+57,Saif Edible Food Packing,Refinery,150000,100,0,1,N/A
+58,MM Vegetable Oil Industries,Refinery,600000,100,0,1,N/A
+59,Deepa Food Products Ltd,Refinery,150000,100,0,1,N/A
+60,Tanveer/United Edible Oil Mills,Refinery,300000,100,0,1,N/A
+61,Shun Shing Edible oil Ltd,Refinery,18000,100,0,1,N/A
+62,Marine Edible Oil Ltd,Refinery,18000,100,0,1,N/A
+63,ACI Edible Oils Ltd,Refinery,18000,100,0,1,N/A
+63,ACI Edible Oils Ltd,Refinery,150000,100,0,1,N/A
+64,AM Bran Oil Company Ltd,Refinery,48000,100,0,1,N/A
+65,Adani Wilmar Ltd,Refinery,15000,100,0,1,N/A
+66,Emarald Oil Ltd,Refinery,18000,100,0,1,N/A
+67,Lam Soon Edible Oil Industries Sdn Bhd,Refinery,15000,100,0,1,N/A
+68,Green Oil Ltd,Refinery,15000,100,0,1,N/A
+69,KBC Agro Products Ltd,Refinery,15000,100,0,1,N/A
+70,Kadooglu yag san,Refinery,15000,100,0,1,N/A
+71,Kucukbay Oil Industry Inc,Refinery,21000,100,0,1,N/A
+72,Majumder Group of Industries,Refinery,945000,100,0,1,N/A
+73,MRT Agro Product Ltd,Refinery,405000,100,0,1,N/A
+74,Mateo SA,Refinery,360000,100,0,1,N/A
+75,United Edible Oil Ltd,Refinery,393000,100,0,1,N/A
+76,Chemical Oil Refineries,Refinery,270000,100,0,1,N/A
+77,Borges Agricultural and Industrial Edible Oils,Refinery,0,100,0,1,N/A
+78,Rashid Oil Mills Ltd,Refinery,96000,100,0,1,N/A
+79,Khan Food & Aquarcy Ltd,Refinery,60000,100,0,1,N/A
+80,Shabnam Vegetable Oil Industries Ltd,Refinery,54000,100,0,1,N/A
+81,Super Oil Refinery Ltd,Refinery,66000,100,0,1,N/A
+82,"Helvacidade Food, Pharma and Chemicals Incorporation",Refinery,90000,100,0,1,N/A
+83,ACI,Refinery,90000,100,0,1,N/A
+84,Nurjahan,Refinery,75000,100,0,1,N/A
+85,IFAD,Refinery,45000,100,0,1,N/A
+86,Sajeeb,Refinery,90000,100,0,1,N/A
+87,Emerald Oil Industries Limited,Distributor,0,100,0,1,N/A
