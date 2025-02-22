@@ -1,3 +1,5 @@
-YearTypeID,Year Type,Start Month,End Month
-,Fiscal,July,June
-,Calendar,January,December
+Year Type,Start Month,End Month
+N/A,N/A,N/A
+Year (Jan-Dec),January,December
+Year(Jun-July),June,July
+Year (Mar-Apr),March,April
