@@ -4,38 +4,44 @@
 // Include the database connection
 include('db_connect.php');
 
-// SQL query to drop the 'entities' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS entities";
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+// SQL query to drop the 'entity' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS entity";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'entities' dropped successfully.<br>";
+    echo "Table 'entity' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'entities': " . $conn->error . "<br>";
+    echo "Error dropping table 'entity': " . $conn->error . "<br>";
 }
 
-// SQL query to create the 'entities' table with foreign keys
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// SQL query to create the 'entity' table with foreign keys
 $createTableSQL = "
-    CREATE TABLE entities (
+    CREATE TABLE entity (
         EntityID INT(11) AUTO_INCREMENT PRIMARY KEY,
         ProducerProcessorName VARCHAR(255) NOT NULL,
         CompanyID INT(11) NOT NULL,
         VehicleID INT(11) NOT NULL,
-        AdminLevel1 VARCHAR(255),
-        AdminLevel2 VARCHAR(255),
-        AdminLevel3 VARCHAR(255),
-        UDC VARCHAR(255),
-        Thana VARCHAR(255),
-        Upazila VARCHAR(255),
+        GL1ID INT(11),
+        GL2ID INT(11),
+        GL3ID INT(11),
         CountryID INT(11) NOT NULL,
         FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (CountryID) REFERENCES country(Country_ID)
+        FOREIGN KEY (GL1ID) REFERENCES geographylevel1(GL1ID),
+        FOREIGN KEY (GL2ID) REFERENCES geographylevel2(GL2ID),
+        FOREIGN KEY (GL3ID) REFERENCES geographylevel3(GL3ID),
+        FOREIGN KEY (CountryID) REFERENCES country(CountryID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'entities' created successfully.<br>";
+    echo "Table 'entity' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -43,6 +49,9 @@ if ($conn->query($createTableSQL) === TRUE) {
 // Get valid CompanyIDs, VehicleIDs, and CountryIDs
 $validCompanyIDs = array();
 $validVehicleIDs = array();
+$validGL1IDs = array();
+$validGL2IDs = array();
+$validGL3IDs = array();
 $validCountryIDs = array();
 
 $result = $conn->query("SELECT CompanyID FROM company");
@@ -63,17 +72,44 @@ if ($result) {
     echo "Error getting valid VehicleIDs: " . $conn->error . "<br>";
 }
 
-$result = $conn->query("SELECT Country_ID FROM country");
+$result = $conn->query("SELECT GL1ID FROM geographylevel1");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $validCountryIDs[] = $row['Country_ID'];
+        $validGL1IDs[] = $row['GL1ID'];
+    }
+} else {
+    echo "Error getting valid GL1IDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT GL2ID FROM geographylevel2");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validGL2IDs[] = $row['GL2ID'];
+    }
+} else {
+    echo "Error getting valid GL2IDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT GL3ID FROM geographylevel3");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validGL3IDs[] = $row['GL3ID'];
+    }
+} else {
+    echo "Error getting valid GL3IDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT CountryID FROM country");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validCountryIDs[] = $row['CountryID'];
     }
 } else {
     echo "Error getting valid CountryIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
-$csvFile = 'data/entities.csv';  // Update with the exact path of your CSV file
+$csvFile = 'data/entity.csv';  // Update with the exact path of your CSV file
 
 if (!file_exists($csvFile)) {
     die("Error: CSV file '$csvFile' not found.<br>");
@@ -133,7 +169,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 10) {
+        if (count($data) < 7) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -143,28 +179,27 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $producerProcessorName = trim($data[0]);
         $companyID = trim($data[1]);
         $vehicleID = trim($data[3]);
-        $admin1 = trim($data[4]);
-        $admin2 = trim($data[5]);
-        $admin3 = trim($data[6]);
-        $udc = trim($data[7]);
-        $thana = trim($data[8]);
-        $upazila = trim($data[9]);
+        $gl1ID = trim($data[5]);
+        $gl2ID = trim($data[7]);
+        $gl3ID = trim($data[9]);
         $countryID = trim($data[11]);
         
         // Remove any extra spaces between the name and comma
-        $companyID = preg_replace('/\s+,/', ',', $companyID);
         $producerProcessorName = preg_replace('/\s+,/', ',', $producerProcessorName);
-        $admin1 = preg_replace('/\s+,/', ',', $admin1);
-        $admin2 = preg_replace('/\s+,/', ',', $admin2);
-        $admin3 = preg_replace('/\s+,/', ',', $admin3);
-        $udc = preg_replace('/\s+,/', ',', $udc);
-        $thana = preg_replace('/\s+,/', ',', $thana);
-        $upazila = preg_replace('/\s+,/', ',', $upazila);
         
         // Convert to proper types
         $companyID = filter_var($companyID, FILTER_VALIDATE_INT);
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
+        $gl1ID = filter_var($gl1ID, FILTER_VALIDATE_INT);
+        $gl2ID = filter_var($gl2ID, FILTER_VALIDATE_INT);
+        $gl3ID = filter_var($gl3ID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
+        
+		// Prepare variables for bind_param
+		$null_gl1id = empty($gl1ID) && $gl1ID !== 0 ? NULL : $gl1ID;
+		$null_gl2id = empty($gl2ID) && $gl2ID !== 0 ? NULL : $gl2ID;
+		$null_gl3id = empty($gl3ID) && $gl3ID !== 0 ? NULL : $gl3ID;
+
         if ($companyID === false || $companyID === null || $vehicleID === false || $vehicleID === null || $countryID === false || $countryID === null) {
             echo "Error: Invalid CompanyID, VehicleID or CountryID format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
@@ -172,17 +207,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         $producerProcessorName = mysqli_real_escape_string($conn, $producerProcessorName);
-        $admin1 = mysqli_real_escape_string($conn, $admin1);
-        $admin2 = mysqli_real_escape_string($conn, $admin2);
-        $admin3 = mysqli_real_escape_string($conn, $admin3);
-        $udc = mysqli_real_escape_string($conn, $udc);
-        $thana = mysqli_real_escape_string($conn, $thana);
-        $upazila = mysqli_real_escape_string($conn, $upazila);
 
         // Debugging: Show extracted values
-        echo "ProducerProcessorName: '$producerProcessorName', CompanyID: '$companyID', VehicleID: $vehicleID, AdminLevel1: '$admin1', AdminLevel2: '$admin2', AdminLevel3: '$admin3', UDC: '$udc', Thana: '$thana', Upazila: '$upazila', CountryID: $countryID<br>";
+        echo "ProducerProcessorName: '$producerProcessorName', CompanyID: '$companyID', VehicleID: $vehicleID, GL1ID: '$gl1ID', GL2ID: '$gl2ID', GL3ID: '$gl3ID', CountryID: $countryID<br>";
 
-        // Validate CompanyID, VehicleID and CountryID
+        // Validate foreign keys
         if (!in_array($companyID, $validCompanyIDs)) {
             echo "Error: CompanyID $companyID does not exist in company table. Skipping row.<br>";
             $rowNumber++;
@@ -190,6 +219,21 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         if (!in_array($vehicleID, $validVehicleIDs)) {
             echo "Error: VehicleID $vehicleID does not exist in FoodVehicle table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if (!empty($gl1ID) && !in_array($gl1ID, $validGL1IDs)) {
+            echo "Error: GL1ID $gl1ID does not exist in geographylevel1 table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if (!empty($gl2ID) && !in_array($gl2ID, $validGL2IDs)) {
+            echo "Error: GL2ID $gl2ID does not exist in geographylevel2 table. Skipping row.<br>";
+            $rowNumber++;
+            continue;
+        }
+        if (!empty($gl3ID) && !in_array($gl3ID, $validGL3IDs)) {
+            echo "Error: GL3ID $gl3ID does not exist in geographylevel3 table. Skipping row.<br>";
             $rowNumber++;
             continue;
         }
@@ -205,9 +249,14 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO entities (ProducerProcessorName, CompanyID, VehicleID, AdminLevel1, AdminLevel2, AdminLevel3, UDC, Thana, Upazila, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO entity (ProducerProcessorName, CompanyID, VehicleID, GL1ID, GL2ID, GL3ID, CountryID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("siissssssi", $producerProcessorName, $companyID, $vehicleID, $admin1, $admin2, $admin3, $udc, $thana, $upazila, $countryID);
+
+        // Bind parameters correctly, handling NULL values
+		$types = "siisiii"; // Define types of parameters
+		$params = array(&$types, &$producerProcessorName, &$companyID, &$vehicleID, &$null_gl1id, &$null_gl2id, &$null_gl3id, &$countryID);
+
+		call_user_func_array(array($stmt, 'bind_param'), $params);
 
         if ($stmt->execute()) {
             $entityID = $conn->insert_id;
@@ -221,16 +270,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final entities table contents:<br>";
-    $result = $conn->query("SELECT e.*, c.CompanyGroup, fv.VehicleName, co.Country_Name 
-                           FROM entities e 
-                           JOIN company c ON e.CompanyID = c.CompanyID 
-                           JOIN FoodVehicle fv ON e.VehicleID = fv.VehicleID 
-                           JOIN country co ON e.CountryID = co.Country_ID 
-                           ORDER BY e.EntityID");
+    echo "<br>Final entity table contents:<br>";
+    $result = $conn->query("SELECT * FROM entity ORDER BY EntityID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['EntityID']}, ProducerProcessorName: {$row['ProducerProcessorName']}, CompanyID: {$row['CompanyID']}, CompanyGroup: {$row['CompanyGroup']}, VehicleID: {$row['VehicleID']}, AdminLevel1: {$row['AdminLevel1']}, AdminLevel2: {$row['AdminLevel2']}, AdminLevel3: {$row['AdminLevel3']}, UDC: {$row['UDC']}, Thana: {$row['Thana']}, Upazila: {$row['Upazila']}, CountryID: {$row['CountryID']}, VehicleName: {$row['VehicleName']}, Country: {$row['Country_Name']}<br>";
+            echo "ID: {$row['EntityID']}, ProducerProcessorName: {$row['ProducerProcessorName']}, CompanyID: {$row['CompanyID']}, VehicleID: {$row['VehicleID']}, GL1ID: {$row['GL1ID']}, GL2ID: {$row['GL2ID']}, GL3ID: {$row['GL3ID']}, CountryID: {$row['CountryID']}<br>";
         }
     }
 
@@ -238,6 +282,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 } else {
     echo "Error: Could not open CSV file.<br>";
 }
+
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // Note: We do not close the database connection here
 // because it needs to remain open for subsequent operations in index.php

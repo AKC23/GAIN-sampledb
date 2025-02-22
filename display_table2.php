@@ -92,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_adult_male_equivalent.php');
                 } elseif ($tableName == 'product') {
                     include('display_tables/display_product.php');
+                } elseif ($tableName == 'entity') {
+                    include('display_tables/display_entity.php');
                 }
             } else {
                 echo "No records found.";
@@ -145,6 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_adult_male_equivalent.php');
                 }  elseif ($tableName == 'product') {
                     include('display_tables/display_product.php');
+                } elseif ($tableName == 'entity') {
+                    include('display_tables/display_entity.php');
                 }
             } else {
                 echo "No records found.";
