@@ -1,60 +1,64 @@
 <?php
+// insert_producer_sku.php
 // Include the database connection
 include('db_connect.php');
 
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'producer_sku' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS producer_sku";
+// SQL query to drop the 'producersku' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS producersku";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'producer_sku' dropped successfully.<br>";
+    echo "Table 'producersku' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'producer_sku': " . $conn->error . "<br>";
+    echo "Error dropping table 'producersku': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'producer_sku' table with foreign keys
+// SQL query to create the 'producersku' table with foreign keys
 $createTableSQL = "
-    CREATE TABLE producer_sku (
-        SKU_ID INT AUTO_INCREMENT PRIMARY KEY,
-        BrandID INT(11),
-        CompanyID INT(11),
-        SKU VARCHAR(100),
+    CREATE TABLE producersku (
+        SKUID INT AUTO_INCREMENT PRIMARY KEY,
+        ProductID INT(11) NOT NULL,
+        CompanyID INT(11) NOT NULL,
+        SKU INT(11),
         Unit VARCHAR(50),
         PackagingTypeID INT(11),
         Price DECIMAL(10,2),
         CurrencyID INT(11),
-        FOREIGN KEY (BrandID) REFERENCES brand(BrandID),
+		ReferenceID INT(11),
+        FOREIGN KEY (ProductID) REFERENCES product(ProductID),
         FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
-        FOREIGN KEY (PackagingTypeID) REFERENCES packaging_type(Packaging_Type_ID),
-        FOREIGN KEY (CurrencyID) REFERENCES measure_currency(CurrencyID)
+        FOREIGN KEY (PackagingTypeID) REFERENCES packagingtype(PackagingTypeID),
+        FOREIGN KEY (CurrencyID) REFERENCES measurecurrency(MCID),
+		FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'producer_sku' created successfully.<br>";
+    echo "Table 'producersku' created successfully.<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// Get valid BrandIDs, CompanyIDs, Packaging_Type_IDs, and CurrencyIDs
-$validBrandIDs = array();
+// Get valid ProductIDs, CompanyIDs, PackagingTypeIDs, CurrencyIDs, ReferenceIDs
+$validProductIDs = array();
 $validCompanyIDs = array();
 $validPackagingTypeIDs = array();
 $validCurrencyIDs = array();
+$validReferenceIDs = array();
 
-$result = $conn->query("SELECT BrandID FROM brand");
+$result = $conn->query("SELECT ProductID FROM product");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $validBrandIDs[] = $row['BrandID'];
+        $validProductIDs[] = $row['ProductID'];
     }
 } else {
-    echo "Error getting valid BrandIDs: " . $conn->error . "<br>";
+    echo "Error getting valid ProductIDs: " . $conn->error . "<br>";
 }
 
 $result = $conn->query("SELECT CompanyID FROM company");
@@ -66,22 +70,31 @@ if ($result) {
     echo "Error getting valid CompanyIDs: " . $conn->error . "<br>";
 }
 
-$result = $conn->query("SELECT Packaging_Type_ID FROM packaging_type");
+$result = $conn->query("SELECT PackagingTypeID FROM packagingtype");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $validPackagingTypeIDs[] = $row['Packaging_Type_ID'];
+        $validPackagingTypeIDs[] = $row['PackagingTypeID'];
     }
 } else {
-    echo "Error getting valid Packaging_Type_IDs: " . $conn->error . "<br>";
+    echo "Error getting valid PackagingTypeIDs: " . $conn->error . "<br>";
 }
 
-$result = $conn->query("SELECT CurrencyID FROM measure_currency");
+$result = $conn->query("SELECT MCID FROM measurecurrency");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $validCurrencyIDs[] = $row['CurrencyID'];
+        $validCurrencyIDs[] = $row['MCID'];
     }
 } else {
     echo "Error getting valid CurrencyIDs: " . $conn->error . "<br>";
+}
+
+$result = $conn->query("SELECT ReferenceID FROM reference");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $validReferenceIDs[] = $row['ReferenceID'];
+    }
+} else {
+    echo "Error getting valid ReferenceIDs: " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -101,17 +114,18 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $brandID = (int)trim($data[0]);
+        $productID = (int)trim($data[0]);
         $companyID = (int)trim($data[2]);
-        $sku = mysqli_real_escape_string($conn, trim($data[4]));
+        $sku = (int)trim($data[4]);
         $unit = mysqli_real_escape_string($conn, trim($data[5]));
         $packagingTypeID = (int)trim($data[6]);
-        $price = (float)trim($data[7]);
-        $currencyID = (int)trim($data[8]);
+        $price = (float)trim($data[8]);
+        $currencyID = (int)trim($data[9]);
+		$referenceID = (int)trim($data[11]);
 
         // Validate IDs
-        if (!in_array($brandID, $validBrandIDs)) {
-            echo "Error: BrandID $brandID does not exist in brand table. Skipping row $rowNumber.<br>";
+        if (!in_array($productID, $validProductIDs)) {
+            echo "Error: ProductID $productID does not exist in product table. Skipping row $rowNumber.<br>";
             $rowNumber++;
             continue;
         }
@@ -121,24 +135,29 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
         if (!in_array($packagingTypeID, $validPackagingTypeIDs)) {
-            echo "Error: Packaging_Type_ID $packagingTypeID does not exist in packaging_type table. Skipping row $rowNumber.<br>";
+            echo "Error: PackagingTypeID $packagingTypeID does not exist in packagingtype table. Skipping row $rowNumber.<br>";
             $rowNumber++;
             continue;
         }
         if (!in_array($currencyID, $validCurrencyIDs)) {
-            echo "Error: CurrencyID $currencyID does not exist in measure_currency table. Skipping row $rowNumber.<br>";
+            echo "Error: CurrencyID $currencyID does not exist in measurecurrency table. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
+		if (!in_array($referenceID, $validReferenceIDs)) {
+            echo "Error: ReferenceID $referenceID does not exist in reference table. Skipping row $rowNumber.<br>";
             $rowNumber++;
             continue;
         }
 
-        $sql = "INSERT INTO producer_sku (BrandID, CompanyID, SKU, Unit, Packaging_Type_ID, Price, CurrencyID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producersku (ProductID, CompanyID, SKU, Unit, PackagingTypeID, Price, CurrencyID, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiissdi", $brandID, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID);
+        $stmt->bind_param("iiissdii", $productID, $companyID, $sku, $unit, $packagingTypeID, $price, $currencyID, $referenceID);
 
         if ($stmt->execute()) {
-            echo "✓ Inserted producer_sku record ID: " . $conn->insert_id . "<br>";
+            echo "✓ Inserted producersku record ID: " . $conn->insert_id . "<br>";
         } else {
-            echo "Error inserting producer_sku record: " . $stmt->error . "<br>";
+            echo "Error inserting producersku record: " . $stmt->error . "<br>";
         }
         $stmt->close();
         $rowNumber++;
@@ -150,11 +169,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 }
 
 // Show final contents
-echo "<br>Final 'producer_sku' table contents:<br>";
-$result = $conn->query("SELECT * FROM producer_sku ORDER BY BrandID");
+echo "<br>Final 'producersku' table contents:<br>";
+$result = $conn->query("SELECT * FROM producersku ORDER BY SKUID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['SKU_ID']}, BrandID: {$row['BrandID']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, Packaging_Type_ID: {$row['Packaging_Type_ID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}<br>";
+        echo "ID: {$row['SKUID']}, ProductID: {$row['ProductID']}, CompanyID: {$row['CompanyID']}, SKU: {$row['SKU']}, Unit: {$row['Unit']}, PackagingTypeID: {$row['PackagingTypeID']}, Price: {$row['Price']}, CurrencyID: {$row['CurrencyID']}, ReferenceID: {$row['ReferenceID']}<br>";
     }
 }
 

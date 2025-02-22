@@ -96,6 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_entity.php');
                 } elseif ($tableName == 'producerprocessor') {
                     include('display_tables/display_producer_processor.php');
+                } elseif ($tableName == 'producersku') {
+                    include('display_tables/display_producer_sku.php');
                 }
             } else {
                 echo "No records found.";
@@ -147,12 +149,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_extraction_conversion.php');
                 } elseif ($tableName == 'adultmaleequivalent') {
                     include('display_tables/display_adult_male_equivalent.php');
-                }  elseif ($tableName == 'product') {
+                } elseif ($tableName == 'product') {
                     include('display_tables/display_product.php');
                 } elseif ($tableName == 'entity') {
                     include('display_tables/display_entity.php');
                 } elseif ($tableName == 'producerprocessor') {
                     include('display_tables/display_producer_processor.php');
+                } elseif ($tableName == 'producersku') {
+                    include('display_tables/display_producer_sku.php');
                 }
             } else {
                 echo "No records found.";
@@ -162,4 +166,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
-?>

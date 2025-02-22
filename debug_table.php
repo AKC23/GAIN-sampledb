@@ -77,6 +77,7 @@ try {
         // Level 2: Tables that depend on Level 1 tables
         include('insert_entity.php');
         include('insert_producer_processor.php');
+        include('insert_producer_sku.php');
 
     } else {
         throw new Exception("Database connection is closed.");
