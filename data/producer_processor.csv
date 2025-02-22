@@ -1,88 +1,88 @@
-Producer-Processor name,CompanyID,Company Name,VehicleID,Food Vehicle,GL1ID,AdminLevel1,GL2ID,AdminLevel2,GL3ID,AdminLevel3,CountryID,Country
-N/A,1,N/A,1,N/A,1,N/A,1,N/A,1,N/A,1,N/A
-ACI Logistics Limited,1,N/A,2,E,7,Rajshahi,40,Rajshahi,1,N/A,2,Bangladesh
-Agrotech International Limited,2,Agrotech International Limited,2,E,6,Mymensingh,1,N/A,1,N/A,2,Bangladesh
-Ali Natural Oil Mills & Agro Industries Limited,3,Ali Natural Oil Mills & Agro Industries Limited,2,E,1,N/A,17,Jamalpur,1,N/A,2,Bangladesh
-Bangladesh Edible Oil Limited,4,Bangladesh Edible Oil Limited,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Bashundhara Multi Food Products Limited,5,Bashundhara Group of Industries,2,E,2,Dhaka,2,Dhaka,1,N/A,2,Bangladesh
-Bay Fishing Corporation Limited,6,TK Group of Industries,2,E,4,Chattogram,19,Chattogram,1,N/A,2,Bangladesh
-City Edible Oil Limited,7,City Group,2,E,1,N/A,8,Narayanganj,1,N/A,2,Bangladesh
-Globe Edible Oil Limited,8,Globe Pharma Group of Companies,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Green Oil Poultry & Feed Limited,9,Green Oil Poultry & Feed Industries,2,E,8,Rangpur,1,N/A,1,N/A,2,Bangladesh
-IFAD Multi Products Limited,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-Jamuna Edible Oil Industries Limited,10,Jamuna Industrial Agro Group,2,E,7,Rajshahi,1,N/A,1,N/A,2,Bangladesh
-Jamuna Edible Oil Industries Limited (Unit-2),10,Jamuna Industrial Agro Group,2,E,7,Rajshahi,40,Rajshahi,1,N/A,2,Bangladesh
-Jasmir Super Oil Limited,11,Nurjahan Group,2,E,4,Chattogram,19,Chattogram,1,N/A,2,Bangladesh
-KBC Agro Products Private Limited,12,Mahbub Group of Industries,2,E,2,Dhaka,2,Dhaka,1,N/A,2,Bangladesh
-Marico Bangladesh Limited,1,N/A,2,E,2,Dhaka,3,Gazipur,1,N/A,2,Bangladesh
-Mazumdar Bran Oil Mills Limited,13,Majumder Group,2,E,5,Khulna,31,Jessor,1,N/A,2,Bangladesh
-Meer Banaspati Products,1,N/A,2,E,4,Chattogram,19,Chattogram,1,N/A,2,Bangladesh
-Meghna Edible Oils Refinery Limited,14,Meghna Group of Industries,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-MM Vegitable Oil Products Limited,15,Mostafa Group of Industries,2,E,4,Chattogram,19,Chattogram,1,N/A,2,Bangladesh
-MRT Agro Products BD Limited,16,MRT Group of Industries,2,E,6,Mymensingh,15,Mymensingh,1,N/A,2,Bangladesh
-Northern Consumer Products Limited,17,M & J Group,2,E,7,Rajshahi,42,Shirajganj,1,N/A,2,Bangladesh
-Rashid Oil Mills Limited,18,Rashid Group of Industries,2,E,7,Rajshahi,47,Pabna,1,N/A,2,Bangladesh
-Rupsha Edible Oil Refinery Limited,1,N/A,2,E,5,Khulna,35,Bagerhat,1,N/A,2,Bangladesh
-S Alam Super Edible Oil Limited,19,SA Group of Industries,2,E,4,Chattogram,1,N/A,1,N/A,2,Bangladesh
-Sena Edible Oil Industries,1,N/A,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-SG Oil Refineries Limited,1,N/A,2,E,5,Khulna,35,Bagerhat,1,N/A,2,Bangladesh
-Shabnam Vegetable Oil Industries Limited,20,TK Group,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Shakti Edible Products Limited,1,N/A,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Shun Shing Edible Oil Limited,4,Bangladesh Edible Oil Limited,2,E,5,Khulna,35,Bagerhat,1,N/A,2,Bangladesh
-Smile Food Products,1,N/A,2,E,4,Chattogram,19,Chattogram,1,N/A,2,Bangladesh
-Super Oil Refinery Limited,20,TK Group,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Tamim Agro Industries Limited,21,Tamim Group,2,E,7,Rajshahi,44,Bogura,1,N/A,2,Bangladesh
-VOTT Oil Refineries Limited,7,City Group,2,E,4,Chattogram,1,N/A,1,N/A,2,Bangladesh
-A Deshi Food Product Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-AMB Nosia Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Ara Food & Beverage,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Areej Veg Oils,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Chamak Food Products,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Confidence Edible Oil Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Gazi NPKS,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-JB Foods Service,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Jibon Food Products,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Kanon Enterprise,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-MH Edible Products Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Madina Oil Limited,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Monjil Multi Food Product Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-MS Modina Oil Mills,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Natore Agro Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-NM Food Product,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Olitalia,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Omi Food Product,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Pran Agro Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-President Food Products,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-RB Edible Food Product,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Rony Edible Oil & Food products Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Saif Edible Food Packing,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-MM Vegetable Oil Industries,1,N/A,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Deepa Food Products Ltd,1,N/A,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Tanveer/United Edible Oil Mills,1,N/A,2,E,2,Dhaka,8,Narayanganj,1,N/A,2,Bangladesh
-Marine Edible Oil Ltd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-ACI Edible Oils Ltd,1,N/A,2,E,7,Rajshahi,42,Shirajganj,1,N/A,2,Bangladesh
-AM Bran Oil Company Ltd,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-Adani Wilmar Ltd,1,N/A,2,E,10,Gujarat,66,Gujarat,1,N/A,2,Bangladesh
-Emarald Oil Ltd,1,N/A,2,E,6,Mymensingh,16,Sherpur,1,N/A,2,Bangladesh
-Lam Soon Edible Oil Industries Sdn Bhd,1,N/A,2,E,1,N/A,1,N/A,1,N/A,6,Malaysia
-Green Oil Ltd,1,N/A,2,E,8,Rangpur,1,N/A,1,N/A,2,Bangladesh
-KBC Agro Products Ltd,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-Jamuna Edible Oil Industries Ltd,1,N/A,2,E,7,Rajshahi,1,N/A,1,N/A,2,Bangladesh
-Kadooglu yag san,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Kucukbay Oil Industry Inc,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Majumder Group of Industries,1,N/A,2,E,5,Khulna,1,N/A,1,N/A,2,Bangladesh
-MRT Agro Product Ltd,1,N/A,2,E,6,Mymensingh,1,N/A,1,N/A,2,Bangladesh
-Mateo SA,1,N/A,2,E,1,N/A,1,N/A,1,N/A,8,Spain
-United Edible Oil Ltd,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-Chemical Oil Refineries,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Borges Agricultural and Industrial Edible Oils,1,N/A,2,E,1,N/A,1,N/A,1,N/A,2,Bangladesh
-Rashid Oil Mills Ltd,1,N/A,2,E,7,Rajshahi,1,N/A,1,N/A,2,Bangladesh
-Khan Food & Aquarcy Ltd,1,N/A,2,E,7,Rajshahi,1,N/A,1,N/A,2,Bangladesh
-Shabnam Vegetable Oil Industries Ltd,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-Super Oil Refinery Ltd,1,N/A,2,E,2,Dhaka,1,N/A,1,N/A,2,Bangladesh
-"Helvacidade Food, Pharma and Chemicals Incorporation",1,N/A,2,E,1,N/A,1,N/A,1,N/A,10,Turkey
-ACI,1,ACI,2,E,1,N/A,1,N/A,1,N/A,1,N/A
-Nurjahan,1,ACI,2,E,1,N/A,1,N/A,1,N/A,1,N/A
-IFAD,1,N/A,2,E,2,N/A,1,N/A,1,N/A,1,N/A
-Sajeeb,1,N/A,2,E,1,N/A,1,N/A,1,N/A,1,N/A
-Emerald Oil Industries Limited,1,N/A,2,E,3,N/A,1,N/A,1,N/A,1,N/A
+EntityID,Producer-Processor Name,Task Done By Entity,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),producer_reference_ID,Identifier Number
+1,N/A,N/A,0,0,0,1,N/A
+2,ACI Logistics Limited,Distributor,0,100,0,1,N/A
+3,Agrotech International Limited,Distributor,0,100,0,1,N/A
+4,Ali Natural Oil Mills & Agro Industries Limited,Distributor,0,100,0,1,N/A
+5,Bangladesh Edible Oil Limited,Distributor,0,100,0,1,N/A
+6,Bashundhara Multi Food Products Limited,Distributor,0,100,0,1,N/A
+7,Bay Fishing Corporation Limited,Distributor,0,100,0,1,N/A
+8,City Edible Oil Limited,Distributor,0,100,0,1,N/A
+9,Globe Edible Oil Limited,Distributor,0,100,0,1,N/A
+10,Green Oil Poultry & Feed Limited,Distributor,0,100,0,1,N/A
+11,IFAD Multi Products Limited,Distributor,0,100,0,1,N/A
+12,Jamuna Edible Oil Industries Limited,Distributor,0,100,0,1,N/A
+13,Jamuna Edible Oil Industries Limited (Unit-2),Distributor,0,100,0,1,N/A
+14,Jasmir Super Oil Limited,Distributor,0,100,0,1,N/A
+15,KBC Agro Products Private Limited,Distributor,0,100,0,1,N/A
+16,Marico Bangladesh Limited,Distributor,0,100,0,1,N/A
+17,Mazumdar Bran Oil Mills Limited,Distributor,0,100,0,1,N/A
+18,Meer Banaspati Products,Distributor,0,100,0,1,N/A
+19,Meghna Edible Oils Refinery Limited,Distributor,0,100,0,1,N/A
+20,MM Vegitable Oil Products Limited,Distributor,0,100,0,1,N/A
+21,MRT Agro Products BD Limited,Distributor,0,100,0,1,N/A
+22,Northern Consumer Products Limited,Distributor,0,100,0,1,N/A
+23,Rashid Oil Mills Limited,Distributor,0,100,0,1,N/A
+24,Rupsha Edible Oil Refinery Limited,Distributor,0,100,0,1,N/A
+25,S Alam Super Edible Oil Limited,Distributor,0,100,0,1,N/A
+26,Sena Edible Oil Industries,Distributor,0,100,0,1,N/A
+27,SG Oil Refineries Limited,Distributor,0,100,0,1,N/A
+28,Shabnam Vegetable Oil Industries Limited,Distributor,0,100,0,1,N/A
+29,Shakti Edible Products Limited,Distributor,0,100,0,1,N/A
+31,Smile Food Products,Distributor,0,100,0,1,N/A
+32,Super Oil Refinery Limited,Distributor,0,100,0,1,N/A
+33,Tamim Agro Industries Limited,Distributor,0,100,0,1,N/A
+34,VOTT Oil Refineries Limited,Distributor,0,100,0,1,N/A
+35,A Deshi Food Product Ltd,Refinery,150000,100,0,1,N/A
+36,AMB Nosia Ltd,Refinery,150000,100,0,1,N/A
+37,Ara Food & Beverage,Refinery,150000,100,0,1,N/A
+38,Areej Veg Oils,Refinery,200000,100,0,1,N/A
+39,Chamak Food Products,Refinery,0,100,0,1,N/A
+40,Confidence Edible Oil Ltd,Refinery,0,100,0,1,N/A
+41,Gazi NPKS,Refinery,150000,100,0,1,N/A
+42,JB Foods Service,Refinery,0,100,0,1,N/A
+43,Jibon Food Products,Refinery,0,100,0,1,N/A
+44,Kanon Enterprise,Refinery,0,100,0,1,N/A
+45,MH Edible Products Ltd,Refinery,150000,100,0,1,N/A
+46,Madina Oil Limited,Refinery,0,100,0,1,N/A
+47,Monjil Multi Food Product Ltd,Refinery,0,100,0,1,N/A
+48,MS Modina Oil Mills,Refinery,0,100,0,1,N/A
+49,Natore Agro Ltd,Refinery,42000,100,0,1,N/A
+50,NM Food Product,Refinery,42000,100,0,1,N/A
+51,Olitalia,Refinery,150000,100,0,1,N/A
+52,Omi Food Product,Refinery,150000,100,0,1,N/A
+53,Pran Agro Ltd,Refinery,150000,100,0,1,N/A
+54,President Food Products,Refinery,150000,100,0,1,N/A
+55,RB Edible Food Product,Refinery,600000,100,0,1,N/A
+56,Rony Edible Oil & Food products Ltd,Refinery,150000,100,0,1,N/A
+57,Saif Edible Food Packing,Refinery,150000,100,0,1,N/A
+58,MM Vegetable Oil Industries,Refinery,600000,100,0,1,N/A
+59,Deepa Food Products Ltd,Refinery,150000,100,0,1,N/A
+60,Tanveer/United Edible Oil Mills,Refinery,300000,100,0,1,N/A
+61,Shun Shing Edible oil Ltd,Refinery,18000,100,0,1,N/A
+62,Marine Edible Oil Ltd,Refinery,18000,100,0,1,N/A
+63,ACI Edible Oils Ltd,Refinery,18000,100,0,1,N/A
+63,ACI Edible Oils Ltd,Refinery,150000,100,0,1,N/A
+64,AM Bran Oil Company Ltd,Refinery,48000,100,0,1,N/A
+65,Adani Wilmar Ltd,Refinery,15000,100,0,1,N/A
+66,Emarald Oil Ltd,Refinery,18000,100,0,1,N/A
+67,Lam Soon Edible Oil Industries Sdn Bhd,Refinery,15000,100,0,1,N/A
+68,Green Oil Ltd,Refinery,15000,100,0,1,N/A
+69,KBC Agro Products Ltd,Refinery,15000,100,0,1,N/A
+70,Kadooglu yag san,Refinery,15000,100,0,1,N/A
+71,Kucukbay Oil Industry Inc,Refinery,21000,100,0,1,N/A
+72,Majumder Group of Industries,Refinery,945000,100,0,1,N/A
+73,MRT Agro Product Ltd,Refinery,405000,100,0,1,N/A
+74,Mateo SA,Refinery,360000,100,0,1,N/A
+75,United Edible Oil Ltd,Refinery,393000,100,0,1,N/A
+76,Chemical Oil Refineries,Refinery,270000,100,0,1,N/A
+77,Borges Agricultural and Industrial Edible Oils,Refinery,0,100,0,1,N/A
+78,Rashid Oil Mills Ltd,Refinery,96000,100,0,1,N/A
+79,Khan Food & Aquarcy Ltd,Refinery,60000,100,0,1,N/A
+80,Shabnam Vegetable Oil Industries Ltd,Refinery,54000,100,0,1,N/A
+81,Super Oil Refinery Ltd,Refinery,66000,100,0,1,N/A
+82,"Helvacidade Food, Pharma and Chemicals Incorporation",Refinery,90000,100,0,1,N/A
+83,ACI,Refinery,90000,100,0,1,N/A
+84,Nurjahan,Refinery,75000,100,0,1,N/A
+85,IFAD,Refinery,45000,100,0,1,N/A
+86,Sajeeb,Refinery,90000,100,0,1,N/A
+87,Emerald Oil Industries Limited,Distributor,0,100,0,1,N/A
