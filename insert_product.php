@@ -24,7 +24,12 @@ $createTableSQL = "
     CREATE TABLE product (
         ProductID INT(11) AUTO_INCREMENT PRIMARY KEY,
         ProductName VARCHAR(255) NOT NULL,
-		ProductCategory VARCHAR(255) NOT NULL
+        BrandID INT(11) NOT NULL,
+        CompanyID INT(11) NOT NULL,
+        FoodTypeID INT(11) NOT NULL,
+        FOREIGN KEY (BrandID) REFERENCES brand(BrandID),
+        FOREIGN KEY (CompanyID) REFERENCES company(CompanyID),
+        FOREIGN KEY (FoodTypeID) REFERENCES foodtype(FoodTypeID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -52,11 +57,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
         $productName = mysqli_real_escape_string($conn, trim($data[0]));
-		$productCategory = mysqli_real_escape_string($conn, trim($data[1]));
+        $brandID = mysqli_real_escape_string($conn, trim($data[1]));
+        $companyID = mysqli_real_escape_string($conn, trim($data[3]));
+        $foodTypeID = mysqli_real_escape_string($conn, trim($data[5]));
 
-        $sql = "INSERT INTO product (ProductName, ProductCategory) VALUES (?, ?)";
+        $sql = "INSERT INTO product (ProductName, BrandID, CompanyID, FoodTypeID) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $productName, $productCategory);
+        $stmt->bind_param("siii", $productName, $brandID, $companyID, $foodTypeID);
 
         if ($stmt->execute()) {
             echo "✓ Inserted product record ID: " . $conn->insert_id . "<br>";
@@ -77,7 +84,7 @@ echo "<br>Final 'product' table contents:<br>";
 $result = $conn->query("SELECT * FROM product ORDER BY ProductID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['ProductID']}, ProductName: {$row['ProductName']}, ProductCategory: {$row['ProductCategory']}<br>";
+        echo "ID: {$row['ProductID']}, ProductName: {$row['ProductName']}, BrandID: {$row['BrandID']}, CompanyID: {$row['CompanyID']}, FoodTypeID: {$row['FoodTypeID']}<br>";
     }
 }
 

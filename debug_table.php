@@ -71,7 +71,7 @@ try {
         include('insert_producer_reference.php'); // Ensure producer_reference is created after company & country
         include('insert_extraction_conversion.php'); // Ensure extraction_conversion is created after foodvehicle, foodtype, reference
         include('insert_insert_adult_male_equivalent.php'); // Ensure adult_male_equivalent is created after gender & age
-        
+        include('insert_product.php');
         
         
         // Level 2: Tables that depend on Level 1 tables
