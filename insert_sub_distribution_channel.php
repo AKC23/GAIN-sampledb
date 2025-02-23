@@ -23,7 +23,9 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE subdistributionchannel (
         SubDistributionChannelID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        SubDistributionChannelName VARCHAR(255) NOT NULL
+        SubDistributionChannelName VARCHAR(255) NOT NULL,
+        DistributionChannelID INT(11),
+        FOREIGN KEY (DistributionChannelID) REFERENCES distributionchannel(DistributionChannelID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -32,6 +34,9 @@ if ($conn->query($createTableSQL) === TRUE) {
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
+
+// Enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
 // Path to your CSV file
 $csvFile = 'data/sub_distribution_channel.csv';  // Update with the exact path of your CSV file
@@ -51,15 +56,16 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
         $subDistributionChannelName = mysqli_real_escape_string($conn, trim($data[0]));
+        $distributionChannelID = mysqli_real_escape_string($conn, trim($data[1]));
 
-        $sql = "INSERT INTO subdistributionchannel (SubDistributionChannelName) VALUES (?)";
+        $sql = "INSERT INTO subdistributionchannel (SubDistributionChannelName, DistributionChannelID) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $subDistributionChannelName);
+        $stmt->bind_param("si", $subDistributionChannelName, $distributionChannelID);
 
         if ($stmt->execute()) {
-            echo "✓ Inserted subdistributionchannel record ID: " . $conn->insert_id . "<br>";
+            echo "✓ Inserted sub_distribution_channel record ID: " . $conn->insert_id . "<br>";
         } else {
-            echo "Error inserting subdistributionchannel record: " . $stmt->error . "<br>";
+            echo "Error inserting sub_distribution_channel record: " . $stmt->error . "<br>";
         }
         $stmt->close();
         $rowNumber++;
@@ -75,7 +81,7 @@ echo "<br>Final 'subdistributionchannel' table contents:<br>";
 $result = $conn->query("SELECT * FROM subdistributionchannel ORDER BY SubDistributionChannelID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['SubDistributionChannelID']}, SubDistributionChannelName: {$row['SubDistributionChannelName']}<br>";
+        echo "ID: {$row['SubDistributionChannelID']}, SubDistributionChannelName: {$row['SubDistributionChannelName']}, DistributionChannelID: {$row['DistributionChannelID']}<br>";
     }
 }
 

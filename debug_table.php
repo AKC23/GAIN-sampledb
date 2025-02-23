@@ -22,7 +22,7 @@ try {
             'foodtype',
             'company',
             'brand',
-            'processing_stage',
+            'processingstage',
             'geographylevel1',
             'geographylevel2',
             'geographylevel3',
@@ -64,7 +64,7 @@ try {
         // Level 1: Tables that depend on base tables
         echo "<h3>Creating base tables (Level 1)...</h3>";
         include('insert_foodtype.php'); // Ensure foodtype is created after foodvehicle
-        include('insert_processing_stage.php'); // Ensure processing_stage is created after foodvehicle
+        include('insert_processing_stage.php'); // Ensure processingstage is created after foodvehicle
         include('insert_geography_level1.php'); // Ensure geographylevel1 is created after country
         include('insert_geography_level2.php'); // Ensure geographylevel2 is created after geographylevel1
         include('insert_geography_level3.php'); // Ensure geographylevel3 is created after geographylevel2
@@ -81,8 +81,6 @@ try {
 
         // Level 3: Tables that depend on Level 2 tables
         include('insert_supply.php');
-        
-
 
     } else {
         throw new Exception("Database connection is closed.");

@@ -1,13 +1,13 @@
-Sub Distribution Channel
-N/A
-Retail Shop
-Wholesale
-Supermarket
-Government Ration
-OMS
-Bakery
-Hotels
-Restaurants
-Fast Food
-Small 2nd level Processing Manufacturing
-Large Manufacturing
+Sub Distribution Channel,DistributionChannelID
+N/A,1
+Retail Shop,2
+Wholesale,2
+Supermarket,2
+Government Ration,3
+OMS,3
+Bakery,4
+Hotels,4
+Restaurants,4
+Fast Food,4
+Small 2nd level Processing Manufacturing,5
+Large Manufacturing,5

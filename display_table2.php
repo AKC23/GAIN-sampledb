@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $query = "SELECT * FROM $tableName";
         $conditions = [];
         if (!empty($vehicleName)) {
-            if ($tableName == 'foodtype' || $tableName == 'processing_stage') {
+            if ($tableName == 'foodtype' || $tableName == 'processingstage') {
                 // Get VehicleID based on VehicleName
                 $vehicleResult = $conn->query("SELECT VehicleID FROM foodvehicle WHERE VehicleName = '$vehicleName'");
                 if ($vehicleRow = $vehicleResult->fetch_assoc()) {
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_company.php');
                 } elseif ($tableName == 'brand') {
                     include('display_tables/display_brand.php');
-                } elseif ($tableName == 'processing_stage') {
+                } elseif ($tableName == 'processingstage') {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_company.php');
                 } elseif ($tableName == 'brand') {
                     include('display_tables/display_brand.php');
-                } elseif ($tableName == 'processing_stage') {
+                } elseif ($tableName == 'processingstage') {
                     include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'geographylevel1') {
                     include('display_tables/display_geography_level1.php');
@@ -174,3 +174,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
+?>
