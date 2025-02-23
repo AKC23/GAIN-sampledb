@@ -1,4 +1,5 @@
 <?php
+// display_tables/display_year_type.php
 echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
 // Fetch and display table headers
 while ($fieldInfo = $result->fetch_field()) {

@@ -1,4 +1,5 @@
 <?php
+// input_table.php
 // Include the database connection
 include('db_connect.php');
 
@@ -49,20 +50,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $tableName = $_POST['tableName'];
     $data = [];
     foreach ($columns as $column) {
-        if ($column != $primaryKey) {
+        if ($column != $primaryKey && $column != 'Volume_MT_Y' && $column != 'AnnualProductionSupplyVolume') {
             $data[$column] = $_POST[$column] ?? '';
         }
     }
 
     // Ensure CountryID exists in the country table, but skip this check for the country table itself
-    if ($tableName != 'country') {
+    if ($tableName != 'country' && in_array('CountryID', $columns)) {
         $countryID = $_POST['CountryID'] ?? '';
-        $countryCheckQuery = "SELECT Country_ID FROM country WHERE Country_ID = '" . $conn->real_escape_string($countryID) . "'";
+        $countryCheckQuery = "SELECT CountryID FROM country WHERE CountryID = '" . $conn->real_escape_string($countryID) . "'";
         $countryCheckResult = $conn->query($countryCheckQuery);
         if ($countryCheckResult->num_rows == 0) {
             echo "<div class='alert alert-danger'>Error: CountryID '" . htmlspecialchars($countryID) . "' does not exist in the country table.</div>";
             exit;
         }
+    }
+
+    // Calculate Volume_MT_Y for distribution table
+    if ($tableName == 'distribution') {
+        $ucid = $_POST['UCID'] ?? '';
+        $sourceVolume = (float)$_POST['SourceVolume'] ?? 0;
+        $unitValueResult = $conn->query("SELECT UnitValue FROM measureunit1 WHERE UCID = $ucid");
+        if ($unitValueResult && $unitValueRow = $unitValueResult->fetch_assoc()) {
+            $unitValue = (float)$unitValueRow['UnitValue'];
+            $data['Volume_MT_Y'] = $sourceVolume * $unitValue;
+        } else {
+            echo "<div class='alert alert-danger'>Error: Invalid UCID $ucid.</div>";
+            exit;
+        }
+    }
+
+    // Calculate AnnualProductionSupplyVolume for producerprocessor table
+    if ($tableName == 'producerprocessor') {
+        $productionCapacityVolume = (float)$_POST['ProductionCapacityVolume'] ?? 0;
+        $percentageOfCapacityUsed = (float)$_POST['PercentageOfCapacityUsed'] ?? 0;
+        $data['AnnualProductionSupplyVolume'] = ($productionCapacityVolume * $percentageOfCapacityUsed) / 100;
     }
 
     // Insert new record
@@ -125,237 +147,100 @@ if (!empty($entityID)) {
                 <select id="tableName" name="tableName" class="form-control" onchange="updateForm()">
                     <option value="">Select a table</option>
                     <?php
-                    $validTables = [
-                        'foodvehicle',
-                        'foodtype',
-                        'country',
-                        'processing_stage',
-                        'reference',
-                        'measure_unit',
-                        'measure_period',
-                        'measure_currency',
-                        'geography',
-                        'entities',
-                        'producer_skus',
-                        'extraction_conversion',
-                        'producer_processor',
-                        'packaging_type'
-                    ];
-                    foreach ($tables as $table):
-                        if (in_array($table, $validTables)): ?>
-                            <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($table); ?>
-                            </option>
-                        <?php endif;
-                    endforeach; ?>
+                    foreach ($tables as $table): ?>
+                        <option value="<?php echo htmlspecialchars($table); ?>" <?php echo ($table == $tableName) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($table); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <?php if (!empty($successMessage)): ?>
-                <div class="alert alert-success" role="alert" style="color: red;">
+                <div class="alert alert-success" role="alert">
                     <?php echo $successMessage; ?>
                 </div>
             <?php endif; ?>
             <?php if (!empty($columns)): ?>
-                <?php if ($tableName == 'country'): ?>
+                <?php foreach ($columns as $column): ?>
                     <div class="mb-3">
-                        <label for="Country_ID" class="form-label">Country ID</label>
-                        <input type="text" name="Country_ID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                        <label for="<?php echo htmlspecialchars($column); ?>" class="form-label"><?php echo htmlspecialchars($column); ?></label>
+                        <?php if ($column == $primaryKey): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                        <?php elseif ($column == 'CountryID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT CountryID, CountryName FROM country ORDER BY CountryName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['CountryID']}'>{$row['CountryName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'VehicleID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT VehicleID, VehicleName FROM foodvehicle ORDER BY VehicleName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['VehicleID']}'>{$row['VehicleName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'DistributionChannelID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT DistributionChannelID, DistributionChannelName FROM distributionchannel ORDER BY DistributionChannelName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['DistributionChannelID']}'>{$row['DistributionChannelName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'SubDistributionChannelID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT SubDistributionChannelID, SubDistributionChannelName FROM subdistributionchannel ORDER BY SubDistributionChannelName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['SubDistributionChannelID']}'>{$row['SubDistributionChannelName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'UCID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT UCID, SupplyVolumeUnit, PeriodicalUnit FROM measureunit1 ORDER BY SupplyVolumeUnit ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['UCID']}'>{$row['SupplyVolumeUnit']} / {$row['PeriodicalUnit']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'YearTypeID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT YearTypeID, YearTypeName FROM yeartype ORDER BY YearTypeName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['YearTypeID']}'>{$row['YearTypeName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'ReferenceID'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT ReferenceID, ReferenceNumber FROM reference ORDER BY ReferenceNumber ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['ReferenceID']}'>{$row['ReferenceNumber']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php else: ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                        <?php endif; ?>
                     </div>
-                    <div class="mb-3">
-                        <label for="Country_Name" class="form-label">Country Name</label>
-                        <input type="text" name="Country_Name" class="form-control">
-                    </div>
-                <?php elseif ($tableName == 'entities'): ?>
-                    <div class="mb-3">
-                        <label for="EntityID" class="form-label">Entity ID</label>
-                        <input type="text" name="EntityID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ProducerProcessorName" class="form-label">Producer / Processor Name</label>
-                        <input type="text" name="ProducerProcessorName" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="CompanyGroup" class="form-label">Company Group</label>
-                        <input type="text" name="CompanyGroup" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="VehicleID" class="form-label">Vehicle Name</label>
-                        <select name="VehicleID" class="form-control">
-                            <?php
-                            $result = $conn->query("SELECT VehicleID, VehicleName FROM FoodVehicle ORDER BY VehicleName ASC");
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='{$row['VehicleID']}'>{$row['VehicleName']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="AdminLevel1" class="form-label">Admin Level 1 (Zone / District)</label>
-                        <input type="text" name="AdminLevel1" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="AdminLevel2" class="form-label">Admin Level 2 (Region / State)</label>
-                        <input type="text" name="AdminLevel2" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="AdminLevel3" class="form-label">Admin Level 3 (City / City Corporation)</label>
-                        <input type="text" name="AdminLevel3" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="UDC" class="form-label">UDC</label>
-                        <input type="text" name="UDC" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="Thana" class="form-label">Thana</label>
-                        <input type="text" name="Thana" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="Upazila" class="form-label">Upazila</label>
-                        <input type="text" name="Upazila" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="CountryID" class="form-label">Country Name</label>
-                        <select name="CountryID" class="form-control">
-                            <?php
-                            $result = $conn->query("SELECT Country_ID, Country_Name FROM country ORDER BY Country_Name ASC");
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='{$row['Country_ID']}'>{$row['Country_Name']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                <?php elseif ($tableName == 'producer_processor'): ?>
-                    <div class="mb-3">
-                        <label for="ProcessorID" class="form-label">Processor ID</label>
-                        <input type="text" name="ProcessorID" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="EntityID" class="form-label">Producer Processor Name</label>
-                        <select id="EntityID" name="EntityID" class="form-control" onchange="updateCompanyGroup()">
-                            <?php
-                            $result = $conn->query("SELECT EntityID, ProducerProcessorName FROM entities ORDER BY ProducerProcessorName ASC");
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='{$row['EntityID']}'>{$row['ProducerProcessorName']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="CompanyGroup" class="form-label">Company Group</label>
-                        <input type="text" id="CompanyGroup" name="CompanyGroup" class="form-control" value="<?php echo htmlspecialchars($companyGroup); ?>" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="TaskDoneByEntity" class="form-label">Task Done By Entity</label>
-                        <select name="TaskDoneByEntity" class="form-control">
-                            <?php
-                            $result = $conn->query("SELECT DISTINCT TaskDoneByEntity FROM producer_processor ORDER BY TaskDoneByEntity ASC");
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='{$row['TaskDoneByEntity']}'>{$row['TaskDoneByEntity']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Productioncapacityvolume" class="form-label">Production Capacity Volume</label>
-                        <input type="number" name="Productioncapacityvolume" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="PercentageOfCapacityUsed" class="form-label">Percentage Of Capacity Used</label>
-                        <input type="number" name="PercentageOfCapacityUsed" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="AnnualProductionSupplyVolume" class="form-label">Annual Production Supply Volume</label>
-                        <input type="number" name="AnnualProductionSupplyVolume" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="BSTIReferenceNo" class="form-label">BSTI Reference No</label>
-                        <input type="text" name="BSTIReferenceNo" class="form-control">
-                    </div>
-                <?php else: ?>
-                    <?php foreach ($columns as $column): ?>
-                        <div class="mb-3">
-                            <label for="<?php echo htmlspecialchars($column); ?>" class="form-label"><?php echo htmlspecialchars($column); ?></label>
-                            <?php if ($column == $primaryKey): ?>
-                                <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
-                            <?php elseif ($column == 'CountryID'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT Country_ID, Country_Name FROM country ORDER BY Country_Name ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['Country_ID']}'>{$row['Country_Name']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'VehicleID'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT VehicleID, VehicleName FROM FoodVehicle ORDER BY VehicleName ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['VehicleID']}'>{$row['VehicleName']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'AdminLevel1'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT AdminLevel1_ID, AdminLevel1_Name FROM AdminLevel1 ORDER BY AdminLevel1_Name ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['AdminLevel1_ID']}'>{$row['AdminLevel1_Name']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'AdminLevel2'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT AdminLevel2_ID, AdminLevel2_Name FROM AdminLevel2 ORDER BY AdminLevel2_Name ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['AdminLevel2_ID']}'>{$row['AdminLevel2_Name']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'AdminLevel3'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT AdminLevel3_ID, AdminLevel3_Name FROM AdminLevel3 ORDER BY AdminLevel3_Name ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['AdminLevel3_ID']}'>{$row['AdminLevel3_Name']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'TaskDoneByEntity'): ?>
-                                <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                                    <?php
-                                    $result = $conn->query("SELECT EntityID, EntityName FROM EntityTable ORDER BY EntityName ASC");
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='{$row['EntityID']}'>{$row['EntityName']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            <?php elseif ($column == 'Productioncapacityvolume'): ?>
-                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                            <?php elseif ($column == 'PercentageOfCapacityUsed'): ?>
-                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                            <?php elseif ($column == 'AnnualProductionSupplyVolume'): ?>
-                                <input type="number" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                            <?php elseif ($column == 'BSTIReferenceNo'): ?>
-                                <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                            <?php else: ?>
-                                <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
-                            <?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                <?php endforeach; ?>
                 <div class="mb-3">
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </div>
             <?php endif; ?>
         </form>
     </div>
-    
-     <!-- Optional JavaScript and dependencies -->
+    <!-- Optional JavaScript and dependencies -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Bootstrap JS -->
-<!--     <script src="js/bootstrap.bundle.min.js"></script> -->
 </body>
 </html>

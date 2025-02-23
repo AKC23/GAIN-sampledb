@@ -78,6 +78,7 @@ try {
         include('insert_entity.php');
         include('insert_producer_processor.php');
         include('insert_producer_sku.php');
+        include('insert_distribution.php');
 
     } else {
         throw new Exception("Database connection is closed.");

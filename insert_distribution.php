@@ -1,6 +1,10 @@
 <?php
+// insert_distribution.php
 // Include the database connection
 include('db_connect.php');
+
+// Disable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
 $dropTableSQL = "DROP TABLE IF EXISTS distribution";
 
@@ -11,6 +15,9 @@ if ($conn->query($dropTableSQL) === TRUE) {
     echo "Error dropping table: " . $conn->error . "<br>";
 }
 
+// Re-enable foreign key checks
+$conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
 // SQL query to create the 'distribution' table
 $createTableSQL = "
     CREATE TABLE distribution (
@@ -19,16 +26,19 @@ $createTableSQL = "
         SubDistributionChannelID INT(11),
         VehicleID INT(11),
         UCID INT(11),
-        volumeMT FLOAT,
+        SourceVolume DECIMAL(10,2),
+        Volume_MT_Y DECIMAL(10,2),
+        CountryID INT(11),
         YearTypeID INT(11),
-        StartYear VARCHAR(50),
-        EndYear VARCHAR(50),
+        StartYear INT(4),
+        EndYear INT(4),
         ReferenceID INT(11),
-        FOREIGN KEY (DistributionChannelID) REFERENCES distribution_channel(DistributionChannelID),
-        FOREIGN KEY (SubDistributionChannelID) REFERENCES sub_distribution_channel(SubDistributionChannelID),
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (UCID) REFERENCES measure_unit1(UCID),
-        FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID),
+        FOREIGN KEY (DistributionChannelID) REFERENCES distributionchannel(DistributionChannelID),
+        FOREIGN KEY (SubDistributionChannelID) REFERENCES subdistributionchannel(SubDistributionChannelID),
+        FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID),
+        FOREIGN KEY (UCID) REFERENCES measureunit1(UCID),
+        FOREIGN KEY (CountryID) REFERENCES country(CountryID),
+        FOREIGN KEY (YearTypeID) REFERENCES yeartype(YearTypeID),
         FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -59,18 +69,31 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $subDistributionChannelID = (int)trim($data[2]);
         $vehicleID = (int)trim($data[4]);
         $ucid = (int)trim($data[6]);
-        $volumeMT = (float)trim($data[7]);
-        $yearTypeID = (int)trim($data[10]);
-        $startYear = trim($data[14]);
-        $endYear = trim($data[15]);
-        $referenceID = (int)trim($data[16]);
+        $sourceVolume = (float)trim($data[9]);
+        $countryID = (int)trim($data[11]);
+        $yearTypeID = (int)trim($data[13]);
+        $startYear = (int)trim($data[17]);
+        $endYear = (int)trim($data[18]);
+        $referenceID = (int)trim($data[19]);
+
+        // Calculate Volume_MT_Y based on UCID and SourceVolume
+        $unitValueResult = $conn->query("SELECT UnitValue FROM measureunit1 WHERE UCID = $ucid");
+        if ($unitValueResult && $unitValueRow = $unitValueResult->fetch_assoc()) {
+            $unitValue = (float)$unitValueRow['UnitValue'];
+            $volumeMTY = $sourceVolume * $unitValue;
+        } else {
+            echo "Error: Invalid UCID $ucid in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
 
         // Check if referenced values exist
-        $checkDistributionChannel = $conn->query("SELECT 1 FROM distribution_channel WHERE DistributionChannelID = $distributionChannelID");
-        $checkSubDistributionChannel = $conn->query("SELECT 1 FROM sub_distribution_channel WHERE SubDistributionChannelID = $subDistributionChannelID");
-        $checkVehicle = $conn->query("SELECT 1 FROM FoodVehicle WHERE VehicleID = $vehicleID");
-        $checkUCID = $conn->query("SELECT 1 FROM measure_unit1 WHERE UCID = $ucid");
-        $checkYearType = $conn->query("SELECT 1 FROM year_type WHERE YearTypeID = $yearTypeID");
+        $checkDistributionChannel = $conn->query("SELECT 1 FROM distributionchannel WHERE DistributionChannelID = $distributionChannelID");
+        $checkSubDistributionChannel = $conn->query("SELECT 1 FROM subdistributionchannel WHERE SubDistributionChannelID = $subDistributionChannelID");
+        $checkVehicle = $conn->query("SELECT 1 FROM foodvehicle WHERE VehicleID = $vehicleID");
+        $checkUCID = $conn->query("SELECT 1 FROM measureunit1 WHERE UCID = $ucid");
+        $checkCountry = $conn->query("SELECT 1 FROM country WHERE CountryID = $countryID");
+        $checkYearType = $conn->query("SELECT 1 FROM yeartype WHERE YearTypeID = $yearTypeID");
         $checkReference = $conn->query("SELECT 1 FROM reference WHERE ReferenceID = $referenceID");
 
         if ($checkDistributionChannel->num_rows == 0) {
@@ -93,6 +116,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $rowNumber++;
             continue;
         }
+        if ($checkCountry->num_rows == 0) {
+            echo "Error: CountryID $countryID does not exist. Skipping row $rowNumber.<br>";
+            $rowNumber++;
+            continue;
+        }
         if ($checkYearType->num_rows == 0) {
             echo "Error: YearTypeID $yearTypeID does not exist. Skipping row $rowNumber.<br>";
             $rowNumber++;
@@ -109,21 +137,25 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                     SubDistributionChannelID,
                     VehicleID,
                     UCID,
-                    volumeMT,
+                    SourceVolume,
+                    Volume_MT_Y,
+                    CountryID,
                     YearTypeID,
                     StartYear,
                     EndYear,
                     ReferenceID
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "iiiiisssi",
+            "iiiiidiiiii",
             $distributionChannelID,
             $subDistributionChannelID,
             $vehicleID,
             $ucid,
-            $volumeMT,
+            $sourceVolume,
+            $volumeMTY,
+            $countryID,
             $yearTypeID,
             $startYear,
             $endYear,
@@ -149,7 +181,7 @@ echo "<br>Final 'distribution' table contents:<br>";
 $result = $conn->query("SELECT * FROM distribution ORDER BY DistributionID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['DistributionID']}, VehicleID: {$row['VehicleID']}, UCID: {$row['UCID']}, VolumeMT: {$row['volumeMT']}<br>";
+        echo "ID: {$row['DistributionID']}, DistributionChannelID: {$row['DistributionChannelID']}, SubDistributionChannelID: {$row['SubDistributionChannelID']}, VehicleID: {$row['VehicleID']}, UCID: {$row['UCID']}, SourceVolume: {$row['SourceVolume']}, Volume_MT_Y: {$row['Volume_MT_Y']}, CountryID: {$row['CountryID']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
     }
 }
 

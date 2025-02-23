@@ -23,7 +23,7 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE yeartype (
         YearTypeID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        YearType VARCHAR(255) NOT NULL,
+        YearTypeName VARCHAR(255) NOT NULL,
         StartMonth VARCHAR(50) NOT NULL,
         EndMonth VARCHAR(50) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -52,13 +52,13 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $rowNumber = 2;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Clean and validate data
-        $yearType = mysqli_real_escape_string($conn, trim($data[1]));
-        $startMonth = mysqli_real_escape_string($conn, trim($data[2]));
-        $endMonth = mysqli_real_escape_string($conn, trim($data[3]));
+        $yearTypeName = mysqli_real_escape_string($conn, trim($data[0]));
+        $startMonth = mysqli_real_escape_string($conn, trim($data[1]));
+        $endMonth = mysqli_real_escape_string($conn, trim($data[2]));
 
-        $sql = "INSERT INTO yeartype (YearType, StartMonth, EndMonth) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO yeartype (YearTypeName, StartMonth, EndMonth) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $yearType, $startMonth, $endMonth);
+        $stmt->bind_param("sss", $yearTypeName, $startMonth, $endMonth);
 
         if ($stmt->execute()) {
             echo "✓ Inserted yeartype record ID: " . $conn->insert_id . "<br>";
@@ -79,7 +79,7 @@ echo "<br>Final 'yeartype' table contents:<br>";
 $result = $conn->query("SELECT * FROM yeartype ORDER BY YearTypeID");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        echo "ID: {$row['YearTypeID']}, YearType: {$row['YearType']}, StartMonth: {$row['StartMonth']}, EndMonth: {$row['EndMonth']}<br>";
+        echo "ID: {$row['YearTypeID']}, YearTypeName: {$row['YearTypeName']}, StartMonth: {$row['StartMonth']}, EndMonth: {$row['EndMonth']}<br>";
     }
 }
 

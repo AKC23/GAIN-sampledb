@@ -180,6 +180,10 @@
     <div class="container">
         <h1 class="center-title">Database on Edible Oil and Wheat Flour Supply for Human Consumption in Bangladesh</h1>
 
+        <div class="mb-3">
+            <a href="input_table.php" class="btn btn-primary">Input Data</a>
+        </div>
+
         <div class="card">
             <div style="display: flex; align-items: center; width: 100%;">
                 <form method="post" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
