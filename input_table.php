@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     }
 
     // Insert new record
-    $columnsEscaped = array_map(function($col) use ($conn) {
+    $columnsEscaped = array_map(function ($col) use ($conn) {
         return "`" . $conn->real_escape_string($col) . "`";
     }, array_keys($data));
     $valuesEscaped = array_map([$conn, 'real_escape_string'], array_values($data));
@@ -120,6 +120,7 @@ if (!empty($entityID)) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,8 +137,45 @@ if (!empty($entityID)) {
             const entityID = document.getElementById('EntityID').value;
             window.location.href = 'input_table.php?table=producer_processor&entityID=' + entityID;
         }
+
+        function calculateVolumeMTY() {
+            const ucid = document.getElementById('UCID').value;
+            const sourceVolume = parseFloat(document.getElementById('SourceVolume').value) || 0;
+            if (ucid && sourceVolume) {
+                fetch(`get_unit_value.php?ucid=${ucid}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const unitValue = parseFloat(data.UnitValue) || 0;
+                        const volumeMTY = sourceVolume * unitValue;
+                        document.getElementById('Volume_MT_Y').value = volumeMTY.toFixed(2);
+                    });
+            }
+        }
+
+        function calculateAnnualProductionSupplyVolume() {
+            const productionCapacityVolume = parseFloat(document.getElementById('ProductionCapacityVolume').value) || 0;
+            const percentageOfCapacityUsed = parseFloat(document.getElementById('PercentageOfCapacityUsed').value) || 0;
+            const annualProductionSupplyVolume = (productionCapacityVolume * percentageOfCapacityUsed) / 100;
+            document.getElementById('AnnualProductionSupplyVolume').value = annualProductionSupplyVolume.toFixed(2);
+        }
+
+        function updateReferenceDetails() {
+            const referenceID = document.getElementById('ReferenceID').value;
+            if (referenceID) {
+                fetch(`get_reference_details.php?referenceID=${referenceID}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('ReferenceNumber').value = data.ReferenceNumber;
+                        document.getElementById('Source').value = data.Source;
+                        document.getElementById('Link').value = data.Link;
+                        document.getElementById('ProcessToObtainData').value = data.ProcessToObtainData;
+                        document.getElementById('AccessDate').value = data.AccessDate;
+                    });
+            }
+        }
     </script>
 </head>
+
 <body>
     <div class="container">
         <h1 class="center-title">Input Data for Table</h1>
@@ -202,7 +240,7 @@ if (!empty($entityID)) {
                                 ?>
                             </select>
                         <?php elseif ($column == 'UCID'): ?>
-                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                            <select name="<?php echo htmlspecialchars($column); ?>" id="UCID" class="form-control" onchange="calculateVolumeMTY()">
                                 <?php
                                 $result = $conn->query("SELECT UCID, SupplyVolumeUnit, PeriodicalUnit FROM measureunit1 ORDER BY SupplyVolumeUnit ASC");
                                 while ($row = $result->fetch_assoc()) {
@@ -220,7 +258,7 @@ if (!empty($entityID)) {
                                 ?>
                             </select>
                         <?php elseif ($column == 'ReferenceID'): ?>
-                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                            <select name="<?php echo htmlspecialchars($column); ?>" id="ReferenceID" class="form-control" onchange="updateReferenceDetails()">
                                 <?php
                                 $result = $conn->query("SELECT ReferenceID, ReferenceNumber FROM reference ORDER BY ReferenceNumber ASC");
                                 while ($row = $result->fetch_assoc()) {
@@ -228,6 +266,48 @@ if (!empty($entityID)) {
                                 }
                                 ?>
                             </select>
+                            <input type="text" id="ReferenceNumber" class="form-control mt-2" readonly style="color: darkgray;" placeholder="Reference Number">
+                            <input type="text" id="Source" class="form-control mt-2" readonly style="color: darkgray;" placeholder="Source">
+                            <input type="text" id="Link" class="form-control mt-2" readonly style="color: darkgray;" placeholder="Link">
+                            <input type="text" id="ProcessToObtainData" class="form-control mt-2" readonly style="color: darkgray;" placeholder="Process To Obtain Data">
+                            <input type="text" id="AccessDate" class="form-control mt-2" readonly style="color: darkgray;" placeholder="Access Date">
+                        <?php elseif ($column == 'EntityID' && $tableName == 'producerprocessor'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" id="EntityID" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT EntityID, ProducerProcessorName FROM entity ORDER BY ProducerProcessorName ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['EntityID']}'>{$row['ProducerProcessorName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'GL1ID' && $tableName == 'geographylevel2'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT GL1ID, AdminLevel1 FROM geographylevel1 ORDER BY AdminLevel1 ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['GL1ID']}'>{$row['AdminLevel1']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'GL2ID' && $tableName == 'geographylevel3'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $result = $conn->query("SELECT GL2ID, AdminLevel2 FROM geographylevel2 ORDER BY AdminLevel2 ASC");
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='{$row['GL2ID']}'>{$row['AdminLevel2']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php elseif ($column == 'SourceVolume' && $tableName == 'distribution'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="SourceVolume" class="form-control" oninput="calculateVolumeMTY()">
+                        <?php elseif ($column == 'Volume_MT_Y' && $tableName == 'distribution'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="Volume_MT_Y" class="form-control" readonly style="color: darkgray;">
+                        <?php elseif ($column == 'ProductionCapacityVolume' && $tableName == 'producerprocessor'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="ProductionCapacityVolume" class="form-control" oninput="calculateAnnualProductionSupplyVolume()">
+                        <?php elseif ($column == 'PercentageOfCapacityUsed' && $tableName == 'producerprocessor'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="PercentageOfCapacityUsed" class="form-control" oninput="calculateAnnualProductionSupplyVolume()">
+                        <?php elseif ($column == 'AnnualProductionSupplyVolume' && $tableName == 'producerprocessor'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="AnnualProductionSupplyVolume" class="form-control" readonly style="color: darkgray;">
                         <?php else: ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                         <?php endif; ?>
@@ -243,4 +323,5 @@ if (!empty($entityID)) {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

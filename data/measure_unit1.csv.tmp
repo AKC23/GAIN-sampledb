@@ -1,10 +1,10 @@
  Supply Volume Unit,Periodical Unit ,Unit Value
 Metric Ton,Year,1
-Metric Ton,Month,0.083333
-1000 t,Year,0.001
-1000 t,Month,0.00008333
-KG,Year,0.001
-KG,Month,0.00008333
-Gram,Year,0.000001
-Gram,Month,8.33E-08
-Gram,Day,6.94E-09
+Metric Ton,Month,12
+1000 t,Year,1000
+1000 t,Month,12000
+KG,Year,1000
+KG,Month,12000
+Gram,Year,1000000
+Gram,Month,12000000
+Gram,Day,365000000

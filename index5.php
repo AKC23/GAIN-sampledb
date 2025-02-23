@@ -228,7 +228,7 @@
 
             <div class="current-time">
                 <?php
-                echo "Last Updated: February 18, 2025, 6:55 pm";
+                echo "Last Updated: February 23, 2025, 6:55 pm";
                 ?>
             </div>
         </div>
