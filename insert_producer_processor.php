@@ -26,9 +26,9 @@ $createTableSQL = "
         ProducerProcessorID INT(11) AUTO_INCREMENT PRIMARY KEY,
         EntityID INT(11) NOT NULL,
         TaskDoneByEntity VARCHAR(255),
-        ProductionCapacityVolume DECIMAL(20, 3),
+        ProductionCapacityVolumeMTY DECIMAL(20, 3),
         PercentageOfCapacityUsed DECIMAL(10, 2),
-        AnnualProductionSupplyVolume DECIMAL(20, 3),
+        AnnualProductionSupplyVolumeMTY DECIMAL(20, 3),
         ProducerReferenceID INT(11),
         FOREIGN KEY (EntityID) REFERENCES entity(EntityID),
         FOREIGN KEY (ProducerReferenceID) REFERENCES producerreference(ProducerReferenceID)
@@ -133,7 +133,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         // Clean the data more thoroughly
         $entityID = trim($data[0]);
         $taskDoneByEntity = trim($data[2]);
-        $productionCapacityVolume = trim($data[3]);
+        $productionCapacityVolumeMTY = trim($data[3]);
         $percentageOfCapacityUsed = trim($data[4]);
         $producerReferenceID = trim($data[6]);
         
@@ -142,7 +142,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         
         // Convert to proper types
         $entityID = filter_var($entityID, FILTER_VALIDATE_INT);
-        $productionCapacityVolume = filter_var($productionCapacityVolume, FILTER_VALIDATE_FLOAT);
+        $productionCapacityVolumeMTY = filter_var($productionCapacityVolumeMTY, FILTER_VALIDATE_FLOAT);
         $percentageOfCapacityUsed = filter_var($percentageOfCapacityUsed, FILTER_VALIDATE_FLOAT);
         $producerReferenceID = filter_var($producerReferenceID, FILTER_VALIDATE_INT);
 
@@ -154,11 +154,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         $taskDoneByEntity = mysqli_real_escape_string($conn, $taskDoneByEntity);
 
-        // Calculate AnnualProductionSupplyVolume
-        $annualProductionSupplyVolume = ($productionCapacityVolume * $percentageOfCapacityUsed) / 100;
+        // Calculate AnnualProductionSupplyVolumeMTY
+        $annualProductionSupplyVolumeMTY = ($productionCapacityVolumeMTY * $percentageOfCapacityUsed) / 100;
 
         // Debugging: Show extracted values
-        echo "EntityID: '$entityID', TaskDoneByEntity: '$taskDoneByEntity', ProductionCapacityVolume: $productionCapacityVolume, PercentageOfCapacityUsed: $percentageOfCapacityUsed, AnnualProductionSupplyVolume: $annualProductionSupplyVolume, ProducerReferenceID: $producerReferenceID<br>";
+        echo "EntityID: '$entityID', TaskDoneByEntity: '$taskDoneByEntity', ProductionCapacityVolumeMTY: $productionCapacityVolumeMTY, PercentageOfCapacityUsed: $percentageOfCapacityUsed, AnnualProductionSupplyVolumeMTY: $annualProductionSupplyVolumeMTY, ProducerReferenceID: $producerReferenceID<br>";
 
         // Validate foreign keys
         if (!in_array($entityID, $validEntityIDs)) {
@@ -172,9 +172,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO producerprocessor (EntityID, TaskDoneByEntity, ProductionCapacityVolume, PercentageOfCapacityUsed, AnnualProductionSupplyVolume, ProducerReferenceID) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producerprocessor (EntityID, TaskDoneByEntity, ProductionCapacityVolumeMTY, PercentageOfCapacityUsed, AnnualProductionSupplyVolumeMTY, ProducerReferenceID) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isdddi", $entityID, $taskDoneByEntity, $productionCapacityVolume, $percentageOfCapacityUsed, $annualProductionSupplyVolume, $producerReferenceID);
+        $stmt->bind_param("isdddi", $entityID, $taskDoneByEntity, $productionCapacityVolumeMTY, $percentageOfCapacityUsed, $annualProductionSupplyVolumeMTY, $producerReferenceID);
 
         if ($stmt->execute()) {
             $producerProcessorID = $conn->insert_id;
@@ -192,7 +192,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM producerprocessor ORDER BY ProducerProcessorID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ProducerProcessorID']}, EntityID: {$row['EntityID']}, TaskDoneByEntity: {$row['TaskDoneByEntity']}, ProductionCapacityVolume: {$row['ProductionCapacityVolume']}, PercentageOfCapacityUsed: {$row['PercentageOfCapacityUsed']}, AnnualProductionSupplyVolume: {$row['AnnualProductionSupplyVolume']}, ProducerReferenceID: {$row['ProducerReferenceID']}<br>";
+            echo "ID: {$row['ProducerProcessorID']}, EntityID: {$row['EntityID']}, TaskDoneByEntity: {$row['TaskDoneByEntity']}, ProductionCapacityVolumeMTY: {$row['ProductionCapacityVolumeMTY']}, PercentageOfCapacityUsed: {$row['PercentageOfCapacityUsed']}, AnnualProductionSupplyVolumeMTY: {$row['AnnualProductionSupplyVolumeMTY']}, ProducerReferenceID: {$row['ProducerReferenceID']}<br>";
         }
     }
 

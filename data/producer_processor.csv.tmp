@@ -1,4 +1,4 @@
-EntityID,Producer-Processor Name,Task Done By Entity,Production capacity volume (MT/Y),% of capacity used,Annual production/ supply Volume (MT/Y),producer_reference_ID,Identifier Number
+EntityID,Producer-Processor Name,Task Done By Entity,ProductionCapacityVolumeMTY,PercentageOfCapacityUsed,Annual production/ supply Volume (MT/Y),ProducerReferenceID,Identifier Number
 1,N/A,N/A,0,0,0,1,N/A
 2,ACI Logistics Limited,Distributor,0,100,0,1,N/A
 3,Agrotech International Limited,Distributor,0,100,0,1,N/A

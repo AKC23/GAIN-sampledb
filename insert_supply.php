@@ -1,4 +1,5 @@
 <?php
+// insert_supply.php
 
 // Include the database connection
 include('db_connect.php');
@@ -23,30 +24,30 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE supply (
         SupplyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        VehicleID INT(11),
         CountryID INT(11),
         FoodTypeID INT(11),
-        PS_ID INT(11),
+        PSID INT(11),
         Origin VARCHAR(255),
-        PSPRID INT(11),
-        BrandID INT(11),
-        ProductReferenceNo INT(11),
-        UC_ID INT(11),
-        SourceVolume DECIMAL(10, 2),
+        EntityID INT(11),
+        ProductID INT(11),
+        ProducerReferenceID INT(11),
+        UCID INT(11),
+        SourceVolume DECIMAL(20, 3),
+        VolumeMTY DECIMAL(20, 3),
+        CropToFirstProcessedFoodStageConvertedValue DECIMAL(20, 3),
         YearTypeID INT(11),
-        StartYear INT(11),
-        EndYear INT(11),
-        ReferenceID INT(11), 
-        FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (CountryID) REFERENCES Country(Country_ID),
-        FOREIGN KEY (FoodTypeID) REFERENCES FoodType(FoodTypeID),
-        FOREIGN KEY (PS_ID) REFERENCES processing_stage(PSID),
-        FOREIGN KEY (PSPRID) REFERENCES producer_processor(ProcessorID),
-        FOREIGN KEY (BrandID) REFERENCES brand(BrandID),
-        FOREIGN KEY (UC_ID) REFERENCES measure_unit1(UCID),
-        FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID),  
+        StartYear INT(4),
+        EndYear INT(4),
+        ReferenceID INT(11),
+        FOREIGN KEY (CountryID) REFERENCES country(CountryID),
+        FOREIGN KEY (FoodTypeID) REFERENCES foodtype(FoodTypeID),
+        FOREIGN KEY (PSID) REFERENCES processingstage(PSID),
+        FOREIGN KEY (EntityID) REFERENCES entity(EntityID),
+        FOREIGN KEY (ProductID) REFERENCES product(ProductID),
+        FOREIGN KEY (ProducerReferenceID) REFERENCES producerreference(ProducerReferenceID),
+        FOREIGN KEY (UCID) REFERENCES measureunit1(UCID),
+        FOREIGN KEY (YearTypeID) REFERENCES yeartype(YearTypeID),
         FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
-
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 // Execute the query to create the table
@@ -117,91 +118,86 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 24) {
+        if (count($data) < 15) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $vehicleID           = trim($data[1]);
-        $countryID           = trim($data[3]);
-        $foodTypeID          = trim($data[5]);
-        $psID                = trim($data[7]);
-        $origin              = trim($data[8]);
-        $psprID              = trim($data[9]);
-        $brandID             = trim($data[13]);
-        $productReferenceNo  = trim($data[15]);
-        $ucID                = trim($data[16]);
-        $sourceVolume        = trim($data[19]);
-        $yearTypeID          = trim($data[20]);
-        $startYear           = trim($data[21]);
-        $endYear             = trim($data[22]);
-        $referenceID         = trim($data[23]);
+        $countryID = trim($data[0]);
+        $foodTypeID = trim($data[2]);
+        $psid = trim($data[4]);
+        $origin = trim($data[6]);
+        $entityID = trim($data[7]);
+        $productID = trim($data[11]);
+        $producerReferenceID = trim($data[13]);
+        $ucid = trim($data[15]);
+        $sourceVolume = str_replace(',', '', trim($data[18])); // Remove commas
+        $yearTypeID = trim($data[21]);
+        $startYear = trim($data[23]);
+        $endYear = trim($data[24]);
+        $referenceID = trim($data[25]);
+        
+        // Remove any extra spaces between the name and comma
+        $origin = preg_replace('/\s+,/', ',', $origin);
         
         // Convert to proper types
-        $vehicleID           = filter_var($vehicleID, FILTER_VALIDATE_INT);
-        $countryID           = filter_var($countryID, FILTER_VALIDATE_INT);
-        $foodTypeID          = filter_var($foodTypeID, FILTER_VALIDATE_INT);
-        $psID                = filter_var($psID, FILTER_VALIDATE_INT);
-        $psprID              = filter_var($psprID, FILTER_VALIDATE_INT);
-        $brandID             = filter_var($brandID, FILTER_VALIDATE_INT);
-        $productReferenceNo  = filter_var($productReferenceNo, FILTER_VALIDATE_INT);
-        $ucID                = filter_var($ucID, FILTER_VALIDATE_INT);
-        $sourceVolume        = filter_var($sourceVolume, FILTER_VALIDATE_FLOAT);
-        $yearTypeID          = filter_var($yearTypeID, FILTER_VALIDATE_INT);
-        $startYear           = filter_var($startYear, FILTER_VALIDATE_INT);
-        $endYear             = filter_var($endYear, FILTER_VALIDATE_INT);
-        $referenceID         = filter_var($referenceID, FILTER_VALIDATE_INT);
+        $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
+        $foodTypeID = filter_var($foodTypeID, FILTER_VALIDATE_INT);
+        $psid = filter_var($psid, FILTER_VALIDATE_INT);
+        $entityID = filter_var($entityID, FILTER_VALIDATE_INT);
+        $productID = filter_var($productID, FILTER_VALIDATE_INT);
+        $producerReferenceID = filter_var($producerReferenceID, FILTER_VALIDATE_INT);
+        $ucid = filter_var($ucid, FILTER_VALIDATE_INT);
+        $sourceVolume = filter_var($sourceVolume, FILTER_VALIDATE_FLOAT);
+        $yearTypeID = filter_var($yearTypeID, FILTER_VALIDATE_INT);
+        $startYear = filter_var($startYear, FILTER_VALIDATE_INT);
+        $endYear = filter_var($endYear, FILTER_VALIDATE_INT);
+        $referenceID = filter_var($referenceID, FILTER_VALIDATE_INT);
 
-        if ($vehicleID === false || $countryID === false || $foodTypeID === false || $psID === false || $psprID === false || $brandID === false || $productReferenceNo === false || $ucID === false || $sourceVolume === false || $yearTypeID === false || $startYear === false || $endYear === false || $referenceID === false) {
+        if ($countryID === false || $foodTypeID === false || $psid === false || $entityID === false || $productID === false || $producerReferenceID === false || $ucid === false || $sourceVolume === false || $yearTypeID === false || $startYear === false || $endYear === false || $referenceID === false) {
             echo "Error: Invalid data format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
+        $origin = mysqli_real_escape_string($conn, $origin);
+
+        // Calculate VolumeMTY based on Source Volume and UCID
+        $unitValueResult = $conn->query("SELECT UnitValue FROM measureunit1 WHERE UCID = $ucid");
+        if ($unitValueResult && $unitValueRow = $unitValueResult->fetch_assoc()) {
+            $unitValue = (float)$unitValueRow['UnitValue'];
+            $volumeMTY = $sourceVolume * $unitValue;
+        } else {
+            echo "Error: Invalid UCID $ucid in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        // Calculate CropToFirstProcessedFoodStageConvertedValue based on conditions
+        if ($countryID == 2 && $psid == 3) {
+            $cropToFirstProcessedFoodStageConvertedValue = $volumeMTY * 0.175;
+        } elseif ($countryID == 2 && $psid == 6) {
+            $cropToFirstProcessedFoodStageConvertedValue = $volumeMTY * 0.15;
+        } elseif ($countryID == 2 && $psid == 8) {
+            $cropToFirstProcessedFoodStageConvertedValue = $volumeMTY * 1;
+        } else {
+            $cropToFirstProcessedFoodStageConvertedValue = $volumeMTY * 1; // Default value if no condition matches
+        }
+
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, CountryID: $countryID, FoodTypeID: $foodTypeID, PS_ID: $psID, Origin: $origin, PSPRID: $psprID, BrandID: $brandID, ProductReferenceNo: $productReferenceNo, UC_ID: $ucID, SourceVolume: $sourceVolume, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
+        echo "CountryID: $countryID, FoodTypeID: $foodTypeID, PSID: $psid, Origin: '$origin', EntityID: $entityID, ProductID: $productID, ProducerReferenceID: $producerReferenceID, UCID: $ucid, SourceVolume: $sourceVolume, VolumeMTY: $volumeMTY, CropToFirstProcessedFoodStageConvertedValue: $cropToFirstProcessedFoodStageConvertedValue, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
 
-        // Correct INSERT to match the final table structure
-        $sql = "
-            INSERT INTO supply (
-                VehicleID,
-                CountryID,
-                FoodTypeID,
-                PS_ID,
-                Origin,
-                PSPRID,
-                BrandID,
-                ProductReferenceNo,
-                UC_ID,
-                SourceVolume,
-                YearTypeID,
-                StartYear,
-                EndYear,
-                ReferenceID
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ";
+        if (empty($origin)) {
+            echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
+        $sql = "INSERT INTO supply (CountryID, FoodTypeID, PSID, Origin, EntityID, ProductID, ProducerReferenceID, UCID, SourceVolume, VolumeMTY, CropToFirstProcessedFoodStageConvertedValue, YearTypeID, StartYear, EndYear, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-
-        // Updated bind_param type string: now 14 characters for 14 bind variables
-        $stmt->bind_param(
-            'iiiisiiidiiiii',
-            $vehicleID,         // i
-            $countryID,         // i
-            $foodTypeID,        // i
-            $psID,              // i
-            $origin,            // s
-            $psprID,            // i
-            $brandID,           // i
-            $productReferenceNo,// i
-            $ucID,              // i
-            $sourceVolume,      // d
-            $yearTypeID,        // i
-            $startYear,         // i
-            $endYear,           // i
-            $referenceID        // i
-        );
+        $stmt->bind_param("iiisiiidddddiii", $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
 
         if ($stmt->execute()) {
             $supplyID = $conn->insert_id;
@@ -219,7 +215,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM supply ORDER BY SupplyID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['SupplyID']}, VehicleID: {$row['VehicleID']}, CountryID: {$row['CountryID']}, FoodTypeID: {$row['FoodTypeID']}, PS_ID: {$row['PS_ID']}, Origin: {$row['Origin']}, PSPRID: {$row['PSPRID']}, BrandID: {$row['BrandID']}, ProductReferenceNo: {$row['ProductReferenceNo']}, UC_ID: {$row['UC_ID']}, SourceVolume: {$row['SourceVolume']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
+            echo "ID: {$row['SupplyID']}, CountryID: {$row['CountryID']}, FoodTypeID: {$row['FoodTypeID']}, PSID: {$row['PSID']}, Origin: {$row['Origin']}, EntityID: {$row['EntityID']}, ProductID: {$row['ProductID']}, ProducerReferenceID: {$row['ProducerReferenceID']}, UCID: {$row['UCID']}, SourceVolume: {$row['SourceVolume']}, VolumeMTY: {$row['VolumeMTY']}, CropToFirstProcessedFoodStageConvertedValue: {$row['CropToFirstProcessedFoodStageConvertedValue']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
         }
     }
 

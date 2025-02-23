@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $tableName = $_POST['tableName'];
     $data = [];
     foreach ($columns as $column) {
-        if ($column != $primaryKey && $column != 'Volume_MT_Y' && $column != 'AnnualProductionSupplyVolume') {
+        if ($column != $primaryKey && $column != 'Volume_MT_Y' && $column != 'AnnualProductionSupplyVolumeMTY') {
             $data[$column] = $_POST[$column] ?? '';
         }
     }
@@ -80,11 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         }
     }
 
-    // Calculate AnnualProductionSupplyVolume for producerprocessor table
+    // Calculate AnnualProductionSupplyVolumeMTY for producerprocessor table
     if ($tableName == 'producerprocessor') {
-        $productionCapacityVolume = (float)$_POST['ProductionCapacityVolume'] ?? 0;
+        $productionCapacityVolumeMTY = (float)$_POST['ProductionCapacityVolumeMTY'] ?? 0;
         $percentageOfCapacityUsed = (float)$_POST['PercentageOfCapacityUsed'] ?? 0;
-        $data['AnnualProductionSupplyVolume'] = ($productionCapacityVolume * $percentageOfCapacityUsed) / 100;
+        $data['AnnualProductionSupplyVolumeMTY'] = ($productionCapacityVolumeMTY * $percentageOfCapacityUsed) / 100;
     }
 
     // Insert new record
@@ -152,11 +152,11 @@ if (!empty($entityID)) {
             }
         }
 
-        function calculateAnnualProductionSupplyVolume() {
-            const productionCapacityVolume = parseFloat(document.getElementById('ProductionCapacityVolume').value) || 0;
+        function calculateAnnualProductionSupplyVolumeMTY() {
+            const productionCapacityVolumeMTY = parseFloat(document.getElementById('ProductionCapacityVolumeMTY').value) || 0;
             const percentageOfCapacityUsed = parseFloat(document.getElementById('PercentageOfCapacityUsed').value) || 0;
-            const annualProductionSupplyVolume = (productionCapacityVolume * percentageOfCapacityUsed) / 100;
-            document.getElementById('AnnualProductionSupplyVolume').value = annualProductionSupplyVolume.toFixed(2);
+            const annualProductionSupplyVolumeMTY = (productionCapacityVolumeMTY * percentageOfCapacityUsed) / 100;
+            document.getElementById('AnnualProductionSupplyVolumeMTY').value = annualProductionSupplyVolumeMTY.toFixed(2);
         }
 
         function updateReferenceDetails() {
@@ -302,12 +302,12 @@ if (!empty($entityID)) {
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="SourceVolume" class="form-control" oninput="calculateVolumeMTY()">
                         <?php elseif ($column == 'Volume_MT_Y' && $tableName == 'distribution'): ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="Volume_MT_Y" class="form-control" readonly style="color: darkgray;">
-                        <?php elseif ($column == 'ProductionCapacityVolume' && $tableName == 'producerprocessor'): ?>
-                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="ProductionCapacityVolume" class="form-control" oninput="calculateAnnualProductionSupplyVolume()">
+                        <?php elseif ($column == 'ProductionCapacityVolumeMTY' && $tableName == 'producerprocessor'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="ProductionCapacityVolumeMTY" class="form-control" oninput="calculateAnnualProductionSupplyVolumeMTY()">
                         <?php elseif ($column == 'PercentageOfCapacityUsed' && $tableName == 'producerprocessor'): ?>
-                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="PercentageOfCapacityUsed" class="form-control" oninput="calculateAnnualProductionSupplyVolume()">
-                        <?php elseif ($column == 'AnnualProductionSupplyVolume' && $tableName == 'producerprocessor'): ?>
-                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="AnnualProductionSupplyVolume" class="form-control" readonly style="color: darkgray;">
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="PercentageOfCapacityUsed" class="form-control" oninput="calculateAnnualProductionSupplyVolumeMTY()">
+                        <?php elseif ($column == 'AnnualProductionSupplyVolumeMTY' && $tableName == 'producerprocessor'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="AnnualProductionSupplyVolumeMTY" class="form-control" readonly style="color: darkgray;">
                         <?php else: ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                         <?php endif; ?>

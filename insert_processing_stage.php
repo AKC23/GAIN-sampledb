@@ -1,27 +1,27 @@
 <?php
-
+// insert_processing_stage.php   
 // Include the database connection
 include('db_connect.php');
 
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-// SQL query to drop the 'processing_stage' table if it exists
-$dropTableSQL = "DROP TABLE IF EXISTS processing_stage";
+// SQL query to drop the 'processingstage' table if it exists
+$dropTableSQL = "DROP TABLE IF EXISTS processingstage";
 
 // Execute the query to drop the table
 if ($conn->query($dropTableSQL) === TRUE) {
-    echo "Table 'processing_stage' dropped successfully.<br>";
+    echo "Table 'processingstage' dropped successfully.<br>";
 } else {
-    echo "Error dropping table 'processing_stage': " . $conn->error . "<br>";
+    echo "Error dropping table 'processingstage': " . $conn->error . "<br>";
 }
 
 // Re-enable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// SQL query to create the 'processing_stage' table
+// SQL query to create the 'processingstage' table
 $createTableSQL = "
-    CREATE TABLE processing_stage (
+    CREATE TABLE processingstage (
         PSID INT(11) AUTO_INCREMENT PRIMARY KEY,
         ProcessingStageName VARCHAR(255) NOT NULL,
         ExtractionRate DECIMAL(10, 2),
@@ -31,9 +31,9 @@ $createTableSQL = "
 
 // Execute the query to create the table
 if ($conn->query($createTableSQL) === TRUE) {
-    echo "Table 'processing_stage' created successfully.<br>";
+    echo "Table 'processingstage' created successfully.<br>";
 } else {
-    echo "Error creating table 'processing_stage': " . $conn->error . "<br>";
+    echo "Error creating table 'processingstage': " . $conn->error . "<br>";
 }
 
 // Path to your CSV file
@@ -131,7 +131,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO processing_stage (ProcessingStageName, VehicleID, ExtractionRate) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO processingstage (ProcessingStageName, VehicleID, ExtractionRate) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sid", $processingStageName, $vehicleID, $extractionRate);
 
@@ -147,9 +147,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     }
 
     // After inserting, show what's in the table
-    echo "<br>Final processing_stage table contents:<br>";
+    echo "<br>Final processingstage table contents:<br>";
     $result = $conn->query("SELECT ps.*, fv.VehicleName 
-                           FROM processing_stage ps 
+                           FROM processingstage ps 
                            JOIN FoodVehicle fv ON ps.VehicleID = fv.VehicleID 
                            ORDER BY ps.PSID");
     if ($result) {

@@ -100,6 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_producer_sku.php');
                 } elseif ($tableName == 'distribution') {
                     include('display_tables/display_distribution.php');
+                } elseif ($tableName == 'supply') {
+                    include('display_tables/display_supply.php');
                 }
             } else {
                 echo "No records found.";
@@ -161,6 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_producer_sku.php');
                 } elseif ($tableName == 'distribution') {
                     include('display_tables/display_distribution.php');
+                } elseif ($tableName == 'supply') {
+                    include('display_tables/display_supply.php');
                 }
             } else {
                 echo "No records found.";

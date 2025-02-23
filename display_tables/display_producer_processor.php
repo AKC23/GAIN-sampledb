@@ -10,10 +10,11 @@ echo "<th>AdminLevel2</th>";
 echo "<th>AdminLevel3</th>";
 echo "<th>CountryName</th>";
 echo "<th>TaskDoneByEntity</th>";
-echo "<th>ProductionCapacityVolume</th>";
+echo "<th>ProductionCapacityVolumeMTY</th>";
 echo "<th>PercentageOfCapacityUsed</th>";
-echo "<th>AnnualProductionSupplyVolume</th>";
+echo "<th>AnnualProductionSupplyVolumeMTY</th>";
 echo "<th>IdentifierNumber</th>";
+echo "<th>IdentifierReferenceSystem</th>";
 echo "</tr></thead><tbody>";
 
 // Fetch and display table rows
@@ -45,17 +46,18 @@ while ($row = $result->fetch_assoc()) {
     }
 
     echo "<td>" . htmlspecialchars($row['TaskDoneByEntity']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['ProductionCapacityVolume']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['ProductionCapacityVolumeMTY']) . "</td>";
     echo "<td>" . htmlspecialchars($row['PercentageOfCapacityUsed']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['AnnualProductionSupplyVolume']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['AnnualProductionSupplyVolumeMTY']) . "</td>";
 
-    // Fetch IdentifierNumber from producerreference table
+    // Fetch IdentifierNumber and IdentifierReferenceSystem from producerreference table
     $producerReferenceID = htmlspecialchars($row['ProducerReferenceID']);
-    $identifierQuery = $conn->query("SELECT IdentifierNumber FROM producerreference WHERE ProducerReferenceID = $producerReferenceID");
+    $identifierQuery = $conn->query("SELECT IdentifierNumber, IdentifierReferenceSystem FROM producerreference WHERE ProducerReferenceID = $producerReferenceID");
     if ($identifierRow = $identifierQuery->fetch_assoc()) {
         echo "<td>" . htmlspecialchars($identifierRow['IdentifierNumber']) . "</td>";
+        echo "<td>" . htmlspecialchars($identifierRow['IdentifierReferenceSystem']) . "</td>";
     } else {
-        echo "<td>N/A</td>";
+        echo "<td colspan='2'>N/A</td>";
     }
 
     echo "</tr>";

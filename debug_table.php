@@ -73,12 +73,16 @@ try {
         include('insert_insert_adult_male_equivalent.php'); // Ensure adult_male_equivalent is created after gender & age
         include('insert_product.php');
         
-        
         // Level 2: Tables that depend on Level 1 tables
         include('insert_entity.php');
         include('insert_producer_processor.php');
         include('insert_producer_sku.php');
         include('insert_distribution.php');
+
+        // Level 3: Tables that depend on Level 2 tables
+        include('insert_supply.php');
+        
+
 
     } else {
         throw new Exception("Database connection is closed.");
