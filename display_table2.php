@@ -102,6 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_distribution.php');
                 } elseif ($tableName == 'supply') {
                     include('display_tables/display_supply.php');
+                } elseif ($tableName == 'consumption') {
+                    include('display_tables/display_consumption.php');
+                } elseif ($tableName == 'individualconsumption') {
+                    include('display_tables/display_individual_consumption.php');
                 }
             } else {
                 echo "No records found.";
@@ -165,6 +169,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_distribution.php');
                 } elseif ($tableName == 'supply') {
                     include('display_tables/display_supply.php');
+                } elseif ($tableName == 'consumption') {
+                    include('display_tables/display_consumption.php');
+                } elseif ($tableName == 'individualconsumption') {
+                    include('display_tables/display_individual_consumption.php');
                 }
             } else {
                 echo "No records found.";
@@ -174,4 +182,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
-?>

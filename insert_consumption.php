@@ -25,20 +25,21 @@ $createTableSQL = "
         GenderID INT(11) NOT NULL,
         AgeID INT(11) NOT NULL,
         NumberOfPeople INT(11) NOT NULL,
-        SourceVolume DECIMAL(20, 10) NOT NULL,
+        SourceVolume DECIMAL(20, 4) NOT NULL,
+        VolumeMTY DECIMAL(20, 4) NOT NULL,
         UCID INT(11) NOT NULL,
         YearTypeID INT(11) NOT NULL,
         StartYear INT(11) NOT NULL,
         EndYear INT(11) NOT NULL,
         ReferenceID INT(11) NOT NULL,
         FOREIGN KEY (VehicleID) REFERENCES FoodVehicle(VehicleID),
-        FOREIGN KEY (GL1ID) REFERENCES Geography_Level1(GL1ID),
-        FOREIGN KEY (GL2ID) REFERENCES Geography_Level2(GL2ID),
-        FOREIGN KEY (GL3ID) REFERENCES Geography_Level3(GL3ID),
+        FOREIGN KEY (GL1ID) REFERENCES geographylevel1(GL1ID),
+        FOREIGN KEY (GL2ID) REFERENCES geographylevel2(GL2ID),
+        FOREIGN KEY (GL3ID) REFERENCES geographylevel3(GL3ID),
         FOREIGN KEY (GenderID) REFERENCES gender(GenderID),
         FOREIGN KEY (AgeID) REFERENCES age(AgeID),
-        FOREIGN KEY (UCID) REFERENCES measure_unit1(UCID),
-        FOREIGN KEY (YearTypeID) REFERENCES year_type(YearTypeID),
+        FOREIGN KEY (UCID) REFERENCES measureunit1(UCID),
+        FOREIGN KEY (YearTypeID) REFERENCES yeartype(YearTypeID),
         FOREIGN KEY (ReferenceID) REFERENCES reference(ReferenceID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
@@ -124,12 +125,12 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $genderID        = trim($data[8]);
         $ageID           = trim($data[10]);
         $numberOfPeople  = trim($data[12]);
-        $sourceVolume    = trim($data[13]);
-        $ucid            = trim($data[14]);
-        $yearTypeID      = trim($data[17]);
-        $startYear       = trim($data[19]);
-        $endYear         = trim($data[20]);
-        $referenceID     = trim($data[21]);
+        $sourceVolume    = str_replace(',', '', trim($data[16])); // Remove commas
+        $ucid            = trim($data[13]);
+        $yearTypeID      = trim($data[18]);
+        $startYear       = trim($data[20]);
+        $endYear         = trim($data[21]);
+        $referenceID     = trim($data[22]);
         
         // Convert to proper types
         $vehicleID       = filter_var($vehicleID, FILTER_VALIDATE_INT);
@@ -152,8 +153,19 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
+        // Calculate VolumeMTY based on UCID and SourceVolume
+        $unitValueResult = $conn->query("SELECT UnitValue FROM measureunit1 WHERE UCID = $ucid");
+        if ($unitValueResult && $unitValueRow = $unitValueResult->fetch_assoc()) {
+            $unitValue = (float)$unitValueRow['UnitValue'];
+            $volumeMTY = $sourceVolume * $unitValue;
+        } else {
+            echo "Error: Invalid UCID $ucid in row $rowNumber. Skipping.<br>";
+            $rowNumber++;
+            continue;
+        }
+
         // Debugging: Show extracted values
-        echo "VehicleID: $vehicleID, GL1ID: $gl1id, GL2ID: $gl2id, GL3ID: $gl3id, GenderID: $genderID, AgeID: $ageID, NumberOfPeople: $numberOfPeople, SourceVolume: $sourceVolume, UCID: $ucid, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
+        echo "VehicleID: $vehicleID, GL1ID: $gl1id, GL2ID: $gl2id, GL3ID: $gl3id, GenderID: $genderID, AgeID: $ageID, NumberOfPeople: $numberOfPeople, SourceVolume: $sourceVolume, VolumeMTY: $volumeMTY, UCID: $ucid, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
 
         // Correct INSERT to match the final table structure
         $sql = "
@@ -166,18 +178,19 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
                 AgeID,
                 NumberOfPeople,
                 SourceVolume,
+                VolumeMTY,
                 UCID,
                 YearTypeID,
                 StartYear,
                 EndYear,
                 ReferenceID
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ";
         $stmt = $conn->prepare($sql);
 
-        // Updated bind_param type string: now 13 characters for 13 bind variables
+        // Updated bind_param type string: now 14 characters for 14 bind variables
         $stmt->bind_param(
-            'iiiiiiiidiiii',
+            'iiiiiiiidddiii',
             $vehicleID,         // i
             $gl1id,             // i
             $gl2id,             // i
@@ -186,6 +199,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             $ageID,             // i
             $numberOfPeople,    // i
             $sourceVolume,      // d
+            $volumeMTY,         // d
             $ucid,              // i
             $yearTypeID,        // i
             $startYear,         // i
@@ -209,7 +223,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM consumption ORDER BY ConsumptionID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['ConsumptionID']}, VehicleID: {$row['VehicleID']}, GL1ID: {$row['GL1ID']}, GL2ID: {$row['GL2ID']}, GL3ID: {$row['GL3ID']}, GenderID: {$row['GenderID']}, AgeID: {$row['AgeID']}, NumberOfPeople: {$row['NumberOfPeople']}, SourceVolume: {$row['SourceVolume']}, UCID: {$row['UCID']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
+            echo "ID: {$row['ConsumptionID']}, VehicleID: {$row['VehicleID']}, GL1ID: {$row['GL1ID']}, GL2ID: {$row['GL2ID']}, GL3ID: {$row['GL3ID']}, GenderID: {$row['GenderID']}, AgeID: {$row['AgeID']}, NumberOfPeople: {$row['NumberOfPeople']}, SourceVolume: {$row['SourceVolume']}, VolumeMTY: {$row['VolumeMTY']}, UCID: {$row['UCID']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
         }
     }
 
