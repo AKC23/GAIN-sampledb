@@ -24,6 +24,7 @@ $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 $createTableSQL = "
     CREATE TABLE supply (
         SupplyID INT(11) AUTO_INCREMENT PRIMARY KEY,
+        VehicleID INT(11),
         CountryID INT(11),
         FoodTypeID INT(11),
         PSID INT(11),
@@ -39,6 +40,7 @@ $createTableSQL = "
         StartYear INT(4),
         EndYear INT(4),
         ReferenceID INT(11),
+        FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID),
         FOREIGN KEY (CountryID) REFERENCES country(CountryID),
         FOREIGN KEY (FoodTypeID) REFERENCES foodtype(FoodTypeID),
         FOREIGN KEY (PSID) REFERENCES processingstage(PSID),
@@ -118,31 +120,33 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
         
         // Clean and validate data
-        if (count($data) < 15) {
+        if (count($data) < 28) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
         }
 
         // Clean the data more thoroughly
-        $countryID = trim($data[0]);
-        $foodTypeID = trim($data[2]);
-        $psid = trim($data[4]);
-        $origin = trim($data[6]);
-        $entityID = trim($data[7]);
-        $productID = trim($data[11]);
-        $producerReferenceID = trim($data[13]);
-        $ucid = trim($data[15]);
-        $sourceVolume = str_replace(',', '', trim($data[18])); // Remove commas
-        $yearTypeID = trim($data[21]);
-        $startYear = trim($data[23]);
-        $endYear = trim($data[24]);
-        $referenceID = trim($data[25]);
+        $vehicleID = trim($data[0]);
+        $countryID = trim($data[2]);
+        $foodTypeID = trim($data[4]);
+        $psid = trim($data[6]);
+        $origin = trim($data[8]);
+        $entityID = trim($data[9]);
+        $productID = trim($data[13]);
+        $producerReferenceID = trim($data[15]);
+        $ucid = trim($data[17]);
+        $sourceVolume = str_replace(',', '', trim($data[20])); // Remove commas
+        $yearTypeID = trim($data[23]);
+        $startYear = trim($data[25]);
+        $endYear = trim($data[26]);
+        $referenceID = trim($data[27]);
         
         // Remove any extra spaces between the name and comma
         $origin = preg_replace('/\s+,/', ',', $origin);
         
         // Convert to proper types
+        $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
         $foodTypeID = filter_var($foodTypeID, FILTER_VALIDATE_INT);
         $psid = filter_var($psid, FILTER_VALIDATE_INT);
@@ -156,7 +160,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $endYear = filter_var($endYear, FILTER_VALIDATE_INT);
         $referenceID = filter_var($referenceID, FILTER_VALIDATE_INT);
 
-        if ($countryID === false || $foodTypeID === false || $psid === false || $entityID === false || $productID === false || $producerReferenceID === false || $ucid === false || $sourceVolume === false || $yearTypeID === false || $startYear === false || $endYear === false || $referenceID === false) {
+        if ($vehicleID === false || $countryID === false || $foodTypeID === false || $psid === false || $entityID === false || $productID === false || $producerReferenceID === false || $ucid === false || $sourceVolume === false || $yearTypeID === false || $startYear === false || $endYear === false || $referenceID === false) {
             echo "Error: Invalid data format in row $rowNumber. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -187,7 +191,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         }
 
         // Debugging: Show extracted values
-        echo "CountryID: $countryID, FoodTypeID: $foodTypeID, PSID: $psid, Origin: '$origin', EntityID: $entityID, ProductID: $productID, ProducerReferenceID: $producerReferenceID, UCID: $ucid, SourceVolume: $sourceVolume, VolumeMTY: $volumeMTY, CropToFirstProcessedFoodStageConvertedValue: $cropToFirstProcessedFoodStageConvertedValue, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
+        echo "VehicleID: $vehicleID, CountryID: $countryID, FoodTypeID: $foodTypeID, PSID: $psid, Origin: '$origin', EntityID: $entityID, ProductID: $productID, ProducerReferenceID: $producerReferenceID, UCID: $ucid, SourceVolume: $sourceVolume, VolumeMTY: $volumeMTY, CropToFirstProcessedFoodStageConvertedValue: $cropToFirstProcessedFoodStageConvertedValue, YearTypeID: $yearTypeID, StartYear: $startYear, EndYear: $endYear, ReferenceID: $referenceID<br>";
 
         if (empty($origin)) {
             echo "Warning: Empty fields in row $rowNumber. Skipping.<br>";
@@ -195,9 +199,9 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        $sql = "INSERT INTO supply (CountryID, FoodTypeID, PSID, Origin, EntityID, ProductID, ProducerReferenceID, UCID, SourceVolume, VolumeMTY, CropToFirstProcessedFoodStageConvertedValue, YearTypeID, StartYear, EndYear, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO supply (VehicleID, CountryID, FoodTypeID, PSID, Origin, EntityID, ProductID, ProducerReferenceID, UCID, SourceVolume, VolumeMTY, CropToFirstProcessedFoodStageConvertedValue, YearTypeID, StartYear, EndYear, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiisiiidddddiii", $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
+        $stmt->bind_param("iiiiiisiiidddiii", $vehicleID, $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
 
         if ($stmt->execute()) {
             $supplyID = $conn->insert_id;
@@ -215,7 +219,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM supply ORDER BY SupplyID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['SupplyID']}, CountryID: {$row['CountryID']}, FoodTypeID: {$row['FoodTypeID']}, PSID: {$row['PSID']}, Origin: {$row['Origin']}, EntityID: {$row['EntityID']}, ProductID: {$row['ProductID']}, ProducerReferenceID: {$row['ProducerReferenceID']}, UCID: {$row['UCID']}, SourceVolume: {$row['SourceVolume']}, VolumeMTY: {$row['VolumeMTY']}, CropToFirstProcessedFoodStageConvertedValue: {$row['CropToFirstProcessedFoodStageConvertedValue']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
+            echo "ID: {$row['SupplyID']}, VehicleID: {$row['VehicleID']}, CountryID: {$row['CountryID']}, FoodTypeID: {$row['FoodTypeID']}, PSID: {$row['PSID']}, Origin: {$row['Origin']}, EntityID: {$row['EntityID']}, ProductID: {$row['ProductID']}, ProducerReferenceID: {$row['ProducerReferenceID']}, UCID: {$row['UCID']}, SourceVolume: {$row['SourceVolume']}, VolumeMTY: {$row['VolumeMTY']}, CropToFirstProcessedFoodStageConvertedValue: {$row['CropToFirstProcessedFoodStageConvertedValue']}, YearTypeID: {$row['YearTypeID']}, StartYear: {$row['StartYear']}, EndYear: {$row['EndYear']}, ReferenceID: {$row['ReferenceID']}<br>";
         }
     }
 
@@ -227,11 +231,3 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 // Note: We do not close the database connection here
 // because it needs to remain open for subsequent operations in index.php
 ?>
-
-
-
-
-
-
-
-

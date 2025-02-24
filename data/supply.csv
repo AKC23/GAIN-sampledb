@@ -1,42 +1,42 @@
-CountryID,Country supplied,FoodTypeID,Food Type,PS_ID,Processing Stage,Origin,EntityID,Producer/ processor name,Production capacity volume (MT/Y),Percentage of capacity used,ProductID,Product name,ProducerReferenceID,Identifier Number,UCID,Supply Volume Unit,Periodical Unit,Source Volume,Value in Metric Ton/ Year,Crop to 1st Processed Food stage Converted Value,Year Type ID,Year Type,Start Year,End Year,ReferenceID
-2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,243,408.00",0,0,3,Year(Jun-July),2020,2021,49
-2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,106,023.00",0,0,3,Year(Jun-July),2021,2022,50
-2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,071,468.00",0,0,3,Year(Jun-July),2022,2023,51
-2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"39,659,428.00",0,0,3,Year(Jun-July),2020,2021,52
-2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,965,906.00",0,0,3,Year(Jun-July),2021,2022,53
-2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"54,742,532.00",0,0,3,Year(Jun-July),2022,2023,54
-2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"6,674,541.00",0,0,3,Year(Jun-July),2020,2021,55
-2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"7,474,867.00",0,0,3,Year(Jun-July),2021,2022,56
-2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"7,503,085.00",0,0,3,Year(Jun-July),2022,2023,57
-2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"9,117,659.00",0,0,3,Year(Jun-July),2020,2021,58
-2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"9,864,606.00",0,0,3,Year(Jun-July),2021,2022,59
-2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"10,730,759.00",0,0,3,Year(Jun-July),2022,2023,60
-2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,285,200.00",0,0,3,Year(Jun-July),2021,2022,61
-2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"41,196,956.00",0,0,3,Year(Jun-July),2022,2023,62
-2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,365,765.00",0,0,3,Year(Jun-July),2022,2023,63
-2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"200,620.00",0,0,3,Year(Jun-July),2021,2022,64
-2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"272,899.00",0,0,3,Year(Jun-July),2022,2023,65
-2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"362,211.00",0,0,3,Year(Jun-July),2022,2023,66
-2,Bangladesh,2,Soya Bean,6,Crude Oil,Import,1,N/A,0,0,1,N/A,1,N/A,2,Metric Ton,Month,"1,400.00",0,0,1,N/A,,,1
-2,Bangladesh,2,Soya Bean,6,Crude Oil,Import,1,N/A,0,0,1,N/A,1,N/A,2,Metric Ton,Month,"33,300.00",0,0,1,N/A,,,1
-2,Bangladesh,6,Sesame,6,Crude Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,67
-2,Bangladesh,6,Sesame,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,68
-2,Bangladesh,6,Sesame,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,69
-2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,70
-2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,71
-2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,72
-2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,73
-2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,74
-2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,75
-2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,76
-2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,77
-2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,78
-2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,79
-2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,80
-2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,81
-2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,82
-2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,83
-2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,84
-2,Bangladesh,16,Whole Wheat,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,85
-2,Bangladesh,17,Atta,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,86
-2,Bangladesh,18,Maida,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,87
+VehicleID,Food Vehicle,CountryID,Country supplied,FoodTypeID,Food Type,PS_ID,Processing Stage,Origin,EntityID,Producer/ processor name,Production capacity volume (MT/Y),Percentage of capacity used,ProductID,Product name,ProducerReferenceID,Identifier Number,UCID,Supply Volume Unit,Periodical Unit,Source Volume,Value in Metric Ton/ Year,Crop to 1st Processed Food stage Converted Value,Year Type ID,Year Type,Start Year,End Year,ReferenceID
+2,E,2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,243,408.00",0,0,3,Year(Jun-July),2020,2021,49
+2,E,2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,106,023.00",0,0,3,Year(Jun-July),2021,2022,50
+2,E,2,Bangladesh,6,Sesame,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"3,071,468.00",0,0,3,Year(Jun-July),2022,2023,51
+2,E,2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"39,659,428.00",0,0,3,Year(Jun-July),2020,2021,52
+2,E,2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,965,906.00",0,0,3,Year(Jun-July),2021,2022,53
+2,E,2,Bangladesh,7,Rape & Mustard,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"54,742,532.00",0,0,3,Year(Jun-July),2022,2023,54
+2,E,2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"6,674,541.00",0,0,3,Year(Jun-July),2020,2021,55
+2,E,2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"7,474,867.00",0,0,3,Year(Jun-July),2021,2022,56
+2,E,2,Bangladesh,8,Ground Nut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"7,503,085.00",0,0,3,Year(Jun-July),2022,2023,57
+2,E,2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"9,117,659.00",0,0,3,Year(Jun-July),2020,2021,58
+2,E,2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"9,864,606.00",0,0,3,Year(Jun-July),2021,2022,59
+2,E,2,Bangladesh,2,Soya Bean,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"10,730,759.00",0,0,3,Year(Jun-July),2022,2023,60
+2,E,2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,285,200.00",0,0,3,Year(Jun-July),2021,2022,61
+2,E,2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"41,196,956.00",0,0,3,Year(Jun-July),2022,2023,62
+2,E,2,Bangladesh,5,Coconut,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"40,365,765.00",0,0,3,Year(Jun-July),2022,2023,63
+2,E,2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"200,620.00",0,0,3,Year(Jun-July),2021,2022,64
+2,E,2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"272,899.00",0,0,3,Year(Jun-July),2022,2023,65
+2,E,2,Bangladesh,4,Sunflower,3,Oil Seeds,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,"362,211.00",0,0,3,Year(Jun-July),2022,2023,66
+2,E,2,Bangladesh,2,Soya Bean,6,Crude Oil,Import,1,N/A,0,0,1,N/A,1,N/A,2,Metric Ton,Month,"1,400.00",0,0,1,N/A,,,1
+2,E,2,Bangladesh,2,Soya Bean,6,Crude Oil,Import,1,N/A,0,0,1,N/A,1,N/A,2,Metric Ton,Month,"33,300.00",0,0,1,N/A,,,1
+2,E,2,Bangladesh,6,Sesame,6,Crude Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,67
+2,E,2,Bangladesh,6,Sesame,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,68
+2,E,2,Bangladesh,6,Sesame,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,69
+2,E,2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,70
+2,E,2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,71
+2,E,2,Bangladesh,7,Rape & Mustard,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,72
+2,E,2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,73
+2,E,2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,74
+2,E,2,Bangladesh,8,Ground Nut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,75
+2,E,2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2020,2021,76
+2,E,2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,77
+2,E,2,Bangladesh,2,Soya Bean,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,78
+2,E,2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,79
+2,E,2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,80
+2,E,2,Bangladesh,5,Coconut,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,81
+2,E,2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2021,2022,82
+2,E,2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,83
+2,E,2,Bangladesh,4,Sunflower,8,Refined Oil,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,84
+2,E,2,Bangladesh,16,Whole Wheat,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,85
+2,E,2,Bangladesh,17,Atta,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,86
+2,E,2,Bangladesh,18,Maida,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,,0,0,3,Year(Jun-July),2022,2023,87

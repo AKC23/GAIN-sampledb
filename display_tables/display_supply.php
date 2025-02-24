@@ -5,6 +5,7 @@
 $sql = "
     SELECT 
         s.SupplyID,
+        fv.VehicleName,
         c.CountryName,
         ft.FoodTypeName,
         ps.ProcessingStageName,
@@ -29,6 +30,8 @@ $sql = "
         r.AccessDate
     FROM 
         supply s
+    JOIN 
+        foodvehicle fv ON s.VehicleID = fv.VehicleID
     JOIN 
         country c ON s.CountryID = c.CountryID
     JOIN 
@@ -59,6 +62,7 @@ if ($result->num_rows > 0) {
     // Output data of each row
     echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
     echo "<th>SupplyID</th>";
+    echo "<th>Vehicle Name</th>";
     echo "<th>Country Supplied</th>";
     echo "<th>Food Type</th>";
     echo "<th>Processing Stage</th>";
@@ -86,6 +90,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['SupplyID']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['VehicleName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['CountryName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['FoodTypeName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ProcessingStageName']) . "</td>";
