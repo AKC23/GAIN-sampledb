@@ -83,7 +83,7 @@ try {
         include('insert_supply.php');
 
         // Level 3: Tables that depend on Level 2 tables
-        include('insert_supply_in_chain.php');
+        // include('insert_supply_in_chain.php');
 
 
     } else {

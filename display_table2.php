@@ -106,9 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_consumption.php');
                 } elseif ($tableName == 'individualconsumption') {
                     include('display_tables/display_individual_consumption.php');
+                } elseif ($tableName == 'supply_in_chain_final') {
+                    include('display_tables/display_supply_in_chain_final.php');
                 }
             } else {
-                echo "No records found.";
+                echo "Table Name: $tableName<br>No records found.";
             }
         } catch (mysqli_sql_exception $e) {
             echo "Error: " . $e->getMessage();
@@ -173,16 +175,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_consumption.php');
                 } elseif ($tableName == 'individualconsumption') {
                     include('display_tables/display_individual_consumption.php');
-                }elseif ($tableName == 'individualconsumption') {
-                    include('display_tables/display_individual_consumption.php');
-                }elseif ($tableName == 'supply_in_chain_final') {
+                } elseif ($tableName == 'supply_in_chain_final') {
                     include('display_tables/display_supply_in_chain_final.php');
                 }
             } else {
-                echo "No records found.";
+                echo "Table Name: $tableName<br>No records found.";
             }
         }
     }
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
+?>
