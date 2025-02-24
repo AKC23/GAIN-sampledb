@@ -173,6 +173,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_consumption.php');
                 } elseif ($tableName == 'individualconsumption') {
                     include('display_tables/display_individual_consumption.php');
+                }elseif ($tableName == 'individualconsumption') {
+                    include('display_tables/display_individual_consumption.php');
+                }elseif ($tableName == 'supply_in_chain_final') {
+                    include('display_tables/display_supply_in_chain_final.php');
                 }
             } else {
                 echo "No records found.";

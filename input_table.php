@@ -178,6 +178,7 @@ if (!empty($entityID)) {
 
 <body>
     <div class="container">
+        <br><br><br>
         <h1 class="center-title">Input Data for Table</h1>
         <form method="post">
             <div class="mb-3">
@@ -308,6 +309,8 @@ if (!empty($entityID)) {
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="PercentageOfCapacityUsed" class="form-control" oninput="calculateAnnualProductionSupplyVolumeMTY()">
                         <?php elseif ($column == 'AnnualProductionSupplyVolumeMTY' && $tableName == 'producerprocessor'): ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="AnnualProductionSupplyVolumeMTY" class="form-control" readonly style="color: darkgray;">
+                        <?php elseif ($column == 'AccessDate'): ?>
+                            <input type="date" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                         <?php else: ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                         <?php endif; ?>
