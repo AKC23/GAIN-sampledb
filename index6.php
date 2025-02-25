@@ -111,7 +111,7 @@
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
                 if (tableName) {
-                    $.post('display_table2.php', {
+                    $.post('display_table.php', {
                         tableName: tableName,
                         vehicleName: vehicleName,
                         countryName: countryName

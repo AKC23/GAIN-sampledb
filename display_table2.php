@@ -17,28 +17,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     if (!empty($tableName)) {
         $query = "SELECT * FROM $tableName";
         $conditions = [];
-        if (!empty($vehicleName)) {
-            if ($tableName == 'foodtype' || $tableName == 'processingstage') {
-                // Get VehicleID based on VehicleName
-                $vehicleResult = $conn->query("SELECT VehicleID FROM foodvehicle WHERE VehicleName = '$vehicleName'");
-                if ($vehicleRow = $vehicleResult->fetch_assoc()) {
-                    $vehicleID = $vehicleRow['VehicleID'];
-                    $conditions[] = "VehicleID = '$vehicleID'";
-                }
-            } else {
-                $conditions[] = "VehicleName = '$vehicleName'";
+        $hasVehicleField = false;
+        $hasCountryField = false;
+
+        // Check if the table has VehicleID or CountryID fields
+        $columnsResult = $conn->query("SHOW COLUMNS FROM $tableName");
+        while ($column = $columnsResult->fetch_assoc()) {
+            if ($column['Field'] == 'VehicleID') {
+                $hasVehicleField = true;
+            }
+            if ($column['Field'] == 'CountryID') {
+                $hasCountryField = true;
             }
         }
-        if (!empty($countryName)) {
-            if ($tableName == 'geographylevel1' || $tableName == 'producer_reference') {
-                // Get CountryID based on CountryName
-                $countryResult = $conn->query("SELECT CountryID FROM country WHERE CountryName = '$countryName'");
-                if ($countryRow = $countryResult->fetch_assoc()) {
-                    $countryID = $countryRow['CountryID'];
-                    $conditions[] = "CountryID = '$countryID'";
-                }
-            } else {
-                $conditions[] = "CountryName = '$countryName'";
+
+        if (!empty($vehicleName) && $hasVehicleField) {
+            // Get VehicleID based on VehicleName
+            $vehicleResult = $conn->query("SELECT VehicleID FROM foodvehicle WHERE VehicleName = '$vehicleName'");
+            if ($vehicleRow = $vehicleResult->fetch_assoc()) {
+                $vehicleID = $vehicleRow['VehicleID'];
+                $conditions[] = "VehicleID = '$vehicleID'";
+            }
+        }
+        if (!empty($countryName) && $hasCountryField) {
+            // Get CountryID based on CountryName
+            $countryResult = $conn->query("SELECT CountryID FROM country WHERE CountryName = '$countryName'");
+            if ($countryRow = $countryResult->fetch_assoc()) {
+                $countryID = $countryRow['CountryID'];
+                $conditions[] = "CountryID = '$countryID'";
             }
         }
         if (!empty($conditions)) {
@@ -106,8 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_consumption.php');
                 } elseif ($tableName == 'individualconsumption') {
                     include('display_tables/display_individual_consumption.php');
-                } elseif ($tableName == 'supply_in_chain_final') {
-                    include('display_tables/display_supply_in_chain_final.php');
                 }
             } else {
                 echo "Table Name: $tableName<br>No records found.";
@@ -175,8 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_consumption.php');
                 } elseif ($tableName == 'individualconsumption') {
                     include('display_tables/display_individual_consumption.php');
-                } elseif ($tableName == 'supply_in_chain_final') {
-                    include('display_tables/display_supply_in_chain_final.php');
                 }
             } else {
                 echo "Table Name: $tableName<br>No records found.";
