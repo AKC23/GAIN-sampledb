@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $tableName = $_POST['tableName'];
     $data = [];
     foreach ($columns as $column) {
-        if ($column != $primaryKey && $column != 'Volume_MT_Y' && $column != 'AnnualProductionSupplyVolumeMTY') {
+        if ($column != $primaryKey && $column != 'Volume_MT_Y' && $column != 'AnnualProductionSupplyVolumeMTY' && $column != 'VolumeMTY') {
             $data[$column] = $_POST[$column] ?? '';
         }
     }
@@ -62,6 +62,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $countryCheckResult = $conn->query($countryCheckQuery);
         if ($countryCheckResult->num_rows == 0) {
             echo "<div class='alert alert-danger'>Error: CountryID '" . htmlspecialchars($countryID) . "' does not exist in the country table.</div>";
+            exit;
+        }
+    }
+
+    // Calculate VolumeMTY for consumption table
+    if ($tableName == 'consumption') {
+        $ucid = $_POST['UCID'] ?? '';
+        $sourceVolume = (float)$_POST['SourceVolume'] ?? 0;
+        $unitValueResult = $conn->query("SELECT UnitValue FROM measureunit1 WHERE UCID = $ucid");
+        if ($unitValueResult && $unitValueRow = $unitValueResult->fetch_assoc()) {
+            $unitValue = (float)$unitValueRow['UnitValue'];
+            $data['VolumeMTY'] = $sourceVolume * $unitValue;
+        } else {
+            echo "<div class='alert alert-danger'>Error: Invalid UCID $ucid.</div>";
             exit;
         }
     }
@@ -127,6 +141,8 @@ if (!empty($entityID)) {
     <title>Input Table Data</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function updateForm() {
             const tableName = document.getElementById('tableName').value;
@@ -147,7 +163,7 @@ if (!empty($entityID)) {
                     .then(data => {
                         const unitValue = parseFloat(data.UnitValue) || 0;
                         const volumeMTY = sourceVolume * unitValue;
-                        document.getElementById('Volume_MT_Y').value = volumeMTY.toFixed(2);
+                        document.getElementById('VolumeMTY').value = volumeMTY.toFixed(2);
                     });
             }
         }
@@ -180,7 +196,7 @@ if (!empty($entityID)) {
     <div class="container">
         <br><br><br>
         <h1 class="center-title">Input Data for Table</h1>
-        <form method="post">
+        <form method="post" action="">
             <div class="mb-3">
                 <label for="tableName" class="form-label">Select a table</label>
                 <select id="tableName" name="tableName" class="form-control" onchange="updateForm()">
@@ -199,11 +215,99 @@ if (!empty($entityID)) {
                 </div>
             <?php endif; ?>
             <?php if (!empty($columns)): ?>
-                <?php foreach ($columns as $column): ?>
+                <?php foreach ($columns as $column): 
+                    $label = htmlspecialchars($column);
+                    $isForeignKey = false;
+                    $foreignKeyTable = '';
+                    $foreignKeyDisplayColumn = '';
+
+                    if ($column == 'VehicleID') {
+                        $label = 'Vehicle Name';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'foodvehicle';
+                        $foreignKeyDisplayColumn = 'VehicleName';
+                    } elseif ($column == 'FoodTypeID') {
+                        $label = 'Food Type Name';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'foodtype';
+                        $foreignKeyDisplayColumn = 'FoodTypeName';
+                    } elseif ($column == 'GL1ID') {
+                        $label = 'Admin Level 1';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'geographylevel1';
+                        $foreignKeyDisplayColumn = 'AdminLevel1';
+                    } elseif ($column == 'GL2ID') {
+                        $label = 'Admin Level 2';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'geographylevel2';
+                        $foreignKeyDisplayColumn = 'AdminLevel2';
+                    } elseif ($column == 'GL3ID') {
+                        $label = 'Admin Level 3';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'geographylevel3';
+                        $foreignKeyDisplayColumn = 'AdminLevel3';
+                    } elseif ($column == 'GenderID') {
+                        $label = 'Gender Name';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'gender';
+                        $foreignKeyDisplayColumn = 'GenderName';
+                    } elseif ($column == 'AgeID') {
+                        $label = 'Age Range';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'age';
+                        $foreignKeyDisplayColumn = 'AgeRange';
+                    } elseif ($column == 'ProducerReferenceID' && $tableName == 'producerprocessor') {
+                        $label = 'Producer Reference';
+                        $isForeignKey = true;
+                        $foreignKeyTable = 'producerreference';
+                        $foreignKeyDisplayColumn = 'IdentifierNumber';
+                    }
+                    ?>
                     <div class="mb-3">
-                        <label for="<?php echo htmlspecialchars($column); ?>" class="form-label"><?php echo htmlspecialchars($column); ?></label>
+                        <label for="<?php echo htmlspecialchars($column); ?>" class="form-label"><?php echo $label; ?></label>
                         <?php if ($column == $primaryKey): ?>
                             <input type="text" name="<?php echo htmlspecialchars($column); ?>" class="form-control" value="<?php echo htmlspecialchars($nextId); ?>" readonly>
+                        <?php elseif ($column == 'VolumeMTY' && $tableName == 'consumption'): ?>
+                            <input type="text" name="<?php echo htmlspecialchars($column); ?>" id="VolumeMTY" class="form-control" readonly style="color: darkgray;">
+                        <?php elseif ($isForeignKey && $column == 'ProducerReferenceID' && $tableName == 'producerprocessor'): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" id="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $fkResult = $conn->query("SELECT ProducerReferenceID, IdentifierNumber FROM producerreference ORDER BY IdentifierNumber ASC");
+                                while ($fkRow = $fkResult->fetch_assoc()) {
+                                    echo "<option value='{$fkRow['ProducerReferenceID']}'>{$fkRow['IdentifierNumber']}</option>";
+                                }
+                                ?>
+                            </select>
+                            <?php
+                            // Fetch and display related details
+                            $producerReferenceID = $_POST['ProducerReferenceID'] ?? '';
+                            if (!empty($producerReferenceID)) {
+                                $detailsQuery = "SELECT c.CompanyName, pr.IdentifierNumber, pr.IdentifierReferenceSystem, co.CountryName 
+                                                 FROM producerreference pr
+                                                 JOIN company c ON pr.CompanyID = c.CompanyID
+                                                 JOIN country co ON pr.CountryID = co.CountryID
+                                                 WHERE pr.ProducerReferenceID = '" . $conn->real_escape_string($producerReferenceID) . "'";
+                                $detailsResult = $conn->query($detailsQuery);
+                                if ($detailsResult && $detailsResult->num_rows > 0) {
+                                    $detailsRow = $detailsResult->fetch_assoc();
+                                    echo "<div class='mt-2'>";
+                                    echo "<p>Company Name: <input type='text' class='form-control-plaintext' value='" . htmlspecialchars($detailsRow['CompanyName']) . "' readonly></p>";
+                                    echo "<p>Identifier Number: <input type='text' class='form-control-plaintext' value='" . htmlspecialchars($detailsRow['IdentifierNumber']) . "' readonly></p>";
+                                    echo "<p>Identifier Reference System: <input type='text' class='form-control-plaintext' value='" . htmlspecialchars($detailsRow['IdentifierReferenceSystem']) . "' readonly></p>";
+                                    echo "<p>Country Name: <input type='text' class='form-control-plaintext' value='" . htmlspecialchars($detailsRow['CountryName']) . "' readonly></p>";
+                                    echo "</div>";
+                                }
+                            }
+                            ?>
+                        <?php elseif ($isForeignKey): ?>
+                            <select name="<?php echo htmlspecialchars($column); ?>" id="<?php echo htmlspecialchars($column); ?>" class="form-control">
+                                <?php
+                                $fkResult = $conn->query("SELECT {$column}, {$foreignKeyDisplayColumn} FROM {$foreignKeyTable} ORDER BY {$foreignKeyDisplayColumn} ASC");
+                                while ($fkRow = $fkResult->fetch_assoc()) {
+                                    echo "<option value='{$fkRow[$column]}'>{$fkRow[$foreignKeyDisplayColumn]}</option>";
+                                }
+                                ?>
+                            </select>
                         <?php elseif ($column == 'CountryID'): ?>
                             <select name="<?php echo htmlspecialchars($column); ?>" class="form-control">
                                 <?php
