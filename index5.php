@@ -1,3 +1,40 @@
+<?php
+// Include the database connection
+include('db_connect.php');
+
+// Fetch all table names
+$tables = [];
+$result = $conn->query("SHOW TABLES");
+if ($result) {
+    while ($row = $result->fetch_array()) {
+        $tables[] = $row[0];
+    }
+} else {
+    die("Error fetching tables: " . $conn->error);
+}
+
+// Fetch all vehicle names from the foodvehicle table
+$vehicleNames = [];
+$vehicleResult = $conn->query("SELECT VehicleName FROM foodvehicle ORDER BY VehicleName ASC");
+if ($vehicleResult) {
+    while ($vehicleRow = $vehicleResult->fetch_assoc()) {
+        $vehicleNames[] = $vehicleRow['VehicleName'];
+    }
+} else {
+    die("Error fetching vehicle names: " . $conn->error);
+}
+
+// Fetch all country names from the country table
+$countryNames = [];
+$countryResult = $conn->query("SELECT CountryName FROM country ORDER BY CountryName ASC");
+if ($countryResult) {
+    while ($countryRow = $countryResult->fetch_assoc()) {
+        $countryNames[] = $countryRow['CountryName'];
+    }
+} else {
+    die("Error fetching country names: " . $conn->error);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -192,13 +229,11 @@
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            require_once('db_connect.php');
-                            $result = $conn->query("SHOW TABLES");
-                            while ($row = $result->fetch_array()) {
-                                $table = $row[0];
-                                echo "<option value='$table'>" . htmlspecialchars($table) . "</option>";
-                            }
-                            ?>
+                            foreach ($tables as $table): ?>
+                                <option value="<?php echo htmlspecialchars($table); ?>">
+                                    <?php echo htmlspecialchars($table); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                         <button type="submit" class="btn btn-primary mt-2">Show Table</button>
                     </div>
@@ -206,8 +241,12 @@
                         <label for="vehicleName"><strong>Vehicle Name</strong></label>
                         <select name="vehicleName" class="form-control">
                             <option value="">Select a vehicle name</option>
-                            <option value="Edible Oil">Edible Oil</option>
-                            <option value="Wheat Flour">Wheat Flour</option>
+                            <?php
+                            foreach ($vehicleNames as $vehicleName): ?>
+                                <option value="<?php echo htmlspecialchars($vehicleName); ?>">
+                                    <?php echo htmlspecialchars($vehicleName); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
@@ -215,12 +254,11 @@
                         <select name="countryName" class="form-control">
                             <option value="">Select a country name</option>
                             <?php
-                            $countryResult = $conn->query("SELECT CountryName FROM country");
-                            while ($countryRow = $countryResult->fetch_array()) {
-                                $country = $countryRow['CountryName'];
-                                echo "<option value='$country'>" . htmlspecialchars($country) . "</option>";
-                            }
-                            ?>
+                            foreach ($countryNames as $countryName): ?>
+                                <option value="<?php echo htmlspecialchars($countryName); ?>">
+                                    <?php echo htmlspecialchars($countryName); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </form>
@@ -255,3 +293,7 @@
 </body>
 
 </html>
+<?php
+// Close the database connection
+$conn->close();
+?>

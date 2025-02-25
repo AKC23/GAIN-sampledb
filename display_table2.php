@@ -37,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             if ($vehicleRow = $vehicleResult->fetch_assoc()) {
                 $vehicleID = $vehicleRow['VehicleID'];
                 $conditions[] = "VehicleID = '$vehicleID'";
+            } else {
+                echo "<div class='alert alert-warning'>Vehicle Name '$vehicleName' not found in foodvehicle table.</div>";
             }
         }
         if (!empty($countryName) && $hasCountryField) {
@@ -45,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             if ($countryRow = $countryResult->fetch_assoc()) {
                 $countryID = $countryRow['CountryID'];
                 $conditions[] = "CountryID = '$countryID'";
+            } else {
+                echo "<div class='alert alert-warning'>Country Name '$countryName' not found in country table.</div>";
             }
         }
         if (!empty($conditions)) {
