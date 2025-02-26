@@ -1,10 +1,47 @@
+<?php
+// Include the database connection
+include('db_connect.php');
+
+// Fetch all table names
+$tables = [];
+$result = $conn->query("SHOW TABLES");
+if ($result) {
+    while ($row = $result->fetch_array()) {
+        $tables[] = $row[0];
+    }
+} else {
+    die("Error fetching tables: " . $conn->error);
+}
+
+// Fetch all vehicle names from the foodvehicle table
+$vehicleNames = [];
+$vehicleResult = $conn->query("SELECT VehicleName FROM foodvehicle ORDER BY VehicleName ASC");
+if ($vehicleResult) {
+    while ($vehicleRow = $vehicleResult->fetch_assoc()) {
+        $vehicleNames[] = $vehicleRow['VehicleName'];
+    }
+} else {
+    die("Error fetching vehicle names: " . $conn->error);
+}
+
+// Fetch all country names from the country table
+$countryNames = [];
+$countryResult = $conn->query("SELECT CountryName FROM country ORDER BY CountryName ASC");
+if ($countryResult) {
+    while ($countryRow = $countryResult->fetch_assoc()) {
+        $countryNames[] = $countryRow['CountryName'];
+    }
+} else {
+    die("Error fetching country names: " . $conn->error);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database on Edible Oil and Wheat Flour Supply for Human Consumption in Bangladesh</title>
+    <title>Essential Commodities Supply Database</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -15,8 +52,8 @@
         .center-title {
             text-align: center;
             color: #000;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 10px;
             font-weight: 700;
         }
 
@@ -42,17 +79,16 @@
         }
 
         .card {
-            margin-top: 20px;
-            padding: 10px;
+            margin-top: 1%;
+            padding: 10px; /* Increased padding */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #c8e5bf;
             border-radius: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            text-align: center;
-            /* Center-align all text in the card */
+            width: 100%; 
+            text-align: center; /* Center-align all text in the card */
         }
 
         .table-selection {
@@ -111,7 +147,7 @@
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
                 if (tableName) {
-                    $.post('display_table.php', {
+                    $.post('display_table2.php', {
                         tableName: tableName,
                         vehicleName: vehicleName,
                         countryName: countryName
@@ -177,8 +213,8 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="center-title">Database on Edible Oil and Wheat Flour Supply for Human Consumption in Bangladesh</h1>
+    <div class="container" style="max-width: 1200px;">
+        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
 
         <div class="mb-3">
             <a href="input_table.php" class="btn btn-primary">Input Data</a>
@@ -192,13 +228,11 @@
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            require_once('db_connect.php');
-                            $result = $conn->query("SHOW TABLES");
-                            while ($row = $result->fetch_array()) {
-                                $table = $row[0];
-                                echo "<option value='$table'>" . htmlspecialchars($table) . "</option>";
-                            }
-                            ?>
+                            foreach ($tables as $table): ?>
+                                <option value="<?php echo htmlspecialchars($table); ?>">
+                                    <?php echo htmlspecialchars($table); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                         <button type="submit" class="btn btn-primary mt-2">Show Table</button>
                     </div>
@@ -206,8 +240,12 @@
                         <label for="vehicleName"><strong>Vehicle Name</strong></label>
                         <select name="vehicleName" class="form-control">
                             <option value="">Select a vehicle name</option>
-                            <option value="Edible Oil">Edible Oil</option>
-                            <option value="Wheat Flour">Wheat Flour</option>
+                            <?php
+                            foreach ($vehicleNames as $vehicleName): ?>
+                                <option value="<?php echo htmlspecialchars($vehicleName); ?>">
+                                    <?php echo htmlspecialchars($vehicleName); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
@@ -215,12 +253,11 @@
                         <select name="countryName" class="form-control">
                             <option value="">Select a country name</option>
                             <?php
-                            $countryResult = $conn->query("SELECT CountryName FROM country");
-                            while ($countryRow = $countryResult->fetch_array()) {
-                                $country = $countryRow['CountryName'];
-                                echo "<option value='$country'>" . htmlspecialchars($country) . "</option>";
-                            }
-                            ?>
+                            foreach ($countryNames as $countryName): ?>
+                                <option value="<?php echo htmlspecialchars($countryName); ?>">
+                                    <?php echo htmlspecialchars($countryName); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </form>
@@ -255,3 +292,7 @@
 </body>
 
 </html>
+<?php
+// Close the database connection
+$conn->close();
+?>

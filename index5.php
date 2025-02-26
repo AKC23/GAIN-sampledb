@@ -41,7 +41,7 @@ if ($countryResult) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database on Edible Oil and Wheat Flour Supply for Human Consumption in Bangladesh</title>
+    <title>Essential Commodities Supply Database</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -215,7 +215,7 @@ if ($countryResult) {
 
 <body>
     <div class="container">
-        <h1 class="center-title">Database on Edible Oil and Wheat Flour Supply for Human Consumption in Bangladesh</h1>
+        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
 
         <div class="mb-3">
             <a href="input_table.php" class="btn btn-primary">Input Data</a>
