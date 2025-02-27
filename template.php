@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'create') {
         $name = $_POST['name'];
         $description = $_POST['description'];
-        $stmt = $mysqli->prepare("INSERT INTO items (name, description) VALUES (?, ?)");
+        $stmt = $mysqli->prepare("INSERT INTO foodtype (FoodTypeName, VehicleID) VALUES (?, ?)");
         $stmt->bind_param("ss", $name, $description);
         $stmt->execute();
         $stmt->close();

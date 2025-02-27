@@ -22,14 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             // Check if the entered credentials match any user in the database
-            $sql = "SELECT * FROM userinfo WHERE email = '$email' AND password = '$password'";
-            $result = $conn->query($sql);
+            $sql = "SELECT * FROM userinfo WHERE email = ? AND password = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $email, $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 // Redirect to user dashboard or desired page
                 echo "<script>
                         alert('User Login successful! Moving to User view of the database.');
-                        window.location.href = 'index_user.php';
+                        window.location.href = 'index_admin.php';
                       </script>";
                 exit();
             } else {
@@ -42,42 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
         }
-    } elseif (isset($_POST['registerName']) && isset($_POST['registerUsername']) && isset($_POST['registerEmail']) && isset($_POST['registerPassword']) && isset($_POST['registerRepeatPassword']) && isset($_POST['registerBirthday'])) {
-        $name = $_POST["registerName"];
-        $username = $_POST["registerUsername"];
-        $email = $_POST["registerEmail"];
-        $password = $_POST["registerPassword"]; // In real-world, hash this password
-        $repeatPassword = $_POST["registerRepeatPassword"];
-        $birthday = $_POST["registerBirthday"];
-
-        // Validate password match
-        if ($password != $repeatPassword) {
-            die("Passwords do not match.");
-        }
-
-        // Check if the email already exists
-        $checkEmailQuery = "SELECT * FROM userinfo WHERE email = '$email'";
-        $checkEmailResult = $conn->query($checkEmailQuery);
-
-        if ($checkEmailResult->num_rows > 0) {
-            die("Email already exists. Please use a different email.");
-        } else {
-            // If the email is unique, proceed with registration
-
-            // Prepare SQL
-            $sql = "INSERT INTO userinfo (name, username, email, password, birthday) VALUES ('$name', '$username', '$email', '$password', '$birthday')";
-
-            if ($conn->query($sql) === TRUE) {
-                echo "New record created successfully";
-                echo "<script>alert('Registration successful!');</script>";
-                header("Location: login_register.php"); // Redirect to login page after successful registration
-                exit();
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-        }
     }
-
     $conn->close();
 }
 ?>
@@ -153,74 +121,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </form>
                 </div>
                 <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                    <form method="post" action="">
-                        <div class="text-center mb-3">
-                            <p>Sign up with:</p>
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                <i class="fab fa-facebook-f"></i>
-                            </button>
+                    <form class="form-horizontal" action="register_user_info.php" method="POST">
+                        <fieldset>
+                            <div id="legend">
+                                <legend class="">Register</legend>
+                            </div>
+                            <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label" for="registerUsername">Username</label>
+                                <div class="controls">
+                                    <input type="text" id="registerUsername" name="registerUsername" placeholder="" class="input-xlarge form-control">
+                                    <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+                                </div>
+                            </div>
 
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                <i class="fab fa-google"></i>
-                            </button>
+                            <div class="control-group">
+                                <!-- E-mail -->
+                                <label class="control-label" for="registerEmail">E-mail</label>
+                                <div class="controls">
+                                    <input type="text" id="registerEmail" name="registerEmail" placeholder="" class="input-xlarge form-control">
+                                    <p class="help-block">Please provide your E-mail</p>
+                                </div>
+                            </div>
 
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                <i class="fab fa-twitter"></i>
-                            </button>
+                            <div class="control-group">
+                                <!-- Password-->
+                                <label class="control-label" for="registerPassword">Password</label>
+                                <div class="controls">
+                                    <input type="password" id="registerPassword" name="registerPassword" placeholder="" class="input-xlarge form-control">
+                                    <p class="help-block">Password should be at least 4 characters</p>
+                                </div>
+                            </div>
 
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                                <i class "fab fa-github"></i>
-                            </button>
-                        </div>
+                            <div class="control-group">
+                                <!-- Password -->
+                                <label class="control-label" for="registerRepeatPassword">Password (Confirm)</label>
+                                <div class="controls">
+                                    <input type="password" id="registerRepeatPassword" name="registerRepeatPassword" placeholder="" class="input-xlarge form-control">
+                                    <p class="help-block">Please confirm password</p>
+                                </div>
+                            </div>
 
-                        <p class="text-center">or:</p>
+                            <div class="control-group">
+                                <!-- Date of Birth input -->
+                                <label class="control-label" for="registerBirthday">Date of Birth</label>
+                                <div class="controls">
+                                    <input type="date" id="registerBirthday" name="registerBirthday" class="input-xlarge form-control" required />
+                                </div>
+                            </div>
 
-                        <!-- Name input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="text" id="registerName" name="registerName" class="form-control" required />
-                            <label class="form-label" for="registerName">Name</label>
-                        </div>
-
-                        <!-- Username input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="text" id="registerUsername" name="registerUsername" class="form-control" required />
-                            <label class="form-label" for="registerUsername">Username</label>
-                        </div>
-
-                        <!-- Email input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="email" id="registerEmail" name="registerEmail" class="form-control" required />
-                            <label class="form-label" for="registerEmail">Email</label>
-                        </div>
-
-                        <!-- Password input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="password" id="registerPassword" name="registerPassword" class="form-control" required />
-                            <label class="form-label" for="registerPassword">Password</label>
-                        </div>
-
-                        <!-- Repeat Password input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="password" id="registerRepeatPassword" name="registerRepeatPassword" class="form-control" required />
-                            <label class="form-label" for="registerRepeatPassword">Repeat password</label>
-                        </div>
-
-                        <!-- Date of Birth input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="date" id="registerBirthday" name="registerBirthday" class="form-control" required />
-                            <label class="form-label" for="registerBirthday">Date of Birth</label>
-                        </div>
-
-                        <!-- Checkbox -->
-                        <div class="form-check d-flex justify-content-center mb-4">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked aria-describedby="registerCheckHelpText" />
-                            <label class="form-check-label" for="registerCheck">
-                                I have read and agree to the terms
-                            </label>
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-3">Sign in</button>
+                            <div class="control-group">
+                                <!-- Button -->
+                                <div class="controls">
+                                    <button class="btn btn-success">Register</button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </form>
                 </div>
             </div>
