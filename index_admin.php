@@ -41,7 +41,7 @@ if ($countryResult) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essential Commodities Supply Database</title>
+    <title>Essential Commodities Supply Database (Admin)</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -53,8 +53,8 @@ if ($countryResult) {
             text-align: center;
             color: #000;
             margin-top: 15px;
-            margin-bottom: 10px;
-            font-weight: 700;
+            margin-bottom: 15px;
+            font-weight: 300;
         }
 
         .current-time {
@@ -214,10 +214,10 @@ if ($countryResult) {
 
 <body>
     <div class="container" style="max-width: 1200px;">
-        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
+        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption (Admin)</h1>
 
         <div class="mb-3">
-            <a href="input_table.php" class="btn btn-primary">Input Data</a>
+            <a href="input_table6.php" class="btn btn-primary">Input Data</a>
         </div>
 
         <div class="card">
