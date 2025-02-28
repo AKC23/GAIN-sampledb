@@ -1,5 +1,5 @@
 <?php
-// index.php
+// template.php
 
 // Database connection parameters – change these as needed
 $host = 'localhost:3308';
