@@ -141,39 +141,54 @@ if ($countryResult) {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
+            var selectedTable = '';
+
             $('form').on('submit', function(event) {
                 event.preventDefault();
-                var tableName = $('select[name="tableName"]').val();
+                selectedTable = $('select[name="tableName"]').val();
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
-                if (tableName) {
+                if (selectedTable) {
                     $.post('display_table2.php', {
-                        tableName: tableName,
+                        tableName: selectedTable,
                         vehicleName: vehicleName,
                         countryName: countryName
                     }, function(data) {
                         if (data.trim() === '') {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                tableName + '</h2><p>No data available for the selected filter.</p>');
+                                selectedTable + '</h2><p>No data available for the selected filter.</p>');
                         } else {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                tableName + '</h2>' + data);
+                                selectedTable + '</h2>' + data);
                         }
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
-                            tableName: tableName,
+                            tableName: selectedTable,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
                         $('#download-excel-btn').data('params', {
-                            tableName: tableName,
+                            tableName: selectedTable,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
+                        $('#modify-data-btn').show();
                     });
                 } else {
                     $('#table-view').html('');
                     $('.download-buttons').hide();
+                    $('#modify-data-btn').hide();
+                }
+            });
+
+            $('#modify-data-btn').on('click', function() {
+                if (selectedTable) {
+                    if (selectedTable == 'foodvehicle') {
+                        window.location.href = 'input_foodvehicle.php';
+                    }
+                    // Add more conditions for other tables as needed
+                } else {
+                    alert('Please select a table first.');
                 }
             });
 
@@ -208,6 +223,7 @@ if ($countryResult) {
             });
 
             $('.download-buttons').hide();
+            $('#modify-data-btn').hide();
         });
     </script>
 </head>
@@ -215,10 +231,6 @@ if ($countryResult) {
 <body>
     <div class="container" style="max-width: 1200px;">
         <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption (Admin)</h1>
-
-        <div class="mb-3">
-            <a href="input_table6.php" class="btn btn-primary">Input Data</a>
-        </div>
 
         <div class="card">
             <div style="display: flex; align-items: center; width: 100%;">
@@ -274,6 +286,7 @@ if ($countryResult) {
         <div class="download-buttons">
             <button id="download-csv-btn" class="btn btn-success">Download CSV</button>
             <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
+            <button id="modify-data-btn" class="btn btn-primary">Modify Data</button>
         </div>
         <div id="debug-card">
 
@@ -284,7 +297,6 @@ if ($countryResult) {
         </div>
     </div>
     <br><br><br>
-
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
