@@ -186,6 +186,9 @@ if ($countryResult) {
                     if (selectedTable == 'foodvehicle') {
                         window.location.href = 'input_tables/input_foodvehicle.php';
                     }
+                    else if (selectedTable == 'country') {
+                        window.location.href = 'input_tables/input_country.php';
+                    }
                     // Add more conditions for other tables as needed
                 } else {
                     alert('Please select a table first.');
