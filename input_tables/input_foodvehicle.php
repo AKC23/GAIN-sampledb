@@ -1,7 +1,7 @@
 <?php
 // input_foodvehicle.php
 // Include the database connection
-include('db_connect.php');
+include('../db_connect.php');
 
 // Process form submissions (create, update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

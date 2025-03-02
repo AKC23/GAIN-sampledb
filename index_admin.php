@@ -184,7 +184,7 @@ if ($countryResult) {
             $('#modify-data-btn').on('click', function() {
                 if (selectedTable) {
                     if (selectedTable == 'foodvehicle') {
-                        window.location.href = 'input_foodvehicle.php';
+                        window.location.href = 'input_tables/input_foodvehicle.php';
                     }
                     // Add more conditions for other tables as needed
                 } else {
