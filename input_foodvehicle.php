@@ -62,7 +62,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     <div class="container mt-5">
         <h1>Modify Food Vehicle Table</h1>
         
-    
+        <!-- Create Form -->
+        <h3>Add New Informations</h3>
         <form method="post" action="input_foodvehicle.php" class="mb-4">
             <input type="hidden" name="action" value="create">
             <div class="form-group">

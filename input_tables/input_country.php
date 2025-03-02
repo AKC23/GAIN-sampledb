@@ -99,7 +99,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         <h1>Modify Country Table</h1>
         
         <!-- Create Form -->
-        <h2>Add New Country</h2>
+        <h3>Add New Informations</h3>
         <form method="post" action="input_country.php" class="mb-4">
             <input type="hidden" name="action" value="create">
             <div class="form-group">
