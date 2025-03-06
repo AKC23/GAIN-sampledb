@@ -1,11 +1,43 @@
 <?php
 
-// display_table2.php 
+// display_table_user.php 
 // This script displays the contents of a table based on the user's input
 // It also filters the table based on the user's input for vehicleName and countryName
 
 // Include the database connection
 include('db_connect.php');
+
+// Define the list of valid tables with formatted names
+$validTables = [
+    'adultmaleequivalent' => 'Adult Male Equivalent',
+    'age' => 'Age',
+    'brand' => 'Brand',
+    'company' => 'Company',
+    'consumption' => 'Consumption',
+    'country' => 'Country',
+    'distribution' => 'Distribution',
+    'distributionchannel' => 'Distribution Channel',
+    'entity' => 'Entity',
+    'extractionconversion' => 'Extraction Conversion',
+    'foodtype' => 'Food Type',
+    'foodvehicle' => 'Food Vehicle',
+    'gender' => 'Gender',
+    'geographylevel1' => 'Geography Level 1',
+    'geographylevel2' => 'Geography Level 2',
+    'geographylevel3' => 'Geography Level 3',
+    'individualconsumption' => 'Individual Consumption',
+    'measurecurrency' => 'Measure Currency',
+    'measureunit1' => 'Measure Unit 1',
+    'packagingtype' => 'Packaging Type',
+    'producerprocessor' => 'Producer Processor',
+    'producerreference' => 'Producer Reference',
+    'producersku' => 'Producer SKU',
+    'product' => 'Product',
+    'reference' => 'Reference',
+    'subdistributionchannel' => 'Sub Distribution Channel',
+    'supply' => 'Supply',
+    'yeartype' => 'Year Type'
+];
 
 // Ensure that $tableName is set and valid
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
@@ -13,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
     $vehicleName = $_POST['vehicleName'];
     $countryName = $_POST['countryName'];
 
-    // Handle tables
-    if (!empty($tableName)) {
+    // Check if the table is in the list of valid tables
+    if (array_key_exists($tableName, $validTables)) {
         $query = "SELECT * FROM $tableName";
         $conditions = [];
         $hasVehicleField = false;
@@ -38,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 $vehicleID = $vehicleRow['VehicleID'];
                 $conditions[] = "VehicleID = '$vehicleID'";
             } else {
-                echo "<div class='alert alert-warning'>Vehicle Name '$vehicleName' not found in foodvehicle table.</div>";
+                echo "No records found";
+                return;
             }
         }
         if (!empty($countryName) && $hasCountryField) {
@@ -48,7 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                 $countryID = $countryRow['CountryID'];
                 $conditions[] = "CountryID = '$countryID'";
             } else {
-                echo "<div class='alert alert-warning'>Country Name '$countryName' not found in country table.</div>";
+                echo "No records found";
+                return;
             }
         }
         if (!empty($conditions)) {
@@ -118,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_individual_consumption.php');
                 }
             } else {
-                echo "Table Name: $tableName<br>No records found.";
+                echo "No records found";
             }
         } catch (mysqli_sql_exception $e) {
             echo "Error: " . $e->getMessage();
@@ -185,9 +219,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_individual_consumption.php');
                 }
             } else {
-                echo "Table Name: $tableName<br>No records found.";
+                echo "No records found";
             }
         }
+    } else {
+        echo "Invalid table name.";
     }
 }
 // Note: Do not close the database connection here

@@ -35,6 +35,38 @@ if ($countryResult) {
 } else {
     die("Error fetching country names: " . $conn->error);
 }
+
+// Define the list of valid tables with formatted names
+$validTables = [
+    'adultmaleequivalent' => 'Adult Male Equivalent',
+    'age' => 'Age',
+    'brand' => 'Brand',
+    'company' => 'Company',
+    'consumption' => 'Consumption',
+    'country' => 'Country',
+    'distribution' => 'Distribution',
+    'distributionchannel' => 'Distribution Channel',
+    'entity' => 'Entity',
+    'extractionconversion' => 'Extraction Conversion',
+    'foodtype' => 'Food Type',
+    'foodvehicle' => 'Food Vehicle',
+    'gender' => 'Gender',
+    'geographylevel1' => 'Geography Level 1',
+    'geographylevel2' => 'Geography Level 2',
+    'geographylevel3' => 'Geography Level 3',
+    'individualconsumption' => 'Individual Consumption',
+    'measurecurrency' => 'Measure Currency',
+    'measureunit1' => 'Measure Unit 1',
+    'packagingtype' => 'Packaging Type',
+    'producerprocessor' => 'Producer Processor',
+    'producerreference' => 'Producer Reference',
+    'producersku' => 'Producer SKU',
+    'product' => 'Product',
+    'reference' => 'Reference',
+    'subdistributionchannel' => 'Sub Distribution Channel',
+    'supply' => 'Supply',
+    'yeartype' => 'Year Type'
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,17 +180,17 @@ if ($countryResult) {
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
                 if (tableName) {
-                    $.post('display_table6.php', {
+                    $.post('display_table_user.php', {
                         tableName: tableName,
                         vehicleName: vehicleName,
                         countryName: countryName
                     }, function(data) {
                         if (data.trim() === '') {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                tableName + '</h2><p>No data available for the selected filter.</p>');
+                                <?php echo json_encode($validTables); ?>[tableName] + '</h2><p>No data available for the selected filter.</p>');
                         } else {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                tableName + '</h2>' + data);
+                                <?php echo json_encode($validTables); ?>[tableName] + '</h2>' + data);
                         }
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
@@ -230,9 +262,9 @@ if ($countryResult) {
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            foreach ($tables as $table): ?>
+                            foreach ($validTables as $table => $formattedName): ?>
                                 <option value="<?php echo htmlspecialchars($table); ?>">
-                                    <?php echo htmlspecialchars($table); ?>
+                                    <?php echo htmlspecialchars($formattedName); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -280,7 +312,7 @@ if ($countryResult) {
         <div id="debug-card">
 
             <?php
-            // include('debug_table.php');
+            //include('debug_table.php');
             ?>
 
         </div>
