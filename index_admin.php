@@ -1,4 +1,5 @@
 <?php
+// index_user.php
 // Include the database connection
 include('db_connect.php');
 
@@ -34,6 +35,38 @@ if ($countryResult) {
 } else {
     die("Error fetching country names: " . $conn->error);
 }
+
+// Define the list of valid tables with formatted names
+$validTables = [
+    'adultmaleequivalent' => 'Adult Male Equivalent',
+    'age' => 'Age',
+    'brand' => 'Brand',
+    'company' => 'Company',
+    'consumption' => 'Consumption',
+    'country' => 'Country',
+    'distribution' => 'Distribution',
+    'distributionchannel' => 'Distribution Channel',
+    'entity' => 'Entity',
+    'extractionconversion' => 'Extraction Conversion',
+    'foodtype' => 'Food Type',
+    'foodvehicle' => 'Food Vehicle',
+    'gender' => 'Gender',
+    'geographylevel1' => 'Geography Level 1',
+    'geographylevel2' => 'Geography Level 2',
+    'geographylevel3' => 'Geography Level 3',
+    'individualconsumption' => 'Individual Consumption',
+    'measurecurrency' => 'Measure Currency',
+    'measureunit1' => 'Measure Unit 1',
+    'packagingtype' => 'Packaging Type',
+    'producerprocessor' => 'Producer Processor',
+    'producerreference' => 'Producer Reference',
+    'producersku' => 'Producer SKU',
+    'product' => 'Product',
+    'reference' => 'Reference',
+    'subdistributionchannel' => 'Sub Distribution Channel',
+    'supply' => 'Supply',
+    'yeartype' => 'Year Type'
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +74,7 @@ if ($countryResult) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essential Commodities Supply Database (Admin)</title>
+    <title>Essential Commodities Supply Database</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -141,57 +174,39 @@ if ($countryResult) {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
-            var selectedTable = '';
-
             $('form').on('submit', function(event) {
                 event.preventDefault();
-                selectedTable = $('select[name="tableName"]').val();
+                var tableName = $('select[name="tableName"]').val();
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
-                if (selectedTable) {
-                    $.post('display_table2.php', {
-                        tableName: selectedTable,
+                if (tableName) {
+                    $.post('display_table_admin.php', {
+                        tableName: tableName,
                         vehicleName: vehicleName,
                         countryName: countryName
                     }, function(data) {
                         if (data.trim() === '') {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                selectedTable + '</h2><p>No data available for the selected filter.</p>');
+                                <?php echo json_encode($validTables); ?>[tableName] + '</h2><p>No data available for the selected filter.</p>');
                         } else {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                selectedTable + '</h2>' + data);
+                                <?php echo json_encode($validTables); ?>[tableName] + '</h2>' + data);
                         }
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
-                            tableName: selectedTable,
+                            tableName: tableName,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
                         $('#download-excel-btn').data('params', {
-                            tableName: selectedTable,
+                            tableName: tableName,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
-                        $('#modify-data-btn').show();
                     });
                 } else {
                     $('#table-view').html('');
                     $('.download-buttons').hide();
-                    $('#modify-data-btn').hide();
-                }
-            });
-
-            $('#modify-data-btn').on('click', function() {
-                if (selectedTable) {
-                    if (selectedTable == 'foodvehicle') {
-                        window.location.href = 'input_tables/input_foodvehicle.php';
-                    }
-                    else if (selectedTable == 'country') {
-                        window.location.href = 'input_tables/input_country.php';
-                    }
-                    // Add more conditions for other tables as needed
-                } else {
-                    alert('Please select a table first.');
                 }
             });
 
@@ -226,14 +241,18 @@ if ($countryResult) {
             });
 
             $('.download-buttons').hide();
-            $('#modify-data-btn').hide();
         });
     </script>
 </head>
 
 <body>
     <div class="container" style="max-width: 1200px;">
-        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption (Admin)</h1>
+        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
+
+        <div class="mb-3">
+            
+            <a href="login_register.php" class="btn btn-secondary">Admin Login</a>
+        </div>
 
         <div class="card">
             <div style="display: flex; align-items: center; width: 100%;">
@@ -243,9 +262,9 @@ if ($countryResult) {
                         <select name="tableName" class="form-control">
                             <option value="">Select a table</option>
                             <?php
-                            foreach ($tables as $table): ?>
+                            foreach ($validTables as $table => $formattedName): ?>
                                 <option value="<?php echo htmlspecialchars($table); ?>">
-                                    <?php echo htmlspecialchars($table); ?>
+                                    <?php echo htmlspecialchars($formattedName); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -289,17 +308,17 @@ if ($countryResult) {
         <div class="download-buttons">
             <button id="download-csv-btn" class="btn btn-success">Download CSV</button>
             <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
-            <button id="modify-data-btn" class="btn btn-primary">Modify Data</button>
         </div>
         <div id="debug-card">
 
             <?php
-            // include('debug_table.php');
+            //include('debug_table.php');
             ?>
 
         </div>
     </div>
     <br><br><br>
+
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
