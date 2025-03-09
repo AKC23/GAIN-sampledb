@@ -1,5 +1,5 @@
 <?php
-// index_user.php
+
 // Include the database connection
 include('db_connect.php');
 
@@ -74,7 +74,7 @@ $validTables = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essential Commodities Supply Database</title>
+    <title>Essential Commodities Supply Database (Admin)</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -174,39 +174,57 @@ $validTables = [
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
+            var selectedTable = '';
+
             $('form').on('submit', function(event) {
                 event.preventDefault();
-                var tableName = $('select[name="tableName"]').val();
+                selectedTable = $('select[name="tableName"]').val();
                 var vehicleName = $('select[name="vehicleName"]').val();
                 var countryName = $('select[name="countryName"]').val();
-                if (tableName) {
-                    $.post('display_table_admin.php', {
-                        tableName: tableName,
+                if (selectedTable) {
+                    $.post('display_table_user.php', {
+                        tableName: selectedTable,
                         vehicleName: vehicleName,
                         countryName: countryName
                     }, function(data) {
                         if (data.trim() === '') {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                <?php echo json_encode($validTables); ?>[tableName] + '</h2><p>No data available for the selected filter.</p>');
+                                <?php echo json_encode($validTables); ?>[selectedTable] + '</h2><p>No data available for the selected filter.</p>');
                         } else {
                             $('#table-view').html('<h2 class="text-left card-title">Table Name: ' +
-                                <?php echo json_encode($validTables); ?>[tableName] + '</h2>' + data);
+                                <?php echo json_encode($validTables); ?>[selectedTable] + '</h2>' + data);
                         }
                         $('.download-buttons').show();
                         $('#download-csv-btn').data('params', {
-                            tableName: tableName,
+                            tableName: selectedTable,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
                         $('#download-excel-btn').data('params', {
-                            tableName: tableName,
+                            tableName: selectedTable,
                             vehicleName: vehicleName,
                             countryName: countryName
                         });
+                        $('#modify-data-btn').show();
                     });
                 } else {
                     $('#table-view').html('');
                     $('.download-buttons').hide();
+                    $('#modify-data-btn').hide();
+                }
+            });
+
+            $('#modify-data-btn').on('click', function() {
+                if (selectedTable) {
+                    if (selectedTable == 'foodvehicle') {
+                        window.location.href = 'input_tables/input_foodvehicle.php';
+                    }
+                    else if (selectedTable == 'country') {
+                        window.location.href = 'input_tables/input_country.php';
+                    }
+                    // Add more conditions for other tables as needed
+                } else {
+                    alert('Please select a table first.');
                 }
             });
 
@@ -241,18 +259,19 @@ $validTables = [
             });
 
             $('.download-buttons').hide();
+            $('#modify-data-btn').hide();
         });
     </script>
 </head>
 
 <body>
     <div class="container" style="max-width: 1200px;">
-        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
+        <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption (Admin)</h1>
 
-        <div class="mb-3">
-            
-            <a href="login_register.php" class="btn btn-secondary">Admin Login</a>
-        </div>
+
+
+
+
 
         <div class="card">
             <div style="display: flex; align-items: center; width: 100%;">
@@ -308,11 +327,12 @@ $validTables = [
         <div class="download-buttons">
             <button id="download-csv-btn" class="btn btn-success">Download CSV</button>
             <button id="download-excel-btn" class="btn btn-success">Download Excel</button>
+            <button id="modify-data-btn" class="btn btn-primary">Modify Data</button>
         </div>
         <div id="debug-card">
 
             <?php
-            //include('debug_table.php');
+            // include('debug_table.php');
             ?>
 
         </div>

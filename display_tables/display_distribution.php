@@ -13,13 +13,7 @@ $sql = "
         d.Volume_MT_Y,
         c.CountryName,
         yt.YearTypeName,
-        yt.StartMonth,
-        yt.EndMonth,
-        r.ReferenceNumber,
-        r.Source,
-        r.Link,
-        r.ProcessToObtainData,
-        r.AccessDate
+        r.ReferenceNumber
     FROM 
         distribution d
     JOIN 
@@ -55,13 +49,7 @@ if ($result->num_rows > 0) {
     echo "<th>Volume_MT_Y</th>";
     echo "<th>CountryName</th>";
     echo "<th>YearTypeName</th>";
-    echo "<th>StartMonth</th>";
-    echo "<th>EndMonth</th>";
     echo "<th>ReferenceNumber</th>";
-    echo "<th>Source</th>";
-    echo "<th>Link</th>";
-    echo "<th>ProcessToObtainData</th>";
-    echo "<th>AccessDate</th>";
     echo "</tr></thead><tbody>";
     
     while($row = $result->fetch_assoc()) {
@@ -76,13 +64,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['Volume_MT_Y']) . "</td>";
         echo "<td>" . htmlspecialchars($row['CountryName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['YearTypeName']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['StartMonth']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['EndMonth']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ReferenceNumber']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Source']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Link']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['ProcessToObtainData']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['AccessDate']) . "</td>";
         echo "</tr>";
     }
     echo "</tbody></table></div>";

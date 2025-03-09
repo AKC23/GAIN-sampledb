@@ -16,10 +16,6 @@ echo "<th>Year Type</th>";
 echo "<th>Start Year</th>";
 echo "<th>End Year</th>";
 echo "<th>Reference Number</th>";
-echo "<th>Source</th>";
-echo "<th>Link</th>";
-echo "<th>Process To Obtain Data</th>";
-echo "<th>Access Date</th>";
 echo "</tr></thead><tbody>";
 
 // Fetch and display table rows
@@ -84,18 +80,10 @@ while ($row = $result->fetch_assoc()) {
 
     // Fetch Reference details from reference table
     $referenceID = htmlspecialchars($row['ReferenceID']);
-    $referenceQuery = $conn->query("SELECT ReferenceNumber, Source, Link, ProcessToObtainData, AccessDate FROM reference WHERE ReferenceID = $referenceID");
+    $referenceQuery = $conn->query("SELECT ReferenceNumber FROM reference WHERE ReferenceID = $referenceID");
     if ($referenceRow = $referenceQuery->fetch_assoc()) {
         echo "<td>" . htmlspecialchars($referenceRow['ReferenceNumber']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['Source']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['Link']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['ProcessToObtainData']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['AccessDate']) . "</td>";
     } else {
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
         echo "<td>N/A</td>";
     }
 
