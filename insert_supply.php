@@ -201,7 +201,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
         $sql = "INSERT INTO supply (VehicleID, CountryID, FoodTypeID, PSID, Origin, EntityID, ProductID, ProducerReferenceID, UCID, SourceVolume, VolumeMTY, CropToFirstProcessedFoodStageConvertedValue, YearTypeID, StartYear, EndYear, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiiiisiiidddiii", $vehicleID, $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
+        $stmt->bind_param("iiiisisiiidddiii", $vehicleID, $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
 
         if ($stmt->execute()) {
             $supplyID = $conn->insert_id;

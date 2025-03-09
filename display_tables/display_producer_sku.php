@@ -11,11 +11,7 @@ $sql = "
         pt.PackagingTypeName,
         ps.Price,
         mc.CurrencyName,
-        r.ReferenceNumber,
-        r.Source,
-        r.Link,
-        r.ProcessToObtainData,
-        r.AccessDate
+        r.ReferenceNumber
     FROM 
         producersku ps
     JOIN 
@@ -46,10 +42,6 @@ if ($result->num_rows > 0) {
     echo "<th>Price</th>";
     echo "<th>CurrencyName</th>";
     echo "<th>ReferenceNumber</th>";
-    echo "<th>Source</th>";
-    echo "<th>Link</th>";
-    echo "<th>ProcessToObtainData</th>";
-    echo "<th>AccessDate</th>";
     echo "</tr></thead><tbody>";
     
     while($row = $result->fetch_assoc()) {
@@ -63,10 +55,6 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['Price']) . "</td>";
         echo "<td>" . htmlspecialchars($row['CurrencyName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ReferenceNumber']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Source']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Link']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['ProcessToObtainData']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['AccessDate']) . "</td>";
         echo "</tr>";
     }
     echo "</tbody></table></div>";

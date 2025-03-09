@@ -1,4 +1,16 @@
 <?php
+$vehicleNameFilter = isset($_GET['vehicle_name']) ? $_GET['vehicle_name'] : '';
+$countryNameFilter = isset($_GET['country_name']) ? $_GET['country_name'] : '';
+
+$query = "SELECT * FROM producerprocessor WHERE 1=1";
+if ($vehicleNameFilter) {
+    $query .= " AND VehicleName = '" . $conn->real_escape_string($vehicleNameFilter) . "'";
+}
+if ($countryNameFilter) {
+    $query .= " AND CountryName = '" . $conn->real_escape_string($countryNameFilter) . "'";
+}
+$result = $conn->query($query);
+
 echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
 // Fetch and display table headers
 echo "<th>ProducerProcessorID</th>";

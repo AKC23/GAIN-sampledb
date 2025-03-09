@@ -29,7 +29,24 @@ try {
             'producer_reference',
             'measureunit1',
             'measurecurrency',
-            'packagingtype'
+            'packagingtype', 
+            'sub_distribution_channel',
+            'distribution_channel',
+            'reference',
+            'age',
+            'gender',
+            'year_type',
+            'extraction_conversion',
+            'adult_male_equivalent',
+            'product',
+            'entity',
+            'producer_processor',
+            'producer_sku',
+            'distribution',
+            'consumption',
+            'individual_consumption',
+            'supply'
+            //'supply_in_chain'
         ];
 
         foreach ($dropTables as $table) {
