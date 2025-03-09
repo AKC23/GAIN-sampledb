@@ -1,5 +1,5 @@
 <?php
-// input_geography_level1.php
+// input_geography_level2.php
 // Include the database connection
 include('../db_connect.php');
 
@@ -7,22 +7,22 @@ include('../db_connect.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // CREATE a new record
     if (isset($_POST['action']) && $_POST['action'] === 'create') {
-        $adminLevel1 = $_POST['adminLevel1'];
-        $countryID = $_POST['countryID'];
-        // Check if the combination of AdminLevel1 and CountryID already exists
-        $checkQuery = $conn->prepare("SELECT * FROM geographylevel1 WHERE AdminLevel1 = ? AND CountryID = ?");
-        $checkQuery->bind_param("si", $adminLevel1, $countryID);
+        $adminLevel2 = $_POST['adminLevel2'];
+        $gl1ID = $_POST['gl1ID'];
+        // Check if the combination of AdminLevel2 and GL1ID already exists
+        $checkQuery = $conn->prepare("SELECT * FROM geographylevel2 WHERE AdminLevel2 = ? AND GL1ID = ?");
+        $checkQuery->bind_param("si", $adminLevel2, $gl1ID);
         $checkQuery->execute();
         $checkResult = $checkQuery->get_result();
 
         if ($checkResult->num_rows > 0) {
-            echo "<script>alert('This combination of AdminLevel1 and CountryID already exists. Please use a different combination.'); window.location.href = 'input_geography_level1.php';</script>";
+            echo "<script>alert('This combination of AdminLevel2 and GL1ID already exists. Please use a different combination.'); window.location.href = 'input_geography_level2.php';</script>";
         } else {
-            $stmt = $conn->prepare("INSERT INTO geographylevel1 (AdminLevel1, CountryID) VALUES (?, ?)");
-            $stmt->bind_param("si", $adminLevel1, $countryID);
+            $stmt = $conn->prepare("INSERT INTO geographylevel2 (AdminLevel2, GL1ID) VALUES (?, ?)");
+            $stmt->bind_param("si", $adminLevel2, $gl1ID);
             $stmt->execute();
             $stmt->close();
-            header("Location: input_geography_level1.php");
+            header("Location: input_geography_level2.php");
             exit;
         }
         $checkQuery->close();
@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // UPDATE a record
     elseif (isset($_POST['action']) && $_POST['action'] === 'update') {
         $id = $_POST['id'];
-        $adminLevel1 = $_POST['adminLevel1'];
-        $countryID = $_POST['countryID'];
-        $stmt = $conn->prepare("UPDATE geographylevel1 SET AdminLevel1 = ?, CountryID = ? WHERE GL1ID = ?");
-        $stmt->bind_param("sii", $adminLevel1, $countryID, $id);
+        $adminLevel2 = $_POST['adminLevel2'];
+        $gl1ID = $_POST['gl1ID'];
+        $stmt = $conn->prepare("UPDATE geographylevel2 SET AdminLevel2 = ?, GL1ID = ? WHERE GL2ID = ?");
+        $stmt->bind_param("sii", $adminLevel2, $gl1ID, $id);
         $stmt->execute();
         $stmt->close();
-        header("Location: input_geography_level1.php");
+        header("Location: input_geography_level2.php");
         exit;
     }
 }
@@ -49,7 +49,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     $checkForeignKeyQuery = "
         SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
         FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-        WHERE REFERENCED_TABLE_NAME = 'geographylevel1' AND REFERENCED_COLUMN_NAME = 'GL1ID' AND TABLE_SCHEMA = DATABASE()
+        WHERE REFERENCED_TABLE_NAME = 'geographylevel2' AND REFERENCED_COLUMN_NAME = 'GL2ID' AND TABLE_SCHEMA = DATABASE()
     ";
     $foreignKeyResult = $conn->query($checkForeignKeyQuery);
     $isForeignKeyConstraint = false;
@@ -58,7 +58,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     while ($row = $foreignKeyResult->fetch_assoc()) {
         $connectedTable = $row['TABLE_NAME'];
         $connectedTables[] = $connectedTable;
-        $checkConnectedTableQuery = "SELECT * FROM $connectedTable WHERE GL1ID = $id";
+        $checkConnectedTableQuery = "SELECT * FROM $connectedTable WHERE GL2ID = $id";
         $connectedTableResult = $conn->query($checkConnectedTableQuery);
         if ($connectedTableResult->num_rows > 0) {
             $isForeignKeyConstraint = true;
@@ -67,13 +67,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 
     if ($isForeignKeyConstraint) {
         $connectedTablesList = implode(', ', $connectedTables);
-        echo "<script>alert('Cannot delete this record because it is connected to the following tables: $connectedTablesList.'); window.location.href = 'input_geography_level1.php';</script>";
+        echo "<script>alert('Cannot delete this record because it is connected to the following tables: $connectedTablesList.'); window.location.href = 'input_geography_level2.php';</script>";
     } else {
-        $stmt = $conn->prepare("DELETE FROM geographylevel1 WHERE GL1ID = ?");
+        $stmt = $conn->prepare("DELETE FROM geographylevel2 WHERE GL2ID = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();
-        header("Location: input_geography_level1.php");
+        header("Location: input_geography_level2.php");
         exit;
     }
 }
@@ -82,7 +82,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Modify Geography Level 1 Table</title>
+    <title>Modify Geography Level 2 Table</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -98,23 +98,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Modify Geography Level 1 Table</h1>
+        <h1>Modify Geography Level 2 Table</h1>
         
         <!-- Create Form -->
-        
-        <form method="post" action="input_geography_level1.php" class="mb-4">
+        <form method="post" action="input_geography_level2.php" class="mb-4">
             <input type="hidden" name="action" value="create">
             <div class="form-group">
-                <label for="adminLevel1">Admin Level 1:</label>
-                <input type="text" id="adminLevel1" name="adminLevel1" class="form-control" required>
+                <label for="adminLevel2">Admin Level 2:</label>
+                <input type="text" id="adminLevel2" name="adminLevel2" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="countryID">Country Name:</label>
-                <select id="countryID" name="countryID" class="form-control" required>
+                <label for="gl1ID">Admin Level 1:</label>
+                <select id="gl1ID" name="gl1ID" class="form-control" required>
                     <?php
-                    $countryResult = $conn->query("SELECT CountryID, CountryName FROM country ORDER BY CountryName ASC");
-                    while ($countryRow = $countryResult->fetch_assoc()) {
-                        echo "<option value='{$countryRow['CountryID']}'>" . htmlspecialchars($countryRow['CountryName']) . "</option>";
+                    $gl1Result = $conn->query("SELECT GL1ID, AdminLevel1 FROM geographylevel1 ORDER BY AdminLevel1 ASC");
+                    while ($gl1Row = $gl1Result->fetch_assoc()) {
+                        echo "<option value='{$gl1Row['GL1ID']}'>" . htmlspecialchars($gl1Row['AdminLevel1']) . "</option>";
                     }
                     ?>
                 </select>
@@ -122,29 +121,29 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             <button type="submit" class="btn btn-primary mt-2">Add</button>
         </form>
         
-        <!-- Geography Level 1 Table -->
-        <h2>Table: Geography Level 1</h2>
+        <!-- Geography Level 2 Table -->
+        <h2>Table: Geography Level 2</h2>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>GL1ID</th>
+                        <th>GL2ID</th>
+                        <th>Admin Level 2</th>
                         <th>Admin Level 1</th>
-                        <th>Country Name</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $result = $conn->query("SELECT GL1ID, AdminLevel1, country.CountryName FROM geographylevel1 JOIN country ON geographylevel1.CountryID = country.CountryID");
+                    $result = $conn->query("SELECT GL2ID, AdminLevel2, geographylevel1.AdminLevel1 FROM geographylevel2 JOIN geographylevel1 ON geographylevel2.GL1ID = geographylevel1.GL1ID");
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['GL1ID']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['GL2ID']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['AdminLevel2']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['AdminLevel1']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['CountryName']) . "</td>";
                         echo "<td>";
-                        echo "<a href='?action=edit&id=" . $row['GL1ID'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
-                        echo "<a href='?action=delete&id=" . $row['GL1ID'] . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a>";
+                        echo "<a href='?action=edit&id=" . $row['GL2ID'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
+                        echo "<a href='?action=delete&id=" . $row['GL2ID'] . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a>";
                         echo "</td>";
                         echo "</tr>";
                     }
@@ -157,28 +156,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         // Edit Form - show only when "edit" action is triggered
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             $id = $_GET['id'];
-            $stmt = $conn->prepare("SELECT * FROM geographylevel1 WHERE GL1ID = ?");
+            $stmt = $conn->prepare("SELECT * FROM geographylevel2 WHERE GL2ID = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             if ($row = $result->fetch_assoc()) {
                 ?>
-                <h2>Edit Geography Level 1</h2>
-                <form method="post" action="input_geography_level1.php" class="mb-4">
+                <h2>Edit Geography Level 2</h2>
+                <form method="post" action="input_geography_level2.php" class="mb-4">
                     <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['GL1ID']); ?>">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['GL2ID']); ?>">
                     <div class="form-group">
-                        <label for="adminLevel1">Admin Level 1:</label>
-                        <input type="text" id="adminLevel1" name="adminLevel1" class="form-control" value="<?php echo htmlspecialchars($row['AdminLevel1']); ?>" required>
+                        <label for="adminLevel2">Admin Level 2:</label>
+                        <input type="text" id="adminLevel2" name="adminLevel2" class="form-control" value="<?php echo htmlspecialchars($row['AdminLevel2']); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="countryID">Country Name:</label>
-                        <select id="countryID" name="countryID" class="form-control" required>
+                        <label for="gl1ID">Admin Level 1:</label>
+                        <select id="gl1ID" name="gl1ID" class="form-control" required>
                             <?php
-                            $countryResult = $conn->query("SELECT CountryID, CountryName FROM country ORDER BY CountryName ASC");
-                            while ($countryRow = $countryResult->fetch_assoc()) {
-                                $selected = ($countryRow['CountryID'] == $row['CountryID']) ? 'selected' : '';
-                                echo "<option value='{$countryRow['CountryID']}' $selected>" . htmlspecialchars($countryRow['CountryName']) . "</option>";
+                            $gl1Result = $conn->query("SELECT GL1ID, AdminLevel1 FROM geographylevel1 ORDER BY AdminLevel1 ASC");
+                            while ($gl1Row = $gl1Result->fetch_assoc()) {
+                                $selected = ($gl1Row['GL1ID'] == $row['GL1ID']) ? 'selected' : '';
+                                echo "<option value='{$gl1Row['GL1ID']}' $selected>" . htmlspecialchars($gl1Row['AdminLevel1']) . "</option>";
                             }
                             ?>
                         </select>

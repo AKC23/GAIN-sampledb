@@ -113,15 +113,17 @@ $validTables = [
 
         .card {
             margin-top: 1%;
-            padding: 10px; /* Increased padding */
+            padding: 10px;
+            /* Increased padding */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #c8e5bf;
             border-radius: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%; 
-            text-align: center; /* Center-align all text in the card */
+            width: 100%;
+            text-align: center;
+            /* Center-align all text in the card */
         }
 
         .table-selection {
@@ -218,9 +220,14 @@ $validTables = [
                 if (selectedTable) {
                     if (selectedTable == 'foodvehicle') {
                         window.location.href = 'input_tables/input_foodvehicle.php';
-                    }
-                    else if (selectedTable == 'country') {
+                    } else if (selectedTable == 'country') {
                         window.location.href = 'input_tables/input_country.php';
+                    } else if (selectedTable == 'company') {
+                        window.location.href = 'input_tables/input_company.php';
+                    } else if (selectedTable == 'geographylevel1') {
+                        window.location.href = 'input_tables/input_geography_level1.php';
+                    } else if (selectedTable == 'geographylevel2') {
+                        window.location.href = 'input_tables/input_geography_level2.php';
                     }
                     // Add more conditions for other tables as needed
                 } else {
