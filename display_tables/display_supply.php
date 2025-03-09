@@ -23,11 +23,7 @@ $sql = "
         yt.YearTypeName,
         s.StartYear,
         s.EndYear,
-        r.ReferenceNumber,
-        r.Source,
-        r.Link,
-        r.ProcessToObtainData,
-        r.AccessDate
+        r.ReferenceNumber
     FROM 
         supply s
     JOIN 
@@ -81,10 +77,6 @@ if ($result->num_rows > 0) {
     echo "<th>Start Year</th>";
     echo "<th>End Year</th>";
     echo "<th>Reference Number</th>";
-    echo "<th>Source</th>";
-    echo "<th>Link</th>";
-    echo "<th>Process To Obtain Data</th>";
-    echo "<th>Access Date</th>";
     echo "</tr></thead><tbody>";
     
     while($row = $result->fetch_assoc()) {
@@ -109,10 +101,6 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['StartYear']) . "</td>";
         echo "<td>" . htmlspecialchars($row['EndYear']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ReferenceNumber']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Source']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['Link']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['ProcessToObtainData']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['AccessDate']) . "</td>";
         echo "</tr>";
     }
     echo "</tbody></table></div>";
