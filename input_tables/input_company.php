@@ -78,27 +78,32 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Modify Company Table</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        table th, table td {
+        table th,
+        table td {
             text-align: center;
             vertical-align: middle;
         }
+
         .table-responsive {
             max-height: 400px;
             overflow-y: auto;
         }
     </style>
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Modify Company Table</h1>
-        
-        
+
+        <!-- Create Form -->
+        <h3>Add New Informations</h3>
         <form method="post" action="input_company.php" class="mb-4">
             <input type="hidden" name="action" value="create">
             <div class="form-group">
@@ -107,7 +112,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             </div>
             <button type="submit" class="btn btn-primary mt-2">Add</button>
         </form>
-        
+        <!-- Add space after the edit form -->
+        <div class="mb-5"></div>
         <!-- Companies Table -->
         <h2>Table: Company</h2>
         <div class="table-responsive">
@@ -136,7 +142,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                 </tbody>
             </table>
         </div>
-        
+        <!-- Add space after the edit form -->
+        <div class="mb-5"></div>
         <?php
         // Edit Form - show only when "edit" action is triggered
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
@@ -146,7 +153,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             $stmt->execute();
             $result = $stmt->get_result();
             if ($row = $result->fetch_assoc()) {
-                ?>
+        ?>
                 <h2>Edit Company</h2>
                 <form method="post" action="input_company.php" class="mb-4">
                     <input type="hidden" name="action" value="update">
@@ -161,11 +168,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Update</button>
                 </form>
-                <?php
+                <!-- Add space after the edit form -->
+                <div class="mb-5"></div>
+        <?php
+
             }
+
             $stmt->close();
         }
-        
+
         // Close the database connection
         $conn->close();
         ?>
@@ -175,4 +186,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
