@@ -82,20 +82,24 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Modify Adult Male Equivalent Table</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        table th, table td {
+        table th,
+        table td {
             text-align: center;
             vertical-align: middle;
         }
+
         .table-responsive {
             max-height: 400px;
             overflow-y: auto;
         }
+
         .table thead th {
             position: sticky;
             top: 0;
@@ -104,11 +108,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         }
     </style>
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Modify Adult Male Equivalent Table</h1>
-        
+
         <!-- Create Form -->
+        <h3>Add New Informations</h3>
         <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
             <input type="hidden" name="action" value="create">
             <div class="form-group">
@@ -130,16 +136,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                 <label for="ageID">Age:</label>
                 <select id="ageID" name="ageID" class="form-control" required>
                     <?php
-                    $ageResult = $conn->query("SELECT AgeID, AgeName FROM age ORDER BY AgeName ASC");
+                    $ageResult = $conn->query("SELECT AgeID, AgeRange FROM age ORDER BY AgeRange ASC");
                     while ($ageRow = $ageResult->fetch_assoc()) {
-                        echo "<option value='{$ageRow['AgeID']}'>" . htmlspecialchars($ageRow['AgeName']) . "</option>";
+                        echo "<option value='{$ageRow['AgeID']}'>" . htmlspecialchars($ageRow['AgeRange']) . "</option>";
                     }
                     ?>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary mt-2">Add</button>
         </form>
-        
+        <!-- Add space after the edit form -->
+        <div class="mb-5"></div>
         <!-- Adult Male Equivalent Table -->
         <h2>Table: Adult Male Equivalent</h2>
         <div class="table-responsive">
@@ -155,13 +162,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                 </thead>
                 <tbody>
                     <?php
-                    $result = $conn->query("SELECT ame.AMEID, ame.AME, g.GenderName, a.AgeName FROM adultmaleequivalent ame JOIN gender g ON ame.GenderID = g.GenderID JOIN age a ON ame.AgeID = a.AgeID");
+                    $result = $conn->query("SELECT ame.AMEID, ame.AME, g.GenderName, a.AgeRange FROM adultmaleequivalent ame JOIN gender g ON ame.GenderID = g.GenderID JOIN age a ON ame.AgeID = a.AgeID");
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($row['AMEID']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['AME']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['GenderName']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['AgeName']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['AgeRange']) . "</td>";
                         echo "<td>";
                         echo "<a href='?action=edit&id=" . $row['AMEID'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
                         echo "<a href='?action=delete&id=" . $row['AMEID'] . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a>";
@@ -172,7 +179,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                 </tbody>
             </table>
         </div>
-        
+        <!-- Add space after the edit form -->
+        <div class="mb-5"></div>
         <?php
         // Edit Form - show only when "edit" action is triggered
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
@@ -182,7 +190,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             $stmt->execute();
             $result = $stmt->get_result();
             if ($row = $result->fetch_assoc()) {
-                ?>
+        ?>
                 <h2>Edit Adult Male Equivalent</h2>
                 <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
                     <input type="hidden" name="action" value="update">
@@ -207,21 +215,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                         <label for="ageID">Age:</label>
                         <select id="ageID" name="ageID" class="form-control" required>
                             <?php
-                            $ageResult = $conn->query("SELECT AgeID, AgeName FROM age ORDER BY AgeName ASC");
+                            $ageResult = $conn->query("SELECT AgeID, AgeRange FROM age ORDER BY AgeRange ASC");
                             while ($ageRow = $ageResult->fetch_assoc()) {
                                 $selected = ($ageRow['AgeID'] == $row['AgeID']) ? 'selected' : '';
-                                echo "<option value='{$ageRow['AgeID']}' $selected>" . htmlspecialchars($ageRow['AgeName']) . "</option>";
+                                echo "<option value='{$ageRow['AgeID']}' $selected>" . htmlspecialchars($ageRow['AgeRange']) . "</option>";
                             }
                             ?>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Update</button>
                 </form>
-                <?php
+                <!-- Add space after the edit form -->
+                <div class="mb-5"></div>
+        <?php
             }
             $stmt->close();
         }
-        
+
         // Close the database connection
         $conn->close();
         ?>
@@ -231,4 +241,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
