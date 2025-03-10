@@ -228,6 +228,14 @@ $validTables = [
                         window.location.href = 'input_tables/input_geography_level1.php';
                     } else if (selectedTable == 'geographylevel2') {
                         window.location.href = 'input_tables/input_geography_level2.php';
+                    }else if (selectedTable == 'geographylevel3') {
+                        window.location.href = 'input_tables/input_geography_level3.php';
+                    }else if (selectedTable == 'producerreference') {
+                        window.location.href = 'input_tables/input_producer_reference.php';
+                    }else if (selectedTable == 'producerprocessor') {
+                        window.location.href = 'input_tables/input_producer_processor.php';
+                    }else if (selectedTable == 'product') {
+                        window.location.href = 'input_tables/input_product.php';
                     }
                     // Add more conditions for other tables as needed
                 } else {

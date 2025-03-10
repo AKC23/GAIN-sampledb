@@ -1,5 +1,5 @@
 <?php
-// input_geography_level2.php
+// input_tables/input_geography_level2.php
 // Include the database connection
 include('../db_connect.php');
 
