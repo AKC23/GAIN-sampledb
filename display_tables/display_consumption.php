@@ -3,7 +3,21 @@
 
 $sql = "
     SELECT 
-        c.*,
+        c.ConsumptionID,
+        c.VehicleID,
+        c.GL1ID,
+        c.GL2ID,
+        c.GL3ID,
+        c.GenderID,
+        c.AgeID,
+        c.NumberOfPeople,
+        c.SourceVolume,
+        c.VolumeMTY,
+        c.UCID,
+        c.YearTypeID,
+        c.StartYear,
+        c.EndYear,
+        c.ReferenceID,
         gl1.AdminLevel1,
         gl2.AdminLevel2,
         gl3.AdminLevel3,
@@ -35,10 +49,6 @@ echo "<th>Year Type</th>";
 echo "<th>Start Year</th>";
 echo "<th>End Year</th>";
 echo "<th>Reference Number</th>";
-echo "<th>Source</th>";
-echo "<th>Link</th>";
-echo "<th>Process To Obtain Data</th>";
-echo "<th>Access Date</th>";
 echo "</tr></thead><tbody>";
 
 // Fetch and display table rows
@@ -118,15 +128,7 @@ while ($row = $result->fetch_assoc()) {
     $referenceQuery = $conn->query("SELECT ReferenceNumber, Source, Link, ProcessToObtainData, AccessDate FROM reference WHERE ReferenceID = $referenceID");
     if ($referenceRow = $referenceQuery->fetch_assoc()) {
         echo "<td>" . htmlspecialchars($referenceRow['ReferenceNumber']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['Source']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['Link']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['ProcessToObtainData']) . "</td>";
-        echo "<td>" . htmlspecialchars($referenceRow['AccessDate']) . "</td>";
     } else {
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
         echo "<td>N/A</td>";
     }
 

@@ -48,11 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 
     // Check if the table is in the list of valid tables
     if (array_key_exists($tableName, $validTables)) {
-        $query = "SELECT * FROM $tableName";
-        $conditions = [];
-        $hasVehicleField = false;
-        $hasCountryField = false;
-
         // Add this check before $columnsResult
         if ($tableName === 'individualconsumption') {
             include('display_tables/display_individual_consumption.php');
@@ -62,13 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             return;
         }
 
+        $query = "SELECT * FROM $tableName";
+        $conditions = [];
+        $hasVehicleField = false;
+        $hasCountryField = false;
+
         // Check if the table has VehicleID or CountryID fields
         $columnsResult = $conn->query("SHOW COLUMNS FROM $tableName");
         while ($column = $columnsResult->fetch_assoc()) {
             if ($column['Field'] == 'VehicleID') {
                 $hasVehicleField = true;
             }
-            if ($column['Field'] == 'CountryID') {
+            if ($column['Field'] == 'CountryID' || $column['Field'] == 'GL1ID') {
                 $hasCountryField = true;
             }
         }
@@ -89,7 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $countryResult = $conn->query("SELECT CountryID FROM country WHERE CountryName = '$countryName'");
             if ($countryRow = $countryResult->fetch_assoc()) {
                 $countryID = $countryRow['CountryID'];
-                $conditions[] = "CountryID = '$countryID'";
+                // Check if the table has GL1ID instead of CountryID
+                if ($tableName == 'consumption') {
+                    $conditions[] = "GL1ID = '$countryID'";
+                } else {
+                    $conditions[] = "CountryID = '$countryID'";
+                }
             } else {
                 echo "No records found";
                 return;
