@@ -253,6 +253,8 @@ $distributions = $conn->query("
 
             <button type="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
+        <!-- Add space after the form and tables -->
+        <div class="mb-5"></div>
 
         <!-- Existing Records Table -->
         <h2>Existing Distribution Records</h2>
@@ -300,6 +302,8 @@ $distributions = $conn->query("
                 </tbody>
             </table>
         </div>
+        <!-- Add space after the form and tables -->
+        <div class="mb-5"></div>
 
         <!-- Edit Form - show only when "edit" action is triggered -->
         <?php if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])): ?>
@@ -334,7 +338,7 @@ $distributions = $conn->query("
                     </select><br>
 
                     <label for="UCID">Supply Volume Unit:</label>
-                    <select name="UCID" id="UCID" class="form-control">
+                    <select name="UCID" id="UCIDEdit" class="form-control">
                         <?php foreach ($units as $unit): ?>
                             <option value="<?= $unit['UCID'] ?>" <?= $unit['UCID'] == $row['UCID'] ? 'selected' : '' ?>>
                                 <?= $unit['SupplyVolumeUnit'] ?> / <?= $unit['PeriodicalUnit'] ?>
@@ -343,10 +347,10 @@ $distributions = $conn->query("
                     </select><br>
 
                     <label for="SourceVolume">Source Volume:</label>
-                    <input type="text" name="SourceVolume" id="SourceVolume" class="form-control" value="<?= $row['SourceVolume'] ?>"><br>
+                    <input type="text" name="SourceVolume" id="SourceVolumeEdit" class="form-control" value="<?= $row['SourceVolume'] ?>"><br>
 
                     <label for="Volume_MT_Y">Volume (MT/Y):</label>
-                    <input type="text" id="Volume_MT_Y" class="form-control" readonly value="<?= htmlspecialchars(number_format($row['Volume_MT_Y'], 4)) ?>"><br>
+                    <input type="text" id="Volume_MT_YEdit" class="form-control" readonly value="<?= htmlspecialchars(number_format($row['Volume_MT_Y'], 4)) ?>"><br>
 
                     <label for="CountryID">Country:</label>
                     <select name="CountryID" id="CountryID" class="form-control">
@@ -379,6 +383,8 @@ $distributions = $conn->query("
 
                     <button type="submit" class="btn btn-primary mt-2">Update</button>
                 </form>
+                <!-- Add space after the form and tables -->
+                <div class="mb-5"></div>
             <?php
             endif;
             ?>
@@ -392,8 +398,8 @@ $distributions = $conn->query("
         // Build references object in JS
         var references = <?php echo json_encode($fullRefs); ?>;
 
-        function updateReferenceDetails() {
-            var referenceID = document.getElementById('ReferenceID').value;
+        function updateReferenceDetails(refID) {
+            var referenceID = refID || document.getElementById('ReferenceID').value;
             var referenceDetails = document.getElementById('referenceDetails');
             if (referenceID && referenceID in references) {
                 var ref = references[referenceID];
@@ -440,19 +446,24 @@ $distributions = $conn->query("
 
         <?php if (isset($_GET['ReferenceID'])): ?>
             document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById('ReferenceID').value = <?= intval($_GET['ReferenceID']) ?>;
                 updateReferenceDetails(<?= intval($_GET['ReferenceID']) ?>);
             });
         <?php endif; ?>
 
         // Build a simple list of UCID => UnitValue from the $units array
-
-
         var unitValues = {
-            <?php foreach ($units as $unit) {
-                echo "{$unit['UCID']}: " . (float)$unit['UnitValue'] . ",\n";
-            } ?>
-        };
-
+            <?php
+            $countUnits = count($units);
+            foreach ($units as $index => $unit) {
+                // wrap key in quotes, and avoid trailing comma
+                echo "\"{$unit['UCID']}\": " . (float) $unit['UnitValue'];
+                if ($index < $countUnits - 1) {
+                    echo ",";
+                }
+                echo "\n";
+            }
+            ?>}
 
         function computeVolume() {
             var source = parseFloat(document.getElementById('SourceVolume').value) || 0;
@@ -465,6 +476,24 @@ $distributions = $conn->query("
         // Trigger volume calculation when either field changes
         document.getElementById('SourceVolume').addEventListener('input', computeVolume);
         document.getElementById('UCID').addEventListener('change', computeVolume);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // ...existing code...
+            var sourceVolumeEditEl = document.getElementById('SourceVolumeEdit');
+            var ucidEditEl = document.getElementById('UCIDEdit');
+            var volumeMtyEditEl = document.getElementById('Volume_MT_YEdit');
+            function computeVolumeEdit() {
+                var source = parseFloat(sourceVolumeEditEl.value) || 0;
+                var ucid = ucidEditEl.value;
+                var unitVal = unitValues[ucid] || 0;
+                var volume = source * unitVal;
+                volumeMtyEditEl.value = volume ? volume.toFixed(4) : '';
+            }
+            if (sourceVolumeEditEl && ucidEditEl && volumeMtyEditEl) {
+                sourceVolumeEditEl.addEventListener('input', computeVolumeEdit);
+                ucidEditEl.addEventListener('change', computeVolumeEdit);
+            }
+        });
     </script>
 </body>
 

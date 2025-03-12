@@ -1,245 +1,179 @@
 <?php
-// Include the database connection
 include('../db_connect.php');
+
+function fetchOptions($conn, $table, $idField, $nameField) {
+    $options = [];
+    $result = $conn->query("SELECT $idField, $nameField FROM $table ORDER BY $nameField");
+    while ($row = $result->fetch_assoc()) {
+        $options[] = $row;
+    }
+    return $options;
+}
+
+$genders = fetchOptions($conn, 'gender', 'GenderID', 'GenderName');
+$ages = fetchOptions($conn, 'age', 'AgeID', 'AgeRange');
 
 // Process form submissions (create, update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // CREATE a new record
     if (isset($_POST['action']) && $_POST['action'] === 'create') {
-        $ame = $_POST['ame'];
-        $genderID = $_POST['genderID'];
-        $ageID = $_POST['ageID'];
-
-        // Check if the combination of AME, GenderID, and AgeID already exists
-        $checkQuery = $conn->prepare("SELECT * FROM adultmaleequivalent WHERE AME = ? AND GenderID = ? AND AgeID = ?");
-        $checkQuery->bind_param("dii", $ame, $genderID, $ageID);
-        $checkQuery->execute();
-        $checkResult = $checkQuery->get_result();
-
-        if ($checkResult->num_rows > 0) {
-            echo "<script>alert('This combination of AME, GenderID, and AgeID already exists. Please use a different combination.'); window.location.href = 'input_adult_male_equivalent.php';</script>";
-        } else {
-            $stmt = $conn->prepare("INSERT INTO adultmaleequivalent (AME, GenderID, AgeID) VALUES (?, ?, ?)");
-            $stmt->bind_param("dii", $ame, $genderID, $ageID);
-            $stmt->execute();
-            $stmt->close();
-            header("Location: input_adult_male_equivalent.php");
-            exit;
+        $ame = (float)$_POST['AME'];
+        $genderID = $_POST['GenderID'];
+        $ageID = $_POST['AgeID'];
+        $sql = "INSERT INTO adultmaleequivalent (AME, GenderID, AgeID) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("dii", $ame, $genderID, $ageID);
+        if ($stmt->execute()) {
+            echo "✓ Inserted successfully.<br>";
         }
-        $checkQuery->close();
-    }
-    // UPDATE a record
-    elseif (isset($_POST['action']) && $_POST['action'] === 'update') {
-        $id = $_POST['id'];
-        $ame = $_POST['ame'];
-        $genderID = $_POST['genderID'];
-        $ageID = $_POST['ageID'];
-        $stmt = $conn->prepare("UPDATE adultmaleequivalent SET AME = ?, GenderID = ?, AgeID = ? WHERE AMEID = ?");
-        $stmt->bind_param("diii", $ame, $genderID, $ageID, $id);
-        $stmt->execute();
+        $stmt->close();
+        header("Location: input_adult_male_equivalent.php");
+        exit;
+
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'update') {
+        $ameid = $_POST['AMEID'];
+        $ame = (float)$_POST['AME'];
+        $genderID = $_POST['GenderID'];
+        $ageID = $_POST['AgeID'];
+        $sql = "UPDATE adultmaleequivalent SET AME = ?, GenderID = ?, AgeID = ? WHERE AMEID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("diii", $ame, $genderID, $ageID, $ameid);
+        if ($stmt->execute()) {
+            echo "✓ Updated successfully.<br>";
+        }
         $stmt->close();
         header("Location: input_adult_male_equivalent.php");
         exit;
     }
 }
 
-// Process delete requests via GET
+// Process delete requests
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    // Check for foreign key constraints
-    $checkForeignKeyQuery = "
-        SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
-        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-        WHERE REFERENCED_TABLE_NAME = 'adultmaleequivalent' AND REFERENCED_COLUMN_NAME = 'AMEID' AND TABLE_SCHEMA = DATABASE()
-    ";
-    $foreignKeyResult = $conn->query($checkForeignKeyQuery);
-    $isForeignKeyConstraint = false;
-    $connectedTables = [];
-
-    while ($row = $foreignKeyResult->fetch_assoc()) {
-        $connectedTable = $row['TABLE_NAME'];
-        $connectedTables[] = $connectedTable;
-        $checkConnectedTableQuery = "SELECT * FROM $connectedTable WHERE AMEID = $id";
-        $connectedTableResult = $conn->query($checkConnectedTableQuery);
-        if ($connectedTableResult->num_rows > 0) {
-            $isForeignKeyConstraint = true;
-        }
+    $ameid = $_GET['id'];
+    $sql = "DELETE FROM adultmaleequivalent WHERE AMEID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $ameid);
+    if ($stmt->execute()) {
+        echo "✓ Deleted successfully.<br>";
     }
-
-    if ($isForeignKeyConstraint) {
-        $connectedTablesList = implode(', ', $connectedTables);
-        echo "<script>alert('Cannot delete this record because it is connected to the following tables: $connectedTablesList.'); window.location.href = 'input_adult_male_equivalent.php';</script>";
-    } else {
-        $stmt = $conn->prepare("DELETE FROM adultmaleequivalent WHERE AMEID = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
-        header("Location: input_adult_male_equivalent.php");
-        exit;
-    }
+    $stmt->close();
+    header("Location: input_adult_male_equivalent.php");
+    exit;
 }
+
+// Fetch existing records
+$ames = $conn->query("
+    SELECT ame.*,
+           g.GenderName,
+           a.AgeRange
+    FROM adultmaleequivalent ame
+    LEFT JOIN gender g ON ame.GenderID = g.GenderID
+    LEFT JOIN age a ON ame.AgeID = a.AgeID
+");
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Modify Adult Male Equivalent Table</title>
-    <!-- Bootstrap CSS -->
+    <title>Adult Male Equivalent Input</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        table th,
-        table td {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .table-responsive {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background-color: #fff;
-            z-index: 1;
-        }
-    </style>
 </head>
-
 <body>
-    <div class="container mt-5">
-        <h1>Modify Adult Male Equivalent Table</h1>
+<div class="container mt-5">
+    <h1>Adult Male Equivalent</h1>
 
-        <!-- Create Form -->
-        <h3>Add New Informations</h3>
-        <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
-            <input type="hidden" name="action" value="create">
-            <div class="form-group">
-                <label for="ame">AME:</label>
-                <input type="number" step="0.01" id="ame" name="ame" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="genderID">Gender:</label>
-                <select id="genderID" name="genderID" class="form-control" required>
-                    <?php
-                    $genderResult = $conn->query("SELECT GenderID, GenderName FROM gender ORDER BY GenderName ASC");
-                    while ($genderRow = $genderResult->fetch_assoc()) {
-                        echo "<option value='{$genderRow['GenderID']}'>" . htmlspecialchars($genderRow['GenderName']) . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ageID">Age:</label>
-                <select id="ageID" name="ageID" class="form-control" required>
-                    <?php
-                    $ageResult = $conn->query("SELECT AgeID, AgeRange FROM age ORDER BY AgeRange ASC");
-                    while ($ageRow = $ageResult->fetch_assoc()) {
-                        echo "<option value='{$ageRow['AgeID']}'>" . htmlspecialchars($ageRow['AgeRange']) . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary mt-2">Add</button>
-        </form>
-        <!-- Add space after the edit form -->
-        <div class="mb-5"></div>
-        <!-- Adult Male Equivalent Table -->
-        <h2>Table: Adult Male Equivalent</h2>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>AME ID</th>
-                        <th>AME</th>
-                        <th>Gender</th>
-                        <th>Age</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $result = $conn->query("SELECT ame.AMEID, ame.AME, g.GenderName, a.AgeRange FROM adultmaleequivalent ame JOIN gender g ON ame.GenderID = g.GenderID JOIN age a ON ame.AgeID = a.AgeID");
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['AMEID']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['AME']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['GenderName']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['AgeRange']) . "</td>";
-                        echo "<td>";
-                        echo "<a href='?action=edit&id=" . $row['AMEID'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
-                        echo "<a href='?action=delete&id=" . $row['AMEID'] . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a>";
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <!-- Add space after the edit form -->
-        <div class="mb-5"></div>
+    <!-- Create Form -->
+    <h3>Add New Record</h3>
+    <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
+        <input type="hidden" name="action" value="create">
+        <label for="AME">AME:</label>
+        <input type="text" name="AME" id="AME" class="form-control"><br>
+
+        <label for="GenderID">Gender:</label>
+        <select name="GenderID" id="GenderID" class="form-control">
+            <?php foreach ($genders as $g): ?>
+                <option value="<?= $g['GenderID'] ?>"><?= $g['GenderName'] ?></option>
+            <?php endforeach; ?>
+        </select><br>
+
+        <label for="AgeID">Age Range:</label>
+        <select name="AgeID" id="AgeID" class="form-control">
+            <?php foreach ($ages as $a): ?>
+                <option value="<?= $a['AgeID'] ?>"><?= $a['AgeRange'] ?></option>
+            <?php endforeach; ?>
+        </select><br>
+
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </form>
+    <div class="mb-5"></div>
+
+    <!-- Existing Records Table -->
+    <h2>Existing Records</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>AMEID</th>
+            <th>AME</th>
+            <th>Gender</th>
+            <th>Age Range</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php while ($row = $ames->fetch_assoc()): ?>
+            <tr>
+                <td><?= $row['AMEID'] ?></td>
+                <td><?= $row['AME'] ?></td>
+                <td><?= $row['GenderName'] ?></td>
+                <td><?= $row['AgeRange'] ?></td>
+                <td>
+                    <a href="?action=edit&id=<?= $row['AMEID'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="?action=delete&id=<?= $row['AMEID'] ?>" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this record?');">Delete</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+        </tbody>
+    </table>
+    <div class="mb-5"></div>
+
+    <!-- Edit Form -->
+    <?php if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])): ?>
         <?php
-        // Edit Form - show only when "edit" action is triggered
-        if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $stmt = $conn->prepare("SELECT * FROM adultmaleequivalent WHERE AMEID = ?");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($row = $result->fetch_assoc()) {
+        $ameid = $_GET['id'];
+        $result = $conn->query("SELECT * FROM adultmaleequivalent WHERE AMEID = $ameid");
+        if ($row = $result->fetch_assoc()):
         ?>
-                <h2>Edit Adult Male Equivalent</h2>
-                <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['AMEID']); ?>">
-                    <div class="form-group">
-                        <label for="ame">AME:</label>
-                        <input type="number" step="0.01" id="ame" name="ame" class="form-control" value="<?php echo htmlspecialchars($row['AME']); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="genderID">Gender:</label>
-                        <select id="genderID" name="genderID" class="form-control" required>
-                            <?php
-                            $genderResult = $conn->query("SELECT GenderID, GenderName FROM gender ORDER BY GenderName ASC");
-                            while ($genderRow = $genderResult->fetch_assoc()) {
-                                $selected = ($genderRow['GenderID'] == $row['GenderID']) ? 'selected' : '';
-                                echo "<option value='{$genderRow['GenderID']}' $selected>" . htmlspecialchars($genderRow['GenderName']) . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="ageID">Age:</label>
-                        <select id="ageID" name="ageID" class="form-control" required>
-                            <?php
-                            $ageResult = $conn->query("SELECT AgeID, AgeRange FROM age ORDER BY AgeRange ASC");
-                            while ($ageRow = $ageResult->fetch_assoc()) {
-                                $selected = ($ageRow['AgeID'] == $row['AgeID']) ? 'selected' : '';
-                                echo "<option value='{$ageRow['AgeID']}' $selected>" . htmlspecialchars($ageRow['AgeRange']) . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-2">Update</button>
-                </form>
-                <!-- Add space after the edit form -->
-                <div class="mb-5"></div>
-        <?php
-            }
-            $stmt->close();
-        }
+            <h3>Edit Record</h3>
+            <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="AMEID" value="<?= $row['AMEID'] ?>">
 
-        // Close the database connection
-        $conn->close();
-        ?>
-    </div>
+                <label for="AME">AME:</label>
+                <input type="text" name="AME" id="AME" class="form-control" value="<?= $row['AME'] ?>"><br>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                <label for="GenderID">Gender:</label>
+                <select name="GenderID" id="GenderID" class="form-control">
+                    <?php foreach ($genders as $g): ?>
+                        <option value="<?= $g['GenderID'] ?>" <?= $row['GenderID'] == $g['GenderID'] ? 'selected' : '' ?>>
+                            <?= $g['GenderName'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select><br>
+
+                <label for="AgeID">Age Range:</label>
+                <select name="AgeID" id="AgeID" class="form-control">
+                    <?php foreach ($ages as $a): ?>
+                        <option value="<?= $a['AgeID'] ?>" <?= $row['AgeID'] == $a['AgeID'] ? 'selected' : '' ?>>
+                            <?= $a['AgeRange'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select><br>
+
+                <button type="submit" class="btn btn-primary mt-2">Update</button>
+            </form>
+        <?php endif; ?>
+    <?php endif; ?>
+
+</div>
 </body>
-
 </html>
