@@ -1,6 +1,21 @@
 <?php
 // display_tables/display_consumption.php
 
+$sql = "
+    SELECT 
+        c.*,
+        gl1.AdminLevel1,
+        gl2.AdminLevel2,
+        gl3.AdminLevel3,
+        co.CountryName AS GL1CountryName
+    FROM consumption c
+    LEFT JOIN geographylevel1 gl1 ON c.GL1ID = gl1.GL1ID
+    LEFT JOIN geographylevel2 gl2 ON c.GL2ID = gl2.GL2ID
+    LEFT JOIN geographylevel3 gl3 ON c.GL3ID = gl3.GL3ID
+    LEFT JOIN country co ON gl1.CountryID = co.CountryID
+";
+$result = $conn->query($sql);
+
 echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
 // Fetch and display table headers
 echo "<th>ConsumptionID</th>";
@@ -8,6 +23,7 @@ echo "<th>Vehicle Name</th>";
 echo "<th>Admin Level 1</th>";
 echo "<th>Admin Level 2</th>";
 echo "<th>Admin Level 3</th>";
+echo "<th>Country</th>";
 echo "<th>Gender</th>";
 echo "<th>Age Range</th>";
 echo "<th>Number of People</th>";
@@ -40,31 +56,16 @@ while ($row = $result->fetch_assoc()) {
     }
 
     // Fetch Admin Level 1 from geographylevel1 table
-    $gl1ID = htmlspecialchars($row['GL1ID']);
-    $gl1Query = $conn->query("SELECT AdminLevel1 FROM geographylevel1 WHERE GL1ID = $gl1ID");
-    if ($gl1Row = $gl1Query->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($gl1Row['AdminLevel1']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
+    echo "<td>" . htmlspecialchars($row['AdminLevel1']) . "</td>";
 
     // Fetch Admin Level 2 from geographylevel2 table
-    $gl2ID = htmlspecialchars($row['GL2ID']);
-    $gl2Query = $conn->query("SELECT AdminLevel2 FROM geographylevel2 WHERE GL2ID = $gl2ID");
-    if ($gl2Row = $gl2Query->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($gl2Row['AdminLevel2']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
+    echo "<td>" . htmlspecialchars($row['AdminLevel2']) . "</td>";
 
     // Fetch Admin Level 3 from geographylevel3 table
-    $gl3ID = htmlspecialchars($row['GL3ID']);
-    $gl3Query = $conn->query("SELECT AdminLevel3 FROM geographylevel3 WHERE GL3ID = $gl3ID");
-    if ($gl3Row = $gl3Query->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($gl3Row['AdminLevel3']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
+    echo "<td>" . htmlspecialchars($row['AdminLevel3']) . "</td>";
+
+    // Display the joined country name
+    echo "<td>" . htmlspecialchars($row['GL1CountryName']) . "</td>";
 
     // Fetch Gender Name from gender table
     $genderID = htmlspecialchars($row['GenderID']);

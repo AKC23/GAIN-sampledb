@@ -3,17 +3,17 @@ echo "<div class='table-responsive'><table class='table table-bordered'><thead><
 // Fetch and display table headers
 while ($fieldInfo = $result->fetch_field()) {
     if ($fieldInfo->name == 'CompanyID') {
-        echo "<th>CompanyName</th>";
+        echo "<th>Company Name</th>";
     } elseif ($fieldInfo->name == 'VehicleID') {
-        echo "<th>VehicleName</th>";
+        echo "<th>Vehicle Name</th>";
     } elseif ($fieldInfo->name == 'GL1ID') {
-        echo "<th>AdminLevel1</th>";
+        echo "<th>Admin Level 1</th>";
     } elseif ($fieldInfo->name == 'GL2ID') {
-        echo "<th>AdminLevel2</th>";
+        echo "<th>Admin Level 2</th>";
     } elseif ($fieldInfo->name == 'GL3ID') {
-        echo "<th>AdminLevel3</th>";
+        echo "<th>Admin Level 3</th>";
     } elseif ($fieldInfo->name == 'CountryID') {
-        echo "<th>CountryName</th>";
+        echo "<th>Country Name</th>";
     } else {
         echo "<th>" . htmlspecialchars($fieldInfo->name) . "</th>";
     }

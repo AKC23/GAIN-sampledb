@@ -65,6 +65,7 @@ $validTables = [
     'reference' => 'Reference',
     'subdistributionchannel' => 'Sub Distribution Channel',
     'supply' => 'Supply',
+    'supply_in_chain_final' => 'Supply in Chain Final',
     'yeartype' => 'Year Type'
 ];
 ?>

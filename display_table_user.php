@@ -36,6 +36,7 @@ $validTables = [
     'reference' => 'Reference',
     'subdistributionchannel' => 'Sub Distribution Channel',
     'supply' => 'Supply',
+    'supply_in_chain_final' => 'Supply in Chain Final',
     'yeartype' => 'Year Type'
 ];
 
@@ -51,6 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
         $conditions = [];
         $hasVehicleField = false;
         $hasCountryField = false;
+
+        // Add this check before $columnsResult
+        if ($tableName === 'individualconsumption') {
+            include('display_tables/display_individual_consumption.php');
+            return;
+        } elseif ($tableName == 'supply_in_chain_final') {
+            include('display_tables/display_supply_in_chain_final.php');
+            return;
+        }
 
         // Check if the table has VehicleID or CountryID fields
         $columnsResult = $conn->query("SHOW COLUMNS FROM $tableName");
@@ -148,8 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_supply.php');
                 } elseif ($tableName == 'consumption') {
                     include('display_tables/display_consumption.php');
-                } elseif ($tableName == 'individualconsumption') {
-                    include('display_tables/display_individual_consumption.php');
                 }
             } else {
                 echo "No records found";
@@ -215,8 +223,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_supply.php');
                 } elseif ($tableName == 'consumption') {
                     include('display_tables/display_consumption.php');
-                } elseif ($tableName == 'individualconsumption') {
-                    include('display_tables/display_individual_consumption.php');
                 }
             } else {
                 echo "No records found";
@@ -228,4 +234,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
 }
 // Note: Do not close the database connection here
 // The connection will be closed by index.php
-?>

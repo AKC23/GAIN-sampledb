@@ -96,7 +96,7 @@ try {
         include('insert_producer_sku.php');
         include('insert_distribution.php');
         include('insert_consumption.php');
-        include('insert_individual_consumption.php');
+        //include('insert_individual_consumption.php');
         include('insert_supply.php');
 
         // Level 3: Tables that depend on Level 2 tables

@@ -205,7 +205,7 @@ $supplyRecords = $conn->query("
         }
 
         .table-responsive {
-            max-height: 400px;
+            max-height: 700px;
             overflow-y: auto;
         }
 

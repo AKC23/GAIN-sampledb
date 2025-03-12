@@ -13,6 +13,8 @@ $sql = "
         d.Volume_MT_Y,
         c.CountryName,
         yt.YearTypeName,
+        d.StartYear,
+        d.EndYear,
         r.ReferenceNumber
     FROM 
         distribution d
@@ -49,6 +51,8 @@ if ($result->num_rows > 0) {
     echo "<th>Volume_MT_Y</th>";
     echo "<th>CountryName</th>";
     echo "<th>YearTypeName</th>";
+    echo "<th>StartYear</th>";
+    echo "<th>EndYear</th>";
     echo "<th>ReferenceNumber</th>";
     echo "</tr></thead><tbody>";
     
@@ -64,6 +68,8 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['Volume_MT_Y']) . "</td>";
         echo "<td>" . htmlspecialchars($row['CountryName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['YearTypeName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['StartYear']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['EndYear']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ReferenceNumber']) . "</td>";
         echo "</tr>";
     }
