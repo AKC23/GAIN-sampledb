@@ -167,7 +167,7 @@ $distributions = $conn->query("
         }
 
         .table-responsive {
-            max-height: 400px;
+            max-height: 600px;
             overflow-y: auto;
         }
 

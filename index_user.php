@@ -55,8 +55,8 @@ $validTables = [
     'geographylevel2' => 'Geography Level 2',
     'geographylevel3' => 'Geography Level 3',
     'individualconsumption' => 'Individual Consumption',
-    'measurecurrency' => 'Measure Currency',
-    'measureunit1' => 'Measure Unit 1',
+    //'measurecurrency' => 'Measure Currency',
+    // 'measureunit1' => 'Measure Unit 1',
     //'packagingtype' => 'Packaging Type',
     'producerprocessor' => 'Producer Processor',
     'producerreference' => 'Producer Reference',
@@ -147,7 +147,7 @@ $validTables = [
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 20px;
         }
 
         .form-group .btn {
@@ -313,7 +313,7 @@ $validTables = [
         <div id="debug-card">
 
             <?php
-            include('debug_table.php');
+            // include('debug_table.php');
             ?>
 
         </div>

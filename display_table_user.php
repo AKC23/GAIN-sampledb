@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             if ($column['Field'] == 'VehicleID') {
                 $hasVehicleField = true;
             }
-            if ($column['Field'] == 'CountryID' || $column['Field'] == 'GL1ID') {
+            if ($column['Field'] == 'CountryID') {
                 $hasCountryField = true;
             }
         }
@@ -89,12 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
             $countryResult = $conn->query("SELECT CountryID FROM country WHERE CountryName = '$countryName'");
             if ($countryRow = $countryResult->fetch_assoc()) {
                 $countryID = $countryRow['CountryID'];
-                // Check if the table has GL1ID instead of CountryID
-                if ($tableName == 'consumption') {
-                    $conditions[] = "GL1ID = '$countryID'";
-                } else {
-                    $conditions[] = "CountryID = '$countryID'";
-                }
+                $conditions[] = "CountryID = '$countryID'";
             } else {
                 echo "No records found";
                 return;

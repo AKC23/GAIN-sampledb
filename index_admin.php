@@ -219,30 +219,72 @@ $validTables = [
 
             $('#modify-data-btn').on('click', function() {
                 if (selectedTable) {
-                    if (selectedTable == 'foodvehicle') {
-                        window.location.href = 'input_tables/input_foodvehicle.php';
-                    } else if (selectedTable == 'country') {
-                        window.location.href = 'input_tables/input_country.php';
+                    if (selectedTable == 'adultmaleequivalent') {
+                        window.location.href = 'input_tables/input_adult_male_equivalent.php';
+                    } else if (selectedTable == 'age') {
+                        window.location.href = 'input_tables/input_age.php';
+                    } else if (selectedTable == 'brand') {
+                        window.location.href = 'input_tables/input_brand.php';
                     } else if (selectedTable == 'company') {
                         window.location.href = 'input_tables/input_company.php';
+                    } else if (selectedTable == 'consumption') {
+                        window.location.href = 'input_tables/input_consumption.php';
+                    } else if (selectedTable == 'country') {
+                        window.location.href = 'input_tables/input_country.php';
+                    } else if (selectedTable == 'distribution') {
+                        window.location.href = 'input_tables/input_distribution.php';
+                    } else if (selectedTable == 'distributionchannel') {
+                        window.location.href = 'input_tables/input_distribution_channel.php';
+                    } else if (selectedTable == 'entity') {
+                        window.location.href = 'input_tables/input_entity.php';
+                    } else if (selectedTable == 'extractionconversion') {
+                        window.location.href = 'input_tables/input_extraction_conversion.php';
+                    } else if (selectedTable == 'foodtype') {
+                        window.location.href = 'input_tables/input_foodtype.php';
+                    } else if (selectedTable == 'foodvehicle') {
+                        window.location.href = 'input_tables/input_foodvehicle.php';
+                    } else if (selectedTable == 'gender') {
+                        window.location.href = 'input_tables/input_gender.php';
                     } else if (selectedTable == 'geographylevel1') {
                         window.location.href = 'input_tables/input_geography_level1.php';
                     } else if (selectedTable == 'geographylevel2') {
                         window.location.href = 'input_tables/input_geography_level2.php';
-                    }else if (selectedTable == 'geographylevel3') {
+                    } else if (selectedTable == 'geographylevel3') {
                         window.location.href = 'input_tables/input_geography_level3.php';
-                    }else if (selectedTable == 'producerreference') {
-                        window.location.href = 'input_tables/input_producer_reference.php';
-                    }else if (selectedTable == 'producerprocessor') {
+                    } else if (selectedTable == 'individualconsumption') {
+                        window.location.href = 'input_tables/input_consumption.php';
+                    } else if (selectedTable == 'measurecurrency') {
+                        window.location.href = 'input_tables/input_measure_currency.php';
+                    } else if (selectedTable == 'measureunit1') {
+                        window.location.href = 'input_tables/input_measure_unit1.php';
+                    } else if (selectedTable == 'packagingtype') {
+                        window.location.href = 'input_tables/input_packaging_type.php';
+                    } else if (selectedTable == 'producerprocessor') {
                         window.location.href = 'input_tables/input_producer_processor.php';
-                    }else if (selectedTable == 'product') {
+                    } else if (selectedTable == 'producerreference') {
+                        window.location.href = 'input_tables/input_producer_reference.php';
+                    } else if (selectedTable == 'producersku') {
+                        window.location.href = 'input_tables/input_producer_sku.php';
+                    } else if (selectedTable == 'product') {
                         window.location.href = 'input_tables/input_product.php';
+                    } else if (selectedTable == 'reference') {
+                        window.location.href = 'input_tables/input_reference.php';
+                    } else if (selectedTable == 'subdistributionchannel') {
+                        window.location.href = 'input_tables/input_sub_distribution_channel.php';
+                    } else if (selectedTable == 'supply') {
+                        window.location.href = 'input_tables/input_supply.php';
+                    } else if (selectedTable == 'supply_in_chain_final') {
+                        window.location.href = 'input_tables/input_supply_in_chain_final.php';
+                    } else if (selectedTable == 'yeartype') {
+                        window.location.href = 'input_tables/input_year_type.php';
+                    } else {
+                        alert('Invalid table selected.');
                     }
-                    // Add more conditions for other tables as needed
                 } else {
                     alert('Please select a table first.');
                 }
             });
+
 
             $('#download-csv-btn').on('click', function() {
                 var params = $(this).data('params');

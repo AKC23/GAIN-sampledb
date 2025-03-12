@@ -19,8 +19,7 @@ CREATE TABLE IF NOT EXISTS userinfo (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    birthday DATE
+    password VARCHAR(255) NOT NULL
 )";
 if ($conn->query($tableCreationQuery) === TRUE) {
     echo "Table userinfo created successfully or already exists.<br>";
@@ -35,7 +34,7 @@ $checkAdminQuery = "SELECT * FROM userinfo WHERE email = '$adminEmail'";
 $checkAdminResult = $conn->query($checkAdminQuery);
 
 if ($checkAdminResult->num_rows == 0) {
-    $insertAdminQuery = "INSERT INTO userinfo (username, email, password, birthday) VALUES ('admin', '$adminEmail', '$adminPassword', '2000-01-01')";
+    $insertAdminQuery = "INSERT INTO userinfo (username, email, password) VALUES ('admin', '$adminEmail', '$adminPassword')";
     if ($conn->query($insertAdminQuery) === TRUE) {
         echo "Admin credentials inserted successfully.<br>";
     } else {
@@ -50,7 +49,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["registerEmail"];
     $password = $_POST["registerPassword"]; // In real-world, hash this password
     $repeatPassword = $_POST["registerRepeatPassword"];
-    $birthday = $_POST["registerBirthday"];
+
+    // Validate email domain
+    if (!preg_match("/@(gmail\.com|yahoo\.com)$/", $email)) {
+        echo "<script>
+                alert('Email must be a valid gmail.com or yahoo.com address.');
+                window.location.href = 'login_register.php';
+              </script>";
+        exit();
+    }
+
+    // Validate password length
+    if (strlen($password) < 8) {
+        echo "<script>
+                alert('Password must be at least 8 characters long.');
+                window.location.href = 'login_register.php';
+              </script>";
+        exit();
+    }
 
     // Validate password match
     if ($password != $repeatPassword) {
@@ -67,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // If the email is unique, proceed with registration
 
         // Prepare SQL
-        $sql = "INSERT INTO userinfo (username, email, password, birthday) VALUES ('$username', '$email', '$password', '$birthday')";
+        $sql = "INSERT INTO userinfo (username, email, password) VALUES ('$username', '$email', '$password')";
 
         if ($conn->query($sql) === TRUE) {
             echo "<script>alert('Your profile is created! Please login.');</script>";
@@ -118,12 +134,6 @@ $conn->close();
             <div class="form-group">
                 <label for="registerRepeatPassword">Repeat password</label>
                 <input type="password" id="registerRepeatPassword" name="registerRepeatPassword" class="form-control" required />
-            </div>
-
-            <!-- Date of Birth input -->
-            <div class="form-group">
-                <label for="registerBirthday">Date of Birth</label>
-                <input type="date" id="registerBirthday" name="registerBirthday" class="form-control" required />
             </div>
 
             <!-- Submit button -->

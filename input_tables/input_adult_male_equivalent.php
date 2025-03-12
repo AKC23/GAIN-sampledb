@@ -85,7 +85,7 @@ $ames = $conn->query("
     <h3>Add New Record</h3>
     <form method="post" action="input_adult_male_equivalent.php" class="mb-4">
         <input type="hidden" name="action" value="create">
-        <label for="AME">AME:</label>
+        <label for="AME">AME (Example: 0.95 or 0.55): </label>
         <input type="text" name="AME" id="AME" class="form-control"><br>
 
         <label for="GenderID">Gender:</label>

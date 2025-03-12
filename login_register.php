@@ -8,6 +8,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["loginEmail"];
         $password = $_POST["loginPassword"];
 
+        // Validate email domain
+        if (!preg_match("/@(gmail\.com|yahoo\.com)$/", $email)) {
+            echo "<script>
+                    alert('Email must be a valid gmail.com or yahoo.com address.');
+                    window.location.href = 'login_register.php';
+                  </script>";
+            exit();
+        }
+
+        // Validate password length
+        if (strlen($password) < 8) {
+            echo "<script>
+                    alert('Password must be at least 8 characters long.');
+                    window.location.href = 'login_register.php';
+                  </script>";
+            exit();
+        }
+
         // Default admin credentials
         $adminEmail = "admin@gmail.com";
         $adminPassword = "admin1234";
@@ -31,9 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result->num_rows > 0) {
                 // Redirect to user dashboard or desired page
                 echo "<script>
-                        alert('User Login successful! Moving to User view of the database.');
-                        window.location.href = 'index_admin.php';
-                      </script>";
+                    alert('Admin Login successful! Moving to Admin view of the database.');
+                    window.location.href = 'index_admin.php';
+                  </script>";
                 exit();
             } else {
                 // Display an error message for incorrect credentials
@@ -121,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </form>
                 </div>
                 <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                    <form class="form-horizontal" action="register_user_info.php" method="POST">
+                    <form class="form-horizontal" action="register_user_info.php" method="POST" onsubmit="return validateRegisterForm()">
                         <fieldset>
                             <div id="legend">
                                 <legend class="">Register</legend>
@@ -149,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label class="control-label" for="registerPassword">Password</label>
                                 <div class="controls">
                                     <input type="password" id="registerPassword" name="registerPassword" placeholder="" class="input-xlarge form-control">
-                                    <p class="help-block">Password should be at least 4 characters</p>
+                                    <p class="help-block">Password should be at least 8 characters</p>
                                 </div>
                             </div>
 
@@ -159,14 +177,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="controls">
                                     <input type="password" id="registerRepeatPassword" name="registerRepeatPassword" placeholder="" class="input-xlarge form-control">
                                     <p class="help-block">Please confirm password</p>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <!-- Date of Birth input -->
-                                <label class="control-label" for="registerBirthday">Date of Birth</label>
-                                <div class="controls">
-                                    <input type="date" id="registerBirthday" name="registerBirthday" class="input-xlarge form-control" required />
                                 </div>
                             </div>
 
@@ -189,6 +199,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
+    <script>
+        function validateRegisterForm() {
+            var email = document.getElementById("registerEmail").value;
+            var password = document.getElementById("registerPassword").value;
+            var repeatPassword = document.getElementById("registerRepeatPassword").value;
+
+            // Validate email domain
+            if (!email.match(/@(gmail\.com|yahoo\.com)$/)) {
+                alert('Email must be a valid address (like gmail.com or yahoo.com).');
+                return false;
+            }
+
+            // Validate password length
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return false;
+            }
+
+            // Validate password match
+            if (password !== repeatPassword) {
+                alert('Passwords do not match.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 
 </html>
