@@ -6,6 +6,4 @@ This repository contains the code and data analysis for the review and compilati
 
 This project supports GAIN's mission to tackle malnutrition by enhancing understanding of food supply chains and fortification opportunities. The study focuses on edible oils and wheat flour, aiming to assess their availability, fortification quality, and distribution across Bangladesh.
 
-Basic Website: http://gain-sampledb.42web.io/index.php
-
 ---
