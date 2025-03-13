@@ -1,7 +1,6 @@
 <?php
 include('db_connect.php');
 
-
 // SQL query to drop the 'userinfo' table if it exists
 $dropTableSQL = "DROP TABLE IF EXISTS userinfo";
 
@@ -11,7 +10,6 @@ if ($conn->query($dropTableSQL) === TRUE) {
 } else {
     echo "Error dropping table 'userinfo': " . $conn->error . "<br>";
 }
-
 
 // Create the userinfo table if it doesn't exist
 $tableCreationQuery = "

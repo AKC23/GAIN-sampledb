@@ -376,7 +376,7 @@ $validTables = [
 
             <div class="current-time">
                 <?php
-                echo "Last Updated: February 23, 2025, 6:55 pm";
+                echo "Last Updated: March 13, 2025, 11:50 am";
                 ?>
             </div>
         </div>
