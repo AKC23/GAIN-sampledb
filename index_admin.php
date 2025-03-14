@@ -62,6 +62,7 @@ $validTables = [
     'producerreference' => 'Producer Reference',
     'producersku' => 'Producer SKU',
     'product' => 'Product',
+    'processingstage' => 'Processing Stage',
     'reference' => 'Reference',
     'subdistributionchannel' => 'Sub Distribution Channel',
     'supply' => 'Supply',

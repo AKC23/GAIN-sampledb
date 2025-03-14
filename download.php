@@ -8,7 +8,7 @@ if (isset($_POST['format'], $_POST['tableName'])) {
     $vehicleNames = isset($_POST['vehicleNames']) ? explode(',', $_POST['vehicleNames']) : [];
 
     // Check if the table exists or is a special case
-    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption' && $tableName !== 'distribution' && $tableName !== 'entity' && $tableName !== 'extractionconversion' && $tableName !== 'foodtype' && $tableName !== 'geographylevel1' && $tableName !== 'geographylevel2' && $tableName !== 'geographylevel3' && $tableName !== 'producerprocessor' && $tableName !== 'producersku' && $tableName !== 'product' && $tableName !== 'subdistributionchannel') {
+    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption' && $tableName !== 'distribution' && $tableName !== 'entity' && $tableName !== 'extractionconversion' && $tableName !== 'foodtype' && $tableName !== 'geographylevel1' && $tableName !== 'geographylevel2' && $tableName !== 'geographylevel3' && $tableName !== 'producerprocessor' && $tableName !== 'producersku' && $tableName !== 'product' && $tableName !== 'subdistributionchannel' && $tableName !== 'processingstage' && $tableName !== 'producerreference') {
         $tableExistsQuery = "SHOW TABLES LIKE '$tableName'";
         $tableExistsResult = $conn->query($tableExistsQuery);
 
@@ -62,6 +62,12 @@ if (isset($_POST['format'], $_POST['tableName'])) {
         exit();
     } elseif ($tableName === 'subdistributionchannel') {
         include('download_tables/download_sub_distribution_channel.php');
+        exit();
+    } elseif ($tableName === 'processingstage') {
+        include('download_tables/download_processing_stage.php');
+        exit();
+    } elseif ($tableName === 'producerreference') {
+        include('download_tables/download_producer_reference.php');
         exit();
     } else {
         // Check if the columns exist in the table

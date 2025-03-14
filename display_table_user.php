@@ -33,6 +33,7 @@ $validTables = [
     'producerreference' => 'Producer Reference',
     'producersku' => 'Producer SKU',
     'product' => 'Product',
+    'processingstage' => 'Processing Stage',
     'reference' => 'Reference',
     'subdistributionchannel' => 'Sub Distribution Channel',
     'supply' => 'Supply',
@@ -146,6 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_adult_male_equivalent.php');
                 } elseif ($tableName == 'product') {
                     include('display_tables/display_product.php');
+                } elseif ($tableName == 'processingstage') {
+                    include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'entity') {
                     include('display_tables/display_entity.php');
                 } elseif ($tableName == 'producerprocessor') {
@@ -211,6 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['tableName'])) {
                     include('display_tables/display_adult_male_equivalent.php');
                 } elseif ($tableName == 'product') {
                     include('display_tables/display_product.php');
+                } elseif ($tableName == 'processingstage') {
+                    include('display_tables/display_processing_stage.php');
                 } elseif ($tableName == 'entity') {
                     include('display_tables/display_entity.php');
                 } elseif ($tableName == 'producerprocessor') {

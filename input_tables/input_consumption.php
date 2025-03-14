@@ -147,6 +147,7 @@ $consumptions = $conn->query("
            g.GenderName,
            a.AgeRange,
            m.SupplyVolumeUnit,
+           m.PeriodicalUnit,
            y.YearTypeName,
            r.ReferenceNumber
     FROM consumption c
@@ -299,6 +300,7 @@ $consumptions = $conn->query("
                         <th>Age Range</th>
                         <th>Number of People</th>
                         <th>Supply Volume Unit</th>
+                        <th>Periodical Unit</th>
                         <th>Source Volume</th>
                         <th>Volume (MT/Y)</th>
                         <th>Year Type</th>
@@ -320,6 +322,7 @@ $consumptions = $conn->query("
                             <td><?= $row['AgeRange'] ?></td>
                             <td><?= $row['NumberOfPeople'] ?></td>
                             <td><?= $row['SupplyVolumeUnit'] ?></td>
+                            <td><?= $row['PeriodicalUnit'] ?></td>
                             <td><?= $row['SourceVolume'] ?></td>
                             <td><?= $row['VolumeMTY'] ?></td>
                             <td><?= $row['YearTypeName'] ?></td>

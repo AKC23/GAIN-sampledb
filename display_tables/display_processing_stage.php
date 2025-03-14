@@ -1,31 +1,40 @@
 <?php
-// display_tables/display_processing_stage.php
 
-echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
-// Fetch and display table headers
-echo "<th>PSID</th>";
-echo "<th>Processing Stage Name</th>";
-echo "<th>Extraction Rate</th>";
-echo "<th>Vehicle Name</th>";
-echo "</tr></thead><tbody>";
+$sql = "
+SELECT 
+    ps.PSID,
+    ps.ProcessingStageName,
+    ps.ExtractionRate,
+    fv.VehicleName
+FROM 
+    processingstage ps
+JOIN 
+    foodvehicle fv ON ps.VehicleID = fv.VehicleID
+ORDER BY 
+    ps.PSID
+";
 
-// Fetch and display table rows
-while ($row = $result->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($row['PSID']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['ProcessingStageName']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['ExtractionRate']) . "</td>";
+$result = $conn->query($sql);
 
-    // Fetch Vehicle Name from foodvehicle table
-    $vehicleID = htmlspecialchars($row['VehicleID']);
-    $vehicleQuery = $conn->query("SELECT VehicleName FROM foodvehicle WHERE VehicleID = $vehicleID");
-    if ($vehicleRow = $vehicleQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($vehicleRow['VehicleName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
+if ($result->num_rows > 0) {
+    echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
+    // Fetch and display table headers
+    while ($fieldInfo = $result->fetch_field()) {
+        echo "<th>" . htmlspecialchars($fieldInfo->name) . "</th>";
     }
-
-    echo "</tr>";
+    echo "</tr></thead><tbody>";
+    // Fetch and display table rows
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        foreach ($row as $cell) {
+            echo "<td>" . htmlspecialchars($cell) . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</tbody></table></div>";
+} else {
+    echo 'No records found';
 }
-echo "</tbody></table></div>";
+
+$conn->close();
 ?>
