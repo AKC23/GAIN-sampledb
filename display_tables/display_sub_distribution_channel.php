@@ -1,27 +1,39 @@
 <?php
-echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
-// Fetch and display table headers
-echo "<th>Sub Distribution Channel ID</th>";
-echo "<th>Sub Distribution Channel Name</th>";
-echo "<th>Distribution Channel Name</th>";
-echo "</tr></thead><tbody>";
 
-// Fetch and display table rows
-while ($row = $result->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($row['SubDistributionChannelID']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['SubDistributionChannelName']) . "</td>";
+$sql = "
+SELECT 
+    sdc.SubDistributionChannelID,
+    sdc.SubDistributionChannelName,
+    dc.DistributionChannelName
+FROM 
+    subdistributionchannel sdc
+JOIN 
+    distributionchannel dc ON sdc.DistributionChannelID = dc.DistributionChannelID
+ORDER BY 
+    sdc.SubDistributionChannelID
+";
 
-    // Fetch Distribution Channel Name from distributionchannel table
-    $distributionChannelID = htmlspecialchars($row['DistributionChannelID']);
-    $distributionChannelQuery = $conn->query("SELECT DistributionChannelName FROM distributionchannel WHERE DistributionChannelID = $distributionChannelID");
-    if ($distributionChannelRow = $distributionChannelQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($distributionChannelRow['DistributionChannelName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
+    // Fetch and display table headers
+    while ($fieldInfo = $result->fetch_field()) {
+        echo "<th>" . htmlspecialchars($fieldInfo->name) . "</th>";
     }
-
-    echo "</tr>";
+    echo "</tr></thead><tbody>";
+    // Fetch and display table rows
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        foreach ($row as $cell) {
+            echo "<td>" . htmlspecialchars($cell) . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</tbody></table></div>";
+} else {
+    echo 'No records found';
 }
-echo "</tbody></table></div>";
+
+$conn->close();
 ?>
