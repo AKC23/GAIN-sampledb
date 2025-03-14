@@ -1,37 +1,49 @@
 <?php
-echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
-// Fetch and display table headers
-echo "<th>AMEID</th>";
-echo "<th>AME</th>";
-echo "<th>GenderName</th>";
-echo "<th>AgeRange</th>";
-echo "</tr></thead><tbody>";
 
-// Fetch and display table rows
-while ($row = $result->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($row['AMEID']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['AME']) . "</td>";
+$sql = "
+SELECT 
+    ame.AMEID,
+    ame.AME,
+    g.GenderName,
+    a.AgeRange
+FROM 
+    adultmaleequivalent ame
+JOIN 
+    gender g ON ame.GenderID = g.GenderID
+JOIN 
+    age a ON ame.AgeID = a.AgeID
+ORDER BY 
+    ame.AMEID
+";
 
-    // Fetch GenderName from gender table
-    $genderID = htmlspecialchars($row['GenderID']);
-    $genderQuery = $conn->query("SELECT GenderName FROM gender WHERE GenderID = $genderID");
-    if ($genderRow = $genderQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($genderRow['GenderName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo '<div class="table-responsive">';
+    echo '<table class="table table-bordered">';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th>AME ID</th>';
+    echo '<th>AME</th>';
+    echo '<th>Gender</th>';
+    echo '<th>Age Range</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+    while ($row = $result->fetch_assoc()) {
+        echo '<tr>';
+        echo '<td>' . htmlspecialchars($row['AMEID']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['AME']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['GenderName']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['AgeRange']) . '</td>';
+        echo '</tr>';
     }
-
-    // Fetch AgeRange from age table
-    $ageID = htmlspecialchars($row['AgeID']);
-    $ageQuery = $conn->query("SELECT AgeRange FROM age WHERE AgeID = $ageID");
-    if ($ageRow = $ageQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($ageRow['AgeRange']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
-
-    echo "</tr>";
+    echo '</tbody>';
+    echo '</table>';
+    echo '</div>';
+} else {
+    echo 'No records found';
 }
-echo "</tbody></table></div>";
+
+$conn->close();
 ?>

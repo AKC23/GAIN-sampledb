@@ -114,15 +114,17 @@ $validTables = [
 
         .card {
             margin-top: 1%;
-            padding: 10px; /* Increased padding */
+            padding: 10px;
+            /* Increased padding */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #c8e5bf;
             border-radius: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%; 
-            text-align: center; /* Center-align all text in the card */
+            width: 100%;
+            text-align: center;
+            /* Center-align all text in the card */
         }
 
         .table-selection {
@@ -251,7 +253,7 @@ $validTables = [
         <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption</h1>
 
         <div class="mb-3">
-            
+
             <a href="login_register.php" class="btn btn-secondary">Admin Login</a>
         </div>
 
