@@ -8,7 +8,7 @@ if (isset($_POST['format'], $_POST['tableName'])) {
     $vehicleNames = isset($_POST['vehicleNames']) ? explode(',', $_POST['vehicleNames']) : [];
 
     // Check if the table exists or is a special case
-    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption' && $tableName !== 'distribution' && $tableName !== 'entity' && $tableName !== 'extractionconversion' && $tableName !== 'foodtype' && $tableName !== 'geographylevel1' && $tableName !== 'geographylevel2' && $tableName !== 'geographylevel3' && $tableName !== 'producerprocessor' && $tableName !== 'producersku' && $tableName !== 'product' && $tableName !== 'subdistributionchannel' && $tableName !== 'processingstage' && $tableName !== 'producerreference') {
+    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption' && $tableName !== 'distribution' && $tableName !== 'entity' && $tableName !== 'extractionconversion' && $tableName !== 'foodtype' && $tableName !== 'geographylevel1' && $tableName !== 'geographylevel2' && $tableName !== 'geographylevel3' && $tableName !== 'producerprocessor' && $tableName !== 'producersku' && $tableName !== 'product' && $tableName !== 'subdistributionchannel' && $tableName !== 'processingstage' && $tableName !== 'producerreference' && $tableName !== 'supply') {
         $tableExistsQuery = "SHOW TABLES LIKE '$tableName'";
         $tableExistsResult = $conn->query($tableExistsQuery);
 
@@ -68,6 +68,9 @@ if (isset($_POST['format'], $_POST['tableName'])) {
         exit();
     } elseif ($tableName === 'producerreference') {
         include('download_tables/download_producer_reference.php');
+        exit();
+    } elseif ($tableName === 'supply') {
+        include('download_tables/download_supply.php');
         exit();
     } else {
         // Check if the columns exist in the table

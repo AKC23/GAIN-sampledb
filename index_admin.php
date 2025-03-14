@@ -268,6 +268,8 @@ $validTables = [
                         window.location.href = 'input_tables/input_producer_sku.php';
                     } else if (selectedTable == 'product') {
                         window.location.href = 'input_tables/input_product.php';
+                    } else if (selectedTable == 'processingstage') {
+                        window.location.href = 'input_tables/input_processing_stage.php';
                     } else if (selectedTable == 'reference') {
                         window.location.href = 'input_tables/input_reference.php';
                     } else if (selectedTable == 'subdistributionchannel') {
@@ -275,7 +277,7 @@ $validTables = [
                     } else if (selectedTable == 'supply') {
                         window.location.href = 'input_tables/input_supply.php';
                     } else if (selectedTable == 'supply_in_chain_final') {
-                        window.location.href = 'input_tables/input_supply_in_chain_final.php';
+                        alert('This table can\'t be updated separately. Instead, update supply, distribution, and consumption tables to show the updated values here.');
                     } else if (selectedTable == 'yeartype') {
                         window.location.href = 'input_tables/input_year_type.php';
                     } else {

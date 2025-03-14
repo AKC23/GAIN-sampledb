@@ -5,35 +5,35 @@ if (isset($_POST['format'])) {
 
     $sql = "
     SELECT 
-        c.ConsumptionID, 
-        c.VehicleID, 
-        c.GL1ID, 
-        c.GL2ID, 
-        c.GL3ID, 
-        c.GenderID, 
-        c.AgeID, 
-        c.NumberOfPeople, 
-        c.SourceVolume, 
-        c.VolumeMTY, 
-        c.UCID, 
-        c.YearTypeID, 
-        c.StartYear, 
-        c.EndYear, 
-        c.ReferenceID, 
-        gl1.AdminLevel1, 
-        gl2.AdminLevel2, 
-        gl3.AdminLevel3, 
-        co.CountryName AS GL1CountryName 
-    FROM 
-        consumption c 
-    LEFT JOIN 
-        geographylevel1 gl1 ON c.GL1ID = gl1.GL1ID 
-    LEFT JOIN 
-        geographylevel2 gl2 ON c.GL2ID = gl2.GL2ID 
-    LEFT JOIN 
-        geographylevel3 gl3 ON c.GL3ID = gl3.GL3ID 
-    LEFT JOIN 
-        country co ON gl1.CountryID = co.CountryID
+        c.ConsumptionID,
+        fv.VehicleName,
+        gl1.AdminLevel1,
+        gl2.AdminLevel2,
+        gl3.AdminLevel3,
+        co.CountryName AS CountryName,
+        g.GenderName,
+        a.AgeRange,
+        c.NumberOfPeople,
+        mu.SupplyVolumeUnit,
+        mu.PeriodicalUnit,
+        c.SourceVolume,
+        c.VolumeMTY,
+        yt.YearTypeName,
+        c.StartYear,
+        c.EndYear,
+        r.ReferenceNumber
+    FROM consumption c
+    LEFT JOIN foodvehicle fv ON c.VehicleID = fv.VehicleID
+    LEFT JOIN geographylevel1 gl1 ON c.GL1ID = gl1.GL1ID
+    LEFT JOIN geographylevel2 gl2 ON c.GL2ID = gl2.GL2ID
+    LEFT JOIN geographylevel3 gl3 ON c.GL3ID = gl3.GL3ID
+    LEFT JOIN country co ON gl1.CountryID = co.CountryID
+    LEFT JOIN gender g ON c.GenderID = g.GenderID
+    LEFT JOIN age a ON c.AgeID = a.AgeID
+    LEFT JOIN measureunit1 mu ON c.UCID = mu.UCID
+    LEFT JOIN yeartype yt ON c.YearTypeID = yt.YearTypeID
+    LEFT JOIN reference r ON c.ReferenceID = r.ReferenceID
+    ORDER BY c.ConsumptionID
     ";
 
     $result = $conn->query($sql);
@@ -71,4 +71,3 @@ if (isset($_POST['format'])) {
     }
     $conn->close();
 }
-?>

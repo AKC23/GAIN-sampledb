@@ -4,134 +4,84 @@
 $sql = "
     SELECT 
         c.ConsumptionID,
-        c.VehicleID,
-        c.GL1ID,
-        c.GL2ID,
-        c.GL3ID,
-        c.GenderID,
-        c.AgeID,
-        c.NumberOfPeople,
-        c.SourceVolume,
-        c.VolumeMTY,
-        c.UCID,
-        c.YearTypeID,
-        c.StartYear,
-        c.EndYear,
-        c.ReferenceID,
+        fv.VehicleName,
         gl1.AdminLevel1,
         gl2.AdminLevel2,
         gl3.AdminLevel3,
-        co.CountryName AS GL1CountryName
+        co.CountryName AS CountryName,
+        g.GenderName,
+        a.AgeRange,
+        c.NumberOfPeople,
+        mu.SupplyVolumeUnit,
+        mu.PeriodicalUnit,
+        c.SourceVolume,
+        c.VolumeMTY,
+        yt.YearTypeName,
+        c.StartYear,
+        c.EndYear,
+        r.ReferenceNumber
     FROM consumption c
+    LEFT JOIN foodvehicle fv ON c.VehicleID = fv.VehicleID
     LEFT JOIN geographylevel1 gl1 ON c.GL1ID = gl1.GL1ID
     LEFT JOIN geographylevel2 gl2 ON c.GL2ID = gl2.GL2ID
     LEFT JOIN geographylevel3 gl3 ON c.GL3ID = gl3.GL3ID
     LEFT JOIN country co ON gl1.CountryID = co.CountryID
+    LEFT JOIN gender g ON c.GenderID = g.GenderID
+    LEFT JOIN age a ON c.AgeID = a.AgeID
+    LEFT JOIN measureunit1 mu ON c.UCID = mu.UCID
+    LEFT JOIN yeartype yt ON c.YearTypeID = yt.YearTypeID
+    LEFT JOIN reference r ON c.ReferenceID = r.ReferenceID
+    ORDER BY c.ConsumptionID
 ";
+
 $result = $conn->query($sql);
 
-echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
-// Fetch and display table headers
-echo "<th>ConsumptionID</th>";
-echo "<th>Vehicle Name</th>";
-echo "<th>Admin Level 1</th>";
-echo "<th>Admin Level 2</th>";
-echo "<th>Admin Level 3</th>";
-echo "<th>Country</th>";
-echo "<th>Gender</th>";
-echo "<th>Age Range</th>";
-echo "<th>Number of People</th>";
-echo "<th>Supply Volume Unit</th>";
-echo "<th>Periodical Unit</th>";
-echo "<th>Source Volume</th>";
-echo "<th>Volume (MT/Y)</th>";
-echo "<th>Year Type</th>";
-echo "<th>Start Year</th>";
-echo "<th>End Year</th>";
-echo "<th>Reference Number</th>";
-echo "</tr></thead><tbody>";
+if ($result->num_rows > 0) {
+    echo "<div class='table-responsive'><table class='table table-bordered'><thead><tr>";
+    echo "<th>ConsumptionID</th>";
+    echo "<th>Vehicle Name</th>";
+    echo "<th>Admin Level 1</th>";
+    echo "<th>Admin Level 2</th>";
+    echo "<th>Admin Level 3</th>";
+    echo "<th>Country</th>";
+    echo "<th>Gender</th>";
+    echo "<th>Age Range</th>";
+    echo "<th>Number of People</th>";
+    echo "<th>Supply Volume Unit</th>";
+    echo "<th>Periodical Unit</th>";
+    echo "<th>Source Volume</th>";
+    echo "<th>Volume (MT/Y)</th>";
+    echo "<th>Year Type</th>";
+    echo "<th>Start Year</th>";
+    echo "<th>End Year</th>";
+    echo "<th>Reference Number</th>";
+    echo "</tr></thead><tbody>";
 
-// Fetch and display table rows
-while ($row = $result->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($row['ConsumptionID']) . "</td>";
-
-    // Fetch Vehicle Name from foodvehicle table
-    $vehicleID = htmlspecialchars($row['VehicleID']);
-    $vehicleQuery = $conn->query("SELECT VehicleName FROM foodvehicle WHERE VehicleID = $vehicleID");
-    if ($vehicleRow = $vehicleQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($vehicleRow['VehicleName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['ConsumptionID']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['VehicleName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['AdminLevel1']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['AdminLevel2']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['AdminLevel3']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['CountryName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['GenderName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['AgeRange']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['NumberOfPeople']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['SupplyVolumeUnit']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['PeriodicalUnit']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['SourceVolume']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['VolumeMTY']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['YearTypeName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['StartYear']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['EndYear']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['ReferenceNumber']) . "</td>";
+        echo "</tr>";
     }
-
-    // Fetch Admin Level 1 from geographylevel1 table
-    echo "<td>" . htmlspecialchars($row['AdminLevel1']) . "</td>";
-
-    // Fetch Admin Level 2 from geographylevel2 table
-    echo "<td>" . htmlspecialchars($row['AdminLevel2']) . "</td>";
-
-    // Fetch Admin Level 3 from geographylevel3 table
-    echo "<td>" . htmlspecialchars($row['AdminLevel3']) . "</td>";
-
-    // Display the joined country name
-    echo "<td>" . htmlspecialchars($row['GL1CountryName']) . "</td>";
-
-    // Fetch Gender Name from gender table
-    $genderID = htmlspecialchars($row['GenderID']);
-    $genderQuery = $conn->query("SELECT GenderName FROM gender WHERE GenderID = $genderID");
-    if ($genderRow = $genderQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($genderRow['GenderName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
-
-    // Fetch Age Range from age table
-    $ageID = htmlspecialchars($row['AgeID']);
-    $ageQuery = $conn->query("SELECT AgeRange FROM age WHERE AgeID = $ageID");
-    if ($ageRow = $ageQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($ageRow['AgeRange']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
-
-    echo "<td>" . htmlspecialchars($row['NumberOfPeople']) . "</td>";
-
-    // Fetch Supply Volume Unit and Periodical Unit from measureunit1 table
-    $ucid = htmlspecialchars($row['UCID']);
-    $measureUnitQuery = $conn->query("SELECT SupplyVolumeUnit, PeriodicalUnit FROM measureunit1 WHERE UCID = $ucid");
-    if ($measureUnitRow = $measureUnitQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($measureUnitRow['SupplyVolumeUnit']) . "</td>";
-        echo "<td>" . htmlspecialchars($measureUnitRow['PeriodicalUnit']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-        echo "<td>N/A</td>";
-    }
-
-    echo "<td>" . htmlspecialchars($row['SourceVolume']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['VolumeMTY']) . "</td>";
-
-    // Fetch Year Type Name from yeartype table
-    $yearTypeID = htmlspecialchars($row['YearTypeID']);
-    $yearTypeQuery = $conn->query("SELECT YearTypeName FROM yeartype WHERE YearTypeID = $yearTypeID");
-    if ($yearTypeRow = $yearTypeQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($yearTypeRow['YearTypeName']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
-
-    echo "<td>" . htmlspecialchars($row['StartYear']) . "</td>";
-    echo "<td>" . htmlspecialchars($row['EndYear']) . "</td>";
-
-    // Fetch Reference details from reference table
-    $referenceID = htmlspecialchars($row['ReferenceID']);
-    $referenceQuery = $conn->query("SELECT ReferenceNumber, Source, Link, ProcessToObtainData, AccessDate FROM reference WHERE ReferenceID = $referenceID");
-    if ($referenceRow = $referenceQuery->fetch_assoc()) {
-        echo "<td>" . htmlspecialchars($referenceRow['ReferenceNumber']) . "</td>";
-    } else {
-        echo "<td>N/A</td>";
-    }
-
-    echo "</tr>";
+    echo "</tbody></table></div>";
+} else {
+    echo 'No records found';
 }
-echo "</tbody></table></div>";
+
+$conn->close();
+?>
