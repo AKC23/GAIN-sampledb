@@ -8,7 +8,7 @@ if (isset($_POST['format'], $_POST['tableName'])) {
     $vehicleNames = isset($_POST['vehicleNames']) ? explode(',', $_POST['vehicleNames']) : [];
 
     // Check if the table exists or is a special case
-    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption') {
+    if ($tableName !== 'individualconsumption' && $tableName !== 'supply_in_chain_final' && $tableName !== 'adultmaleequivalent' && $tableName !== 'consumption' && $tableName !== 'distribution' && $tableName !== 'entity' && $tableName !== 'extractionconversion' && $tableName !== 'foodtype' && $tableName !== 'geographylevel1' && $tableName !== 'geographylevel2' && $tableName !== 'geographylevel3') {
         $tableExistsQuery = "SHOW TABLES LIKE '$tableName'";
         $tableExistsResult = $conn->query($tableExistsQuery);
 
@@ -29,6 +29,27 @@ if (isset($_POST['format'], $_POST['tableName'])) {
         exit();
     } elseif ($tableName === 'consumption') {
         include('download_tables/download_consumption.php');
+        exit();
+    } elseif ($tableName === 'distribution') {
+        include('download_tables/download_distribution.php');
+        exit();
+    } elseif ($tableName === 'entity') {
+        include('download_tables/download_entity.php');
+        exit();
+    } elseif ($tableName === 'extractionconversion') {
+        include('download_tables/download_extraction_conversion.php');
+        exit();
+    } elseif ($tableName === 'foodtype') {
+        include('download_tables/download_foodtype.php');
+        exit();
+    } elseif ($tableName === 'geographylevel1') {
+        include('download_tables/download_geography_level1.php');
+        exit();
+    } elseif ($tableName === 'geographylevel2') {
+        include('download_tables/download_geography_level2.php');
+        exit();
+    } elseif ($tableName === 'geographylevel3') {
+        include('download_tables/download_geography_level3.php');
         exit();
     } else {
         // Check if the columns exist in the table
