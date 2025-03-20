@@ -33,9 +33,9 @@ $createTableSQL = "
         ProductID INT(11),
         ProducerReferenceID INT(11),
         UCID INT(11),
-        SourceVolume DECIMAL(20, 3),
-        VolumeMTY DECIMAL(20, 3),
-        CropToFirstProcessedFoodStageConvertedValue DECIMAL(20, 3),
+        SourceVolume DECIMAL(20, 4),
+        VolumeMTY DECIMAL(20, 4),
+        CropToFirstProcessedFoodStageConvertedValue DECIMAL(20, 4),
         YearTypeID INT(11),
         StartYear INT(4),
         EndYear INT(4),
@@ -75,7 +75,7 @@ if ($content === false) {
 }
 
 // Check for UTF-8 BOM and remove it
-$bom = pack('H*','EFBBBF');
+$bom = pack('H*', 'EFBBBF');
 if (strncmp($content, $bom, 3) === 0) {
     echo "Found and removing UTF-8 BOM from CSV file.<br>";
     $content = substr($content, 3);
@@ -87,7 +87,7 @@ $content = str_replace("\r", "\n", $content);
 $lines = explode("\n", $content);
 
 // Remove any empty lines
-$lines = array_filter($lines, function($line) {
+$lines = array_filter($lines, function ($line) {
     return trim($line) !== '';
 });
 
@@ -107,18 +107,18 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     if ($header !== FALSE) {
         echo "Row 1 (Header): " . implode(", ", array_map('trim', $header)) . "<br>";
     }
-    
+
     $rowNumber = 2;
     rewind($handle);
     fgetcsv($handle); // Skip header again
-    
+
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Show raw data for debugging
         echo "<br>Row $rowNumber raw data:<br>";
         foreach ($data as $index => $value) {
             echo "Column $index: '" . bin2hex($value) . "' (hex), '" . $value . "' (raw)<br>";
         }
-        
+
         // Clean and validate data
         if (count($data) < 28) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
@@ -136,15 +136,15 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
         $productID = trim($data[13]);
         $producerReferenceID = trim($data[15]);
         $ucid = trim($data[17]);
-        $sourceVolume = str_replace(',', '', trim($data[20])); // Remove commas
+        $sourceVolume = trim($data[20]); // Keep the original value with decimals
         $yearTypeID = trim($data[23]);
         $startYear = trim($data[25]);
         $endYear = trim($data[26]);
         $referenceID = trim($data[27]);
-        
+
         // Remove any extra spaces between the name and comma
         $origin = preg_replace('/\s+,/', ',', $origin);
-        
+
         // Convert to proper types
         $vehicleID = filter_var($vehicleID, FILTER_VALIDATE_INT);
         $countryID = filter_var($countryID, FILTER_VALIDATE_INT);
@@ -199,6 +199,11 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
+        // Format values to 4 decimal places
+        $sourceVolume = number_format($sourceVolume, 4, '.', '');
+        $volumeMTY = number_format($volumeMTY, 4, '.', '');
+        $cropToFirstProcessedFoodStageConvertedValue = number_format($cropToFirstProcessedFoodStageConvertedValue, 4, '.', '');
+
         $sql = "INSERT INTO supply (VehicleID, CountryID, FoodTypeID, PSID, Origin, EntityID, ProductID, ProducerReferenceID, UCID, SourceVolume, VolumeMTY, CropToFirstProcessedFoodStageConvertedValue, YearTypeID, StartYear, EndYear, ReferenceID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iiiisisiiidddiii", $vehicleID, $countryID, $foodTypeID, $psid, $origin, $entityID, $productID, $producerReferenceID, $ucid, $sourceVolume, $volumeMTY, $cropToFirstProcessedFoodStageConvertedValue, $yearTypeID, $startYear, $endYear, $referenceID);
@@ -230,4 +235,3 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
 
 // Note: We do not close the database connection here
 // because it needs to remain open for subsequent operations in index.php
-?>

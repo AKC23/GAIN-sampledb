@@ -11,6 +11,7 @@ $sql = "
         ps.ProcessingStageName,
         s.Origin,
         e.ProducerProcessorName,
+        ec.CountryName AS EntityCountryName,
         pp.ProductionCapacityVolumeMTY,
         pp.PercentageOfCapacityUsed,
         p.ProductName,
@@ -36,6 +37,8 @@ $sql = "
         processingstage ps ON s.PSID = ps.PSID
     JOIN 
         entity e ON s.EntityID = e.EntityID
+    JOIN 
+        country ec ON e.CountryID = ec.CountryID
     JOIN 
         producerprocessor pp ON s.EntityID = pp.EntityID
     JOIN 
@@ -64,6 +67,7 @@ if ($result->num_rows > 0) {
     echo "<th>Processing Stage</th>";
     echo "<th>Origin</th>";
     echo "<th>Producer/Processor Name</th>";
+    echo "<th>Entity Country Name</th>";
     echo "<th>Production Capacity Volume (MT/Y)</th>";
     echo "<th>Percentage of Capacity Used</th>";
     echo "<th>Product Name</th>";
@@ -88,6 +92,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['ProcessingStageName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['Origin']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ProducerProcessorName']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['EntityCountryName']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ProductionCapacityVolumeMTY']) . "</td>";
         echo "<td>" . htmlspecialchars($row['PercentageOfCapacityUsed']) . "</td>";
         echo "<td>" . htmlspecialchars($row['ProductName']) . "</td>";
