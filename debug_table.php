@@ -96,8 +96,9 @@ try {
         include('insert_producer_processor.php');
         include('insert_producer_sku.php');
         include('insert_supply.php');
-        include('insert_distribution.php');
         include('insert_consumption.php');
+        include('insert_distribution.php');
+        
         //include('insert_individual_consumption.php');
 
 

@@ -4,64 +4,6 @@
 // Include the database connection
 include('db_connect.php');
 
-// Ensure the referenced tables exist
-$createDistributionChannelTableSQL = "
-    CREATE TABLE IF NOT EXISTS distributionchannel (
-        DistributionChannelID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        DistributionChannelName VARCHAR(255) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-
-if ($conn->query($createDistributionChannelTableSQL) === TRUE) {
-    echo "Table 'distributionchannel' ensured successfully.<br>";
-} else {
-    echo "Error ensuring table 'distributionchannel': " . $conn->error . "<br>";
-}
-
-$createSubDistributionChannelTableSQL = "
-    CREATE TABLE IF NOT EXISTS subdistributionchannel (
-        SubDistributionChannelID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        SubDistributionChannelName VARCHAR(255) NOT NULL,
-        DistributionChannelID INT(11),
-        FOREIGN KEY (DistributionChannelID) REFERENCES distributionchannel(DistributionChannelID)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-
-if ($conn->query($createSubDistributionChannelTableSQL) === TRUE) {
-    echo "Table 'subdistributionchannel' ensured successfully.<br>";
-} else {
-    echo "Error ensuring table 'subdistributionchannel': " . $conn->error . "<br>";
-}
-
-$createSupplyTableSQL = "
-    CREATE TABLE IF NOT EXISTS supply (
-        SupplyID INT(11) AUTO_INCREMENT PRIMARY KEY,
-        VehicleID INT(11),
-        CountryID INT(11),
-        FoodTypeID INT(11),
-        PSID INT(11),
-        EntityID INT(11),
-        ProductID INT(11),
-        ProducerReferenceID INT(11),
-        UCID INT(11),
-        YearTypeID INT(11),
-        StartYear INT(4),
-        SourceVolume DECIMAL(20, 4),
-        FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID),
-        FOREIGN KEY (CountryID) REFERENCES country(CountryID),
-        FOREIGN KEY (FoodTypeID) REFERENCES foodtype(FoodTypeID),
-        FOREIGN KEY (PSID) REFERENCES processingstage(PSID),
-        FOREIGN KEY (EntityID) REFERENCES entity(EntityID),
-        FOREIGN KEY (ProductID) REFERENCES product(ProductID),
-        FOREIGN KEY (ProducerReferenceID) REFERENCES producerreference(ProducerReferenceID),
-        FOREIGN KEY (UCID) REFERENCES measureunit1(UCID),
-        FOREIGN KEY (YearTypeID) REFERENCES yeartype(YearTypeID)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-
-if ($conn->query($createSupplyTableSQL) === TRUE) {
-    echo "Table 'supply' ensured successfully.<br>";
-} else {
-    echo "Error ensuring table 'supply': " . $conn->error . "<br>";
-}
-
 // Disable foreign key checks
 $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
@@ -82,30 +24,14 @@ $createDistributionTableSQL = "
         DistributionID INT(11) AUTO_INCREMENT PRIMARY KEY,
         DistributionChannelID INT(11),
         SubDistributionChannelID INT(11),
-        SupplyID INT(11),
         VehicleID INT(11),
         CountryID INT(11),
-        FoodTypeID INT(11),
-        PSID INT(11),
-        EntityID INT(11),
-        ProductID INT(11),
-        ProducerReferenceID INT(11),
-        UCID INT(11),
-        YearTypeID INT(11),
         StartYear INT(4),
-        DistributedSourceVolume DECIMAL(20,6),
+        DistributedVolume DECIMAL(20,6),
         FOREIGN KEY (DistributionChannelID) REFERENCES distributionchannel(DistributionChannelID),
         FOREIGN KEY (SubDistributionChannelID) REFERENCES subdistributionchannel(SubDistributionChannelID),
-        FOREIGN KEY (SupplyID) REFERENCES supply(SupplyID),
         FOREIGN KEY (VehicleID) REFERENCES foodvehicle(VehicleID),
-        FOREIGN KEY (CountryID) REFERENCES country(CountryID),
-        FOREIGN KEY (FoodTypeID) REFERENCES foodtype(FoodTypeID),
-        FOREIGN KEY (PSID) REFERENCES processingstage(PSID),
-        FOREIGN KEY (EntityID) REFERENCES entity(EntityID),
-        FOREIGN KEY (ProductID) REFERENCES product(ProductID),
-        FOREIGN KEY (ProducerReferenceID) REFERENCES producerreference(ProducerReferenceID),
-        FOREIGN KEY (UCID) REFERENCES measureunit1(UCID),
-        FOREIGN KEY (YearTypeID) REFERENCES yeartype(YearTypeID)
+        FOREIGN KEY (CountryID) REFERENCES country(CountryID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 if ($conn->query($createDistributionTableSQL) === TRUE) {
@@ -139,6 +65,19 @@ if ($result) {
     echo "Error getting valid SubDistributionChannelIDs: " . $conn->error . "<br>";
 }
 
+// Get all VehicleIDs and CountryIDs from the supply table
+$vehicleCountryPairs = array();
+$result = $conn->query("SELECT DISTINCT VehicleID, CountryID FROM supply");
+if ($result) {
+    echo "<br>Valid VehicleID and CountryID pairs in supply table:<br>";
+    while ($row = $result->fetch_assoc()) {
+        $vehicleCountryPairs[] = array('VehicleID' => $row['VehicleID'], 'CountryID' => $row['CountryID']);
+        echo "VehicleID: {$row['VehicleID']}, CountryID: {$row['CountryID']}<br>";
+    }
+} else {
+    echo "Error getting valid VehicleID and CountryID pairs: " . $conn->error . "<br>";
+}
+
 // Path to your CSV file
 $csvFile = 'data/distribution.csv';
 
@@ -155,7 +94,7 @@ if ($content === false) {
 }
 
 // Check for UTF-8 BOM and remove it
-$bom = pack('H*','EFBBBF');
+$bom = pack('H*', 'EFBBBF');
 if (strncmp($content, $bom, 3) === 0) {
     echo "Found and removing UTF-8 BOM from CSV file.<br>";
     $content = substr($content, 3);
@@ -167,7 +106,7 @@ $content = str_replace("\r", "\n", $content);
 $lines = explode("\n", $content);
 
 // Remove any empty lines
-$lines = array_filter($lines, function($line) {
+$lines = array_filter($lines, function ($line) {
     return trim($line) !== '';
 });
 
@@ -187,20 +126,20 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     if ($header !== FALSE) {
         echo "Row 1 (Header): " . implode(", ", array_map('trim', $header)) . "<br>";
     }
-    
+
     $rowNumber = 2;
     rewind($handle);
     fgetcsv($handle); // Skip header again
-    
+
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         // Show raw data for debugging
         echo "<br>Row $rowNumber raw data:<br>";
         foreach ($data as $index => $value) {
             echo "Column $index: '" . bin2hex($value) . "' (hex), '" . $value . "' (raw)<br>";
         }
-        
+
         // Clean and validate data
-        if (count($data) < 4) {
+        if (count($data) < 3) {
             echo "Warning: Row $rowNumber has insufficient columns. Skipping.<br>";
             $rowNumber++;
             continue;
@@ -227,19 +166,23 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
             continue;
         }
 
-        // Insert data into distribution table
-        $sql = "INSERT INTO distribution (DistributionChannelID, SubDistributionChannelID) VALUES (?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $distributionChannelID, $subDistributionChannelID);
+        // Insert data into distribution table for all combinations of VehicleID and CountryID from the supply table
+        foreach ($vehicleCountryPairs as $pair) {
+            $vehicleID = $pair['VehicleID'];
+            $countryID = $pair['CountryID'];
+            $sql = "INSERT INTO distribution (DistributionChannelID, SubDistributionChannelID, VehicleID, CountryID) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("iiii", $distributionChannelID, $subDistributionChannelID, $vehicleID, $countryID);
 
-        if ($stmt->execute()) {
-            $distributionID = $conn->insert_id;
-            echo "✓ Inserted distribution with ID: $distributionID<br>";
-        } else {
-            echo "Error inserting distribution: " . $stmt->error . "<br>";
+            if ($stmt->execute()) {
+                $distributionID = $conn->insert_id;
+                echo "✓ Inserted distribution with ID: $distributionID<br>";
+            } else {
+                echo "Error inserting distribution: " . $stmt->error . "<br>";
+            }
+
+            $stmt->close();
         }
-
-        $stmt->close();
         $rowNumber++;
     }
 
@@ -248,7 +191,7 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     $result = $conn->query("SELECT * FROM distribution ORDER BY DistributionID");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            echo "ID: {$row['DistributionID']}, DistributionChannelID: {$row['DistributionChannelID']}, SubDistributionChannelID: {$row['SubDistributionChannelID']}<br>";
+            echo "ID: {$row['DistributionID']}, DistributionChannelID: {$row['DistributionChannelID']}, SubDistributionChannelID: {$row['SubDistributionChannelID']}, VehicleID: {$row['VehicleID']}, CountryID: {$row['CountryID']}<br>";
         }
     }
 
@@ -262,46 +205,56 @@ $insertDistributionSQL = "
     WITH SubDistributionCounts AS (
         SELECT 
             DistributionChannelID, 
+            CountryID,
+            VehicleID,
             COUNT(DISTINCT CASE WHEN SubDistributionChannelID > 1 THEN SubDistributionChannelID END) AS TotalSubSpecific
         FROM distribution
         WHERE DistributionChannelID > 1
-        GROUP BY DistributionChannelID
+        GROUP BY DistributionChannelID, CountryID, VehicleID
     ),
     TotalSubDistribution AS (
-        SELECT COUNT(DISTINCT CASE WHEN SubDistributionChannelID > 1 THEN SubDistributionChannelID END) AS TotalSubAll
+        SELECT 
+            CountryID,
+            VehicleID,
+            COUNT(DISTINCT CASE WHEN SubDistributionChannelID > 1 THEN SubDistributionChannelID END) AS TotalSubAll
         FROM distribution
         WHERE DistributionChannelID > 1
+        GROUP BY CountryID, VehicleID
     )
     SELECT 
         d.DistributionChannelID,
         d.SubDistributionChannelID,
-        s.SupplyID,
-        s.VehicleID,
-        s.CountryID,
-        s.FoodTypeID,
-        s.PSID,
-        s.EntityID,
-        s.ProductID,
-        s.ProducerReferenceID,
-        s.UCID,
-        s.YearTypeID,
+        d.VehicleID,
+        d.CountryID,
         s.StartYear,
-        SUM(s.SourceVolume * (sc.TotalSubSpecific / NULLIF(ts.TotalSubAll, 0))) AS WeightedSourceVolume
+        SUM(s.SourceVolume * (sc.TotalSubSpecific / NULLIF(ts.TotalSubAll, 0))) AS DistributedVolume
     FROM supply s
-    JOIN distribution d ON 1=1
-    JOIN SubDistributionCounts sc ON d.DistributionChannelID = sc.DistributionChannelID
-    JOIN TotalSubDistribution ts ON 1=1
+    JOIN distribution d ON s.VehicleID = d.VehicleID AND s.CountryID = d.CountryID
+    JOIN SubDistributionCounts sc 
+        ON d.DistributionChannelID = sc.DistributionChannelID 
+        AND d.CountryID = sc.CountryID 
+        AND d.VehicleID = sc.VehicleID
+    JOIN TotalSubDistribution ts 
+        ON d.CountryID = ts.CountryID 
+        AND d.VehicleID = ts.VehicleID
     WHERE d.DistributionChannelID > 1
     AND d.SubDistributionChannelID > 1
+    AND s.StartYear IS NOT NULL AND s.StartYear != ''
     GROUP BY 
         d.DistributionChannelID, 
         d.SubDistributionChannelID, 
-        s.VehicleID, 
-        s.CountryID";
+        d.VehicleID, 
+        d.CountryID, 
+        s.StartYear
+    HAVING 
+        DistributedVolume IS NOT NULL AND DistributedVolume != ''";
 
 $finalInsertSQL = "
-    INSERT INTO distribution (DistributionChannelID, SubDistributionChannelID, SupplyID, VehicleID, CountryID, FoodTypeID, PSID, EntityID, ProductID, ProducerReferenceID, UCID, YearTypeID, StartYear, DistributedSourceVolume)
-    $insertDistributionSQL";
+    INSERT INTO distribution (DistributionChannelID, SubDistributionChannelID, VehicleID, CountryID, StartYear, DistributedVolume)
+    $insertDistributionSQL
+    ON DUPLICATE KEY UPDATE
+        StartYear = VALUES(StartYear),
+        DistributedVolume = VALUES(DistributedVolume)";
 
 if ($conn->query($finalInsertSQL) === TRUE) {
     echo "Data inserted into 'distribution' table successfully.<br>";
