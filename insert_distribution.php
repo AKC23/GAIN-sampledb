@@ -251,10 +251,7 @@ $insertDistributionSQL = "
 
 $finalInsertSQL = "
     INSERT INTO distribution (DistributionChannelID, SubDistributionChannelID, VehicleID, CountryID, StartYear, DistributedVolume)
-    $insertDistributionSQL
-    ON DUPLICATE KEY UPDATE
-        StartYear = VALUES(StartYear),
-        DistributedVolume = VALUES(DistributedVolume)";
+    $insertDistributionSQL";
 
 if ($conn->query($finalInsertSQL) === TRUE) {
     echo "Data inserted into 'distribution' table successfully.<br>";

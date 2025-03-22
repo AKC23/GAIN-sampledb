@@ -316,7 +316,7 @@ $validTables = [
         <div id="debug-card">
 
             <?php
-            // include('debug_table.php');
+            include('debug_table.php');
             ?>
 
         </div>

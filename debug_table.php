@@ -43,8 +43,8 @@ try {
             'producer_processor',
             'producer_sku',
             'supply',
-            'distribution',
             'consumption',
+            'distribution',
             'individual_consumption'
             //'supply_in_chain'
         ];
@@ -98,7 +98,6 @@ try {
         include('insert_supply.php');
         include('insert_consumption.php');
         include('insert_distribution.php');
-        
         //include('insert_individual_consumption.php');
 
 

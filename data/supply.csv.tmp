@@ -40,6 +40,3 @@ VehicleID,Food Vehicle,CountryID,Country supplied,FoodTypeID,Food Type,PS_ID,Pro
 3,W,2,Bangladesh,16,Whole Wheat,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,633.869,0,0,3,Year(July-June),2022,2023,132
 3,W,2,Bangladesh,17,Atta,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,0,0,0,3,Year(July-June),2022,2023,133
 3,W,2,Bangladesh,18,Maida,9,Wheat flour,Local,1,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,0,0,0,3,Year(July-June),2022,2023,134
-3,W,4,Bangladesh,11,Whole Wheat,2,Wheat flour,Local,2,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,4443.869,0,0,3,Year(July-June),2022,2023,132
-3,W,4,Bangladesh,11,Atta,2,Wheat flour,Local,2,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,2343.869,0,0,3,Year(July-June),2022,2023,133
-3,W,4,Bangladesh,11,Maida,2,Wheat flour,Local,2,N/A,0,0,1,N/A,1,N/A,1,Metric Ton,Year,2233.869,0,0,3,Year(July-June),2022,2023,134

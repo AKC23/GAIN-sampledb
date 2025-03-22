@@ -329,11 +329,6 @@ $validTables = [
     <div class="container" style="max-width: 1200px;">
         <h1 class="center-title">Database on Essential Commodities Supply for Human Consumption (Admin)</h1>
 
-
-
-
-
-
         <div class="card">
             <div style="display: flex; align-items: center; width: 100%;">
                 <form method="post" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
