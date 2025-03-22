@@ -29,7 +29,7 @@ try {
             'producer_reference',
             'measureunit1',
             'measurecurrency',
-            'packagingtype', 
+            'packagingtype',
             'sub_distribution_channel',
             'distribution_channel',
             'reference',
@@ -42,10 +42,10 @@ try {
             'entity',
             'producer_processor',
             'producer_sku',
+            'supply',
             'distribution',
             'consumption',
-            'individual_consumption',
-            'supply'
+            'individual_consumption'
             //'supply_in_chain'
         ];
 
@@ -70,13 +70,14 @@ try {
         include('insert_measure_unit1.php'); // Ensure measureunit1 is created first
         include('insert_measure_currency.php'); // Ensure measurecurrency is created first
         include('insert_packaging_type.php'); // Ensure packagingtype is created first
-        include('insert_sub_distribution_channel.php'); // Ensure packagingtype is created first
         include('insert_distribution_channel.php'); // Ensure packagingtype is created first
+        include('insert_sub_distribution_channel.php'); // Ensure packagingtype is created first
+
         include('insert_reference.php'); // Ensure reference is created first
         include('insert_age.php'); // Ensure age is created first
         include('insert_gender.php'); // Ensure year_type is created first
         include('insert_year_type.php'); // Ensure year_type is created first
-        
+
 
         // Level 1: Tables that depend on base tables
         echo "<h3>Creating base tables (Level 1)...</h3>";
@@ -89,15 +90,16 @@ try {
         include('insert_extraction_conversion.php'); // Ensure extraction_conversion is created after foodvehicle, foodtype, reference
         include('insert_insert_adult_male_equivalent.php'); // Ensure adult_male_equivalent is created after gender & age
         include('insert_product.php');
-        
+
         // Level 2: Tables that depend on Level 1 tables
         include('insert_entity.php');
         include('insert_producer_processor.php');
         include('insert_producer_sku.php');
+        include('insert_supply.php');
         include('insert_distribution.php');
         include('insert_consumption.php');
         //include('insert_individual_consumption.php');
-        include('insert_supply.php');
+
 
         // Level 3: Tables that depend on Level 2 tables
         // include('insert_supply_in_chain.php');
@@ -113,4 +115,3 @@ try {
         echo "<br>Database Error: " . $conn->error . "<br>";
     }
 }
-?>

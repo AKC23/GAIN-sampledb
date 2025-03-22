@@ -1,30 +1,13 @@
-DistributionChannelID,Distribution Channel,SubDistributionChannelID,Sub Distribution Channel,VehicleID,VehicleName,UCID,Source Volume Unit,Periodical Unit,Source Volume,Volume_MT_Y,CountryID,CountryName,Year Type ID,Year Type,Start Month,End Month,Start Year,End Year,ReferenceID
-2,Retail,2,Retail Shop,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-2,Retail,3,Wholesale,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-2,Retail,4,Supermarket,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-3,Institutional,5,Government Ration,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-3,Institutional,6,OMS,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-4,Food Service,7,Bakery,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-4,Food Service,8,Hotels,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-4,Food Service,9,Restaurants,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-4,Food Service,10,Fast Food,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-5,B2B,11,Small 2nd level processing Manufacturing,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-5,B2B,12,Large Manufacturing,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-5,B2B,7,Bakery,2,Edible Oil,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2015,2015,1
-5,B2B,11,Small 2nd level processing Manufacturing,3,Wheat,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2015,2016,1
-5,B2B,12,Large Manufacturing,3,Wheat,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2015,2016,1
-5,B2B,7,Bakery,3,Wheat,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2015,2016,1
-5,B2B,7,Bakery,3,Wheat,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2015,2016,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2022,2023,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2022,2022,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,1,Year(Jun-July),July,June,2020,2021,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2020,2020,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2022,2023,1
-1,N/A,1,N/A,1,N/A,1,Metric Ton,Year,100,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2021,2022,1
-1,N/A,1,N/A,1,N/A,2,Metric Ton,Month,20,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2020,2021,1
-1,N/A,1,N/A,2,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2022,2023,1
-1,N/A,1,N/A,2,N/A,1,Metric Ton,Year,100,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2021,2022,1
-1,N/A,1,N/A,2,N/A,2,Metric Ton,Month,20,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2020,2021,1
-1,N/A,1,N/A,3,N/A,1,Metric Ton,Year,0,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2022,2023,1
-1,N/A,1,N/A,3,N/A,1,Metric Ton,Year,100,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2021,2022,1
-1,N/A,1,N/A,3,N/A,2,Metric Ton,Month,20,0,2,Bangladesh,2,Year (Jan-Dec),January,December,2020,2021,1
+DistributionChannelID,Distribution Channel,SubDistributionChannelID,Sub Distribution Channel
+1,N/A,1,N/A
+2,Retail,2,Retail Shop
+2,Retail,3,Wholesale
+2,Retail,4,Supermarket
+3,Institutional,5,Government Ration
+3,Institutional,6,OMS
+4,Food Service,7,Bakery
+4,Food Service,8,Hotels
+4,Food Service,9,Restaurants
+4,Food Service,10,Fast Food
+5,B2B,11,Small 2nd level processing Manufacturing
+5,B2B,12,Large Manufacturing
